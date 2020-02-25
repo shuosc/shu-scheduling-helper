@@ -1,0 +1,275 @@
+<template>
+  <a-locale-provider :locale="zh_CN">
+    <div>
+      <a-tabs class="main-tabs" v-model="activeTab" @change="handleActiveTabChanged">
+        <a-tab-pane tab="课表" key="scheduleTable">
+          <ScheduleTable @click="handleClassCardClick" />
+        </a-tab-pane>
+        <a-tab-pane tab="待选" key="reserved">
+          <ReservedClassesList ref="reservedClassesList" />
+        </a-tab-pane>
+        <a-tab-pane tab="检索" key="lookup">
+          <LookupPanel />
+        </a-tab-pane>
+      </a-tabs>
+      <div class="content-actions">
+        <a-button type="link" icon="undo" :disabled="!canUndo" @click="undo" />
+        <a-dropdown placement="bottomCenter">
+          <a-menu slot="overlay">
+            <a-menu-item @click="exportDialogVisible = true">
+              <a-icon type="export" />
+              导出已选课程文本...
+            </a-menu-item>
+            <a-menu-divider />
+            <a-menu-item @click="backupAndRestoreDialogVisible = true">
+              <a-icon type="database" />
+              备份与还原...
+            </a-menu-item>
+            <a-menu-divider />
+            <a-menu-item @click="colorSeedDialogVisible = true">
+              <a-icon type="experiment" />
+              色彩随机种子...
+            </a-menu-item>
+          </a-menu>
+          <a-button type="link">
+            更多功能
+            <a-icon type="down" />
+          </a-button>
+        </a-dropdown>
+        <a-button type="link" icon="redo" :disabled="!canRedo" @click="redo" />
+        <a-modal v-model="exportDialogVisible" :title="null" :width="400" :footer="null" destroy-on-close>
+          <ExportDialog />
+        </a-modal>
+        <a-modal v-model="backupAndRestoreDialogVisible" :title="null" :width="480" :footer="null" destroy-on-close>
+          <BackupAndRestoreDialog @ok="backupAndRestoreDialogVisible = false" />
+        </a-modal>
+        <a-modal v-model="colorSeedDialogVisible" :title="null" :width="520" :footer="null" destroy-on-close>
+          <ColorSeedDialog @ok="colorSeedDialogVisible = false" />
+        </a-modal>
+      </div>
+      <div class="content-footer">
+        <h3 class="product-name">
+          SHU排课助手 <small>OL/M/Beta</small><br />
+          <small>{{ $store.state.trimester }}</small>
+        </h3>
+        <div>
+          Copyright &copy; {{ new Date().getFullYear() }} <a href="https://github.com/ZKLlab" target="_blank">ZKLlab</a>.
+          All Rights Reserved.
+        </div>
+        <div>
+          数据来源:
+          <a href="http://www.xk.shu.edu.cn/" target="_blank">上海大学网上选课系统</a> 版权归上海大学所有
+        </div>
+        <div>
+          <a class="beian" href="http://www.beian.miit.gov.cn" target="_blank">沪ICP备17002314号-1</a>
+          <a class="beian mps-beian" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44010302000519"
+             target="_blank">粤公网安备 44010302000519号</a>
+        </div>
+        <a-button class="alternate-to-desktop" href="/index.html" type="link" icon="laptop">
+          切换到电脑版
+        </a-button>
+        <a-button class="alternate-to-desktop" href="https://support.qq.com/products/120502" type="link"
+                  target="_blank" icon="message">
+          意见反馈
+        </a-button>
+      </div>
+      <a-back-top ref="backTop" v-show="false" />
+    </div>
+  </a-locale-provider>
+</template>
+
+<script>
+  import zh_CN from 'ant-design-vue/lib/locale-provider/zh_CN';
+  import ScheduleTable from './components/ScheduleTable';
+  import ReservedClassesList from './components/ReservedClassesList';
+  import LookupPanel from './components/LookupPanel';
+  import BackupAndRestoreDialog from './components/modals/BackupAndRestoreDialog';
+  import ColorSeedDialog from './components/modals/ColorSeedDialog';
+  import ExportDialog from './components/modals/ExportDialog';
+  import {dataManagerMixin} from '../../mixins/common/dataManager';
+
+  export default {
+    name: 'app',
+    components: {
+      BackupAndRestoreDialog,
+      ColorSeedDialog,
+      ExportDialog,
+      LookupPanel,
+      ReservedClassesList,
+      ScheduleTable,
+    },
+    mixins: [dataManagerMixin],
+    data() {
+      return {
+        zh_CN,
+        activeTab: 'reserved',
+        exportDialogVisible: false,
+        backupAndRestoreDialogVisible: false,
+        colorSeedDialogVisible: false,
+      };
+    },
+    computed: {
+      canUndo() {
+        return this.$store.state.historyPos > 1;
+      },
+      canRedo() {
+        return this.$store.state.historyPos < this.$store.state.history.length;
+      },
+    },
+    created() {
+      this.$message.config({
+        top: '57px',
+        maxCount: 1,
+      });
+      this.updateData();
+      addEventListener('storage', this.handleStorage);
+    },
+    beforeDestroy() {
+      removeEventListener('storage', this.handleStorage);
+    },
+    methods: {
+      handleClassCardClick() {
+        this.activeTab = 'reserved';
+        this.$refs.reservedClassesList.scrollTo(this.$store.state.openedCourseId);
+      },
+      handleStorage() {
+        this.$store.dispatch('updateFromStorage');
+        this.$destroyAll();
+      },
+      handleCollapse(collapsed) {
+        this.collapsed = collapsed;
+      },
+      handleActiveTabChanged() {
+        this.$refs.backTop.scrollToTop();
+      },
+      undo() {
+        this.$store.dispatch('undo');
+      },
+      redo() {
+        this.$store.dispatch('redo');
+      },
+    },
+  };
+</script>
+
+<style>
+  body {
+    background: #f0f2f5 !important;
+  }
+
+  /*noinspection CssUnusedSymbol*/
+  button.ant-btn {
+    overflow: hidden;
+  }
+
+  /*noinspection CssUnusedSymbol*/
+  .page-sider.ant-layout-sider-collapsed + .page-content {
+    margin: 64px 0 0 0 !important;
+  }
+
+  /*noinspection CssUnusedSymbol*/
+  .conflict-list-hint {
+    font-size: 12px;
+  }
+
+  /*noinspection CssUnusedSymbol*/
+  .conflict-list-class-meta {
+    font-size: 14px;
+    margin: 16px 0 0;
+  }
+
+  /*noinspection CssUnusedSymbol*/
+  .conflict-solving-list-class-meta-wrapper {
+    margin: 8px 0 0 !important;
+    font-size: 14px;
+  }
+
+  /*noinspection CssUnusedSymbol*/
+  .conflict-list-class-meta-time {
+    font-size: 12px;
+    color: rgba(0, 0, 0, .45);
+  }
+
+  .content-actions {
+    padding: 8px;
+    text-align: center;
+  }
+
+  .content-footer {
+    text-align: center;
+    line-height: 2;
+    font-size: 12px;
+    padding: 8px 8px 32px;
+  }
+
+  .content-footer a {
+    color: rgba(0, 0, 0, 0.45);
+    white-space: nowrap;
+  }
+
+  .content-footer a:hover {
+    color: rgba(0, 0, 0, 0.35);
+  }
+
+  .product-name:after {
+    background: url("../../assets/logo.png") no-repeat center center;
+    background-size: contain;
+    vertical-align: middle;
+    margin: 4px 0 12px;
+    user-select: none;
+    display: block;
+    height: 32px;
+    content: " ";
+  }
+
+  .beian {
+    margin: 0 10px;
+  }
+
+  .mps-beian:before {
+    background: url("../../assets/mps.png") no-repeat center center;
+    vertical-align: text-bottom;
+    background-size: contain;
+    transition: opacity 0.2s;
+    display: inline-block;
+    margin-right: 5px;
+    content: " ";
+    opacity: 0.8;
+    height: 16px;
+    width: 16px;
+  }
+
+  .mps-beian:hover:before {
+    opacity: 0.7;
+  }
+
+  .alternate-to-desktop {
+    margin-top: 16px;
+  }
+
+  /*noinspection CssUnusedSymbol*/
+  .main-tabs .ant-tabs-bar {
+    margin-bottom: 0 !important;
+    background: white;
+    position: fixed;
+    z-index: 99;
+    right: 0;
+    left: 0;
+    top: 0;
+  }
+
+  /*noinspection CssUnusedSymbol*/
+  .main-tabs .ant-tabs-nav-scroll {
+    text-align: center;
+  }
+
+  /*noinspection CssUnusedSymbol*/
+  .main-tabs.ant-tabs {
+    background: white;
+  }
+
+  /*noinspection CssUnusedSymbol*/
+  .main-tabs .ant-tabs-content {
+    margin-top: 44px !important;
+  }
+</style>
