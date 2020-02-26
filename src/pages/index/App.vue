@@ -65,16 +65,31 @@
           let ctrl = isMacLike ? event.metaKey && !event.ctrlKey : event.ctrlKey && !event.metaKey;
           let shift = event.shiftKey;
           let alt = event.altKey;
-          if (ctrl && !alt && ((shift && (event.code === 'KeyZ' || event.key.toLowerCase() === 'z')) || (!shift && (event.code === 'KeyY' || event.key.toLowerCase() === 'y')))) {
-            event.preventDefault();
-            this.$store.dispatch('redo');
-          } else if (ctrl && !alt && !shift && (event.code === 'KeyS' || event.key.toLowerCase() === 's')) {
+          let key = event.key.toLowerCase();
+          let isInput = false;
+          let targetTagName = event.target.tagName.toLowerCase();
+          if (targetTagName === 'textarea') {
+            isInput = true;
+          } else if (targetTagName === 'input') {
+            if (['text', 'password', 'number', 'email', 'tel', 'url', 'search', 'date', 'datetime', 'datetime-local',
+              'time', 'month', 'week'].indexOf(event.target.getAttribute('type').toLowerCase()) >= 0) {
+              isInput = true;
+            }
+          }
+          if (ctrl && !alt && ((shift && (event.code === 'KeyZ' || key === 'z')) || (!shift && (event.code === 'KeyY' || key === 'y')))) {
+            if (!isInput) {
+              event.preventDefault();
+              this.$store.dispatch('redo');
+            }
+          } else if (ctrl && !alt && !shift && (event.code === 'KeyS' || key === 's')) {
             event.preventDefault();
             this.$message.info('所有内容已自动保存！');
-          } else if (ctrl && !alt && !shift && (event.code === 'KeyZ' || event.key.toLowerCase() === 'z')) {
-            event.preventDefault();
-            this.$store.dispatch('undo');
-          } else if (ctrl && !alt && shift && (event.code === 'KeyK' || event.key.toLowerCase() === 'k')) {
+          } else if (ctrl && !alt && !shift && (event.code === 'KeyZ' || key === 'z')) {
+            if (!isInput) {
+              event.preventDefault();
+              this.$store.dispatch('undo');
+            }
+          } else if (ctrl && !alt && shift && (event.code === 'KeyK' || key === 'k')) {
             event.preventDefault();
             this.$refs.content.colorSeedDialogVisible = true;
           }
