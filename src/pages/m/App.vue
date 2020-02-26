@@ -52,6 +52,40 @@
           SHU排课助手 <small>OL/M/Beta</small><br />
           <small>{{ $store.state.trimester }}</small>
         </h3>
+        <div class="about-wrapper">
+          <a-dropdown placement="topCenter">
+            <a-menu slot="overlay" class="about-menu">
+              <template slot="title">
+                <a-icon type="info-circle" />
+                关于
+              </template>
+              <a-menu-item>
+                <a href="https://github.com/ZKLlab/shu-scheduling-helper-frontend" target="_blank"
+                   rel="external nofollow">
+                  <a-icon type="github" />
+                  项目Github主页
+                </a>
+              </a-menu-item>
+              <a-menu-divider />
+              <a-menu-item>
+                <a href="https://github.com/ZKLlab/shu-scheduling-helper-frontend/issues" target="_blank"
+                   rel="external nofollow">
+                  <a-icon type="exclamation-circle" />
+                  去Github提Issue
+                </a>
+              </a-menu-item>
+              <a-menu-item>
+                <a href="https://support.qq.com/products/120502" target="_blank" rel="external nofollow">
+                  <a-icon type="message" />
+                  吐个槽平台
+                </a>
+              </a-menu-item>
+            </a-menu>
+            <a-button type="link" icon="info-circle">
+              关于
+            </a-button>
+          </a-dropdown>
+        </div>
         <div>
           Copyright &copy; {{ new Date().getFullYear() }} <a href="https://github.com/ZKLlab" target="_blank">ZKLlab</a>.
           All Rights Reserved.
@@ -67,10 +101,6 @@
         </div>
         <a-button class="alternate-to-desktop" href="/index.html" type="link" icon="laptop">
           切换到电脑版
-        </a-button>
-        <a-button class="alternate-to-desktop" href="https://support.qq.com/products/120502" type="link"
-                  target="_blank" icon="message">
-          意见反馈
         </a-button>
       </div>
       <a-back-top ref="backTop" v-show="false" />
@@ -245,6 +275,15 @@
 
   .alternate-to-desktop {
     margin-top: 16px;
+  }
+
+  .about-wrapper {
+    margin-bottom: 10px;
+  }
+
+  /*noinspection CssUnusedSymbol*/
+  .about-menu .anticon {
+    margin-right: 8px !important;
   }
 
   /*noinspection CssUnusedSymbol*/
