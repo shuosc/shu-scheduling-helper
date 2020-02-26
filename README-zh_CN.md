@@ -12,6 +12,12 @@
 
 ------
 
+<p align="center">
+  <a href="https://travis-ci.org/ZKLlab/shu-scheduling-helper-frontend">
+    <img alt="Build Status" src="https://img.shields.io/travis/ZKLlab/shu-scheduling-helper-frontend?style=flat-square">
+  </a>
+</p>
+
 - [简介](#简介)
 - [开发](#开发)
 - [致谢](#致谢)
