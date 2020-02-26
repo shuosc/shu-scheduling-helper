@@ -1,0 +1,9 @@
+language: node_js
+node_js:
+  - "10"
+  - "stable"
+  - "lts/*"
+install:
+  - yarn
+script:
+  - yarn build
