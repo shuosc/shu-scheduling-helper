@@ -17,6 +17,8 @@
         设置
       </template>
     </h3>
+    <a-alert v-if="!$store.getters.currentAffairsAndStatePoliciesSelected" class="casp-alert" message="未选形势与政策"
+             type="info" close-text="忽略" show-icon />
     <a-tabs class="tabs" v-model="activeTab" tab-position="left" type="card" size="small">
       <a-tab-pane key="content" force-render>
         <a-icon slot="tab" type="file-text" />
@@ -82,5 +84,9 @@
   /*noinspection CssUnusedSymbol*/
   .tabs >>> .ant-tabs-tab .anticon {
     margin: 0;
+  }
+
+  .casp-alert {
+    margin-bottom: 20px;
   }
 </style>

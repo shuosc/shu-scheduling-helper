@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import {
+  Alert,
   Avatar,
   Badge,
   BackTop,
@@ -33,6 +34,7 @@ import {
   message,
 } from 'ant-design-vue';
 
+Vue.use(Alert);
 Vue.use(Avatar);
 Vue.use(Badge);
 Vue.use(BackTop);

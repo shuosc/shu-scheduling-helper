@@ -70,6 +70,8 @@
             <a-popconfirm title="关闭选课窗口并退出快捷选课？" placement="bottom" @confirm="back">
               <a-button type="link" size="small">返回</a-button>
             </a-popconfirm>
+            <a-alert v-if="!$store.getters.currentAffairsAndStatePoliciesSelected" class="casp-alert"
+                     message="未选形势与政策" type="info" close-text="忽略" show-icon />
           </div>
         </a-list>
       </a-config-provider>
@@ -253,5 +255,10 @@
     background: white;
     color: #999999;
     box-shadow: 0 0 0 1px #d9d9d9 inset;
+  }
+
+  .casp-alert {
+    margin-top: 10px;
+    text-align: left;
   }
 </style>

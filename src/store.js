@@ -28,6 +28,7 @@ export default new Vuex.Store({
   },
   getters: {
     scheduleTableRows(state) {
+      // 课程表格
       let rows = [];
       for (let i = 0; i < 13; i++) {
         rows.push([null, null, null, null, null]);
@@ -51,6 +52,7 @@ export default new Vuex.Store({
       return rows;
     },
     credits(state) {
+      // 学分数
       let result = 0;
       for (let courseId in state.selectedClasses) {
         if (state.selectedClasses.hasOwnProperty(courseId)) {
@@ -60,6 +62,7 @@ export default new Vuex.Store({
       return result;
     },
     currentData(state) {
+      // 当前XXXXXXXX+XXXX,XXXXXXXX-XXXX格式数据
       let keys = [];
       for (let courseId in state.reservedClasses) {
         if (state.reservedClasses.hasOwnProperty(courseId)) {
@@ -77,9 +80,10 @@ export default new Vuex.Store({
       keys.sort();
       return keys.join(',');
     },
-    // currentHash(state) {
-    //   return SHA1(keys.join(',')).toString();
-    // },
+    currentAffairsAndStatePoliciesSelected(state) {
+      // 形势与政策是否已选
+      return state.selectedClasses.hasOwnProperty('16583109');
+    },
   },
   mutations: {
     LOADED(state, value) {
