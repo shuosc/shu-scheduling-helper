@@ -1,52 +1,54 @@
 <template>
-  <a-layout-header class="page-header">
-    <a-menu class="header-menu" theme="light" mode="horizontal" :selectable="false">
-      <a-menu-item class="header-title-wrapper">
-        <div class="header-title-container">
-          <div class="header-title">SHU排课助手 <small>OL/Beta</small></div>
-          <div class="header-trimester">{{ $store.state.trimester }}</div>
-        </div>
-      </a-menu-item>
-      <a-menu-item class="actions-menu-item" :disabled="!canUndo" @click="undo">
-        <a-tooltip :title="undoTitle" placement="bottom">
-          <a-icon type="undo" />
-        </a-tooltip>
-      </a-menu-item>
-      <a-menu-item class="actions-menu-item" :disabled="!canRedo" @click="redo">
-        <a-tooltip :title="redoTitle" placement="bottom">
-          <a-icon type="redo" />
-        </a-tooltip>
-      </a-menu-item>
-      <a-sub-menu class="actions-menu-item actions-menu-item-right">
-        <template slot="title">
-          <a-icon type="info-circle" />
-          关于
-        </template>
-        <a-menu-item>
-          <a href="https://github.com/ZKLlab/shu-scheduling-helper-frontend" target="_blank" rel="external nofollow">
-            <a-icon type="github" />
-            项目Github主页
-          </a>
+  <a-layout-header ref="header" class="page-header">
+    <a-config-provider :get-popup-container="() => $refs.header.$el">
+      <a-menu class="header-menu" theme="light" mode="horizontal" :selectable="false">
+        <a-menu-item class="header-title-wrapper">
+          <div class="header-title-container">
+            <div class="header-title">SHU排课助手 <small>OL/Beta</small></div>
+            <div class="header-trimester">{{ $store.state.trimester }}</div>
+          </div>
         </a-menu-item>
-        <a-sub-menu>
+        <a-menu-item class="actions-menu-item" :disabled="!canUndo" @click="undo">
+          <a-tooltip :title="undoTitle" placement="bottom">
+            <a-icon type="undo" />
+          </a-tooltip>
+        </a-menu-item>
+        <a-menu-item class="actions-menu-item" :disabled="!canRedo" @click="redo">
+          <a-tooltip :title="redoTitle" placement="bottom">
+            <a-icon type="redo" />
+          </a-tooltip>
+        </a-menu-item>
+        <a-sub-menu class="actions-menu-item actions-menu-item-right">
           <template slot="title">
-            <a-icon type="message" />
-            意见反馈
+            <a-icon type="info-circle" />
+            关于
           </template>
           <a-menu-item>
-            <a href="https://github.com/ZKLlab/shu-scheduling-helper-frontend/issues" target="_blank"
-               rel="external nofollow">
-              去Github提Issue
+            <a href="https://github.com/ZKLlab/shu-scheduling-helper-frontend" target="_blank" rel="external nofollow">
+              <a-icon type="github" />
+              项目Github主页
             </a>
           </a-menu-item>
-          <a-menu-item>
-            <a href="https://support.qq.com/products/120502" target="_blank" rel="external nofollow">
-              吐个槽平台
-            </a>
-          </a-menu-item>
+          <a-sub-menu>
+            <template slot="title">
+              <a-icon type="message" />
+              意见反馈
+            </template>
+            <a-menu-item>
+              <a href="https://github.com/ZKLlab/shu-scheduling-helper-frontend/issues" target="_blank"
+                 rel="external nofollow">
+                去Github提Issue
+              </a>
+            </a-menu-item>
+            <a-menu-item>
+              <a href="https://support.qq.com/products/120502" target="_blank" rel="external nofollow">
+                吐个槽平台
+              </a>
+            </a-menu-item>
+          </a-sub-menu>
         </a-sub-menu>
-      </a-sub-menu>
-    </a-menu>
+      </a-menu>
+    </a-config-provider>
   </a-layout-header>
 </template>
 
