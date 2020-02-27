@@ -3,6 +3,7 @@ node_modules
 ossutil_output
 /dist
 .ossutil_checkpoint
+robots.txt
 
 # local env files
 .env.local
