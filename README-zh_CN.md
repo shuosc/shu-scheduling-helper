@@ -47,21 +47,7 @@
 
 ## 开发
 
-### 后端API
-
-#### API 1
-
-```
-https://app.zkllab.com/xk/courses/info
-```
-
-#### API 2
-
-> {hash}的值由上面的API返回
-
-```
-https://app.zkllab.com/xk/courses/{hash}.json
-```
+### [API文档](./docs/api-zh_CN.md)
 
 ### 前端快速上手
 

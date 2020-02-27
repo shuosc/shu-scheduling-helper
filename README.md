@@ -48,21 +48,7 @@ The shu-scheduling-helper project has a frontend part and a backend part. For sa
 
 ## Development
 
-### Backend APIs
-
-#### API 1
-
-```
-https://app.zkllab.com/xk/courses/info
-```
-
-#### API 2
-
-> {hash} is presented by API 1
-
-```
-https://app.zkllab.com/xk/courses/{hash}.json
-```
+### [API doc (中文)](./docs/api-zh_CN.md)
 
 ### Frontend quick start
 
