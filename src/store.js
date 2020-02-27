@@ -260,7 +260,7 @@ export default new Vuex.Store({
       });
     },
     setColorSeed(context, data) {
-      // 设置色彩种子
+      // 设置色彩随机种子
       return new Promise((resolve) => {
         if (!setColorSeed(data)) {
           resolve();
@@ -550,7 +550,9 @@ export default new Vuex.Store({
             Storage.set('selectedClasses', selected),
           ]);
           return changeList;
-        })().then(resolve).catch(reject);
+        })().then(resolve).catch(() => {
+          reject();
+        });
       });
     },
     undo(context) {

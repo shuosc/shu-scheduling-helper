@@ -120,9 +120,7 @@ export const BackupAndRestoreDialogMixin = {
           }
         })().then(() => {
           this.$emit('ok');
-        }).catch((e) => {
-          // eslint-disable-next-line no-console
-          console.error(e);
+        }).catch(() => {
           this.$message.error('恢复备份的时候出现了问题，请检查网络连接后重试。');
         }).finally(() => {
           this.submitting = false;
