@@ -219,7 +219,7 @@ export default new Vuex.Store({
     updateAllClasses(context, data) {
       // 从远程更新所有课程数据
       return new Promise((resolve, reject) => {
-        axios.get(data['url']).then((response) => {
+        axios.get(apiConfig.getDataApi(data['hash'])).then((response) => {
           let changeList = getClassesChangeList(context.state.allClasses, response.data, context.state.reservedClasses, context.state.selectedClasses, context.getters.scheduleTableRows);
           context.commit('ALL_CLASSES', response.data);
           context.commit('ALL_CLASSES_HASH', data['hash']);

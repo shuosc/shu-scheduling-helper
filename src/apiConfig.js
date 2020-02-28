@@ -1,4 +1,4 @@
 export default {
-  infoApi: 'https://app.zkllab.com/xk/courses/info',
-  getDataApi: (hash) => `https://app.zkllab.com/xk/courses/${hash}.json`,
+  infoApi: '/api/courses/info',
+  getDataApi: (hash) => `/api/courses/${hash}.json`,
 };

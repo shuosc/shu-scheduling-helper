@@ -1,4 +1,12 @@
 module.exports = {
+  devServer: {
+    proxy: {
+      '/api': {
+        target: 'https://xk2.zkllab.com',
+        changeOrigin: true
+      },
+    },
+  },
   pages: {
     index: {
       entry: 'src/pages/index/main.js',
