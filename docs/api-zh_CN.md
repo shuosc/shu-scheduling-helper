@@ -6,14 +6,12 @@
 
 声明：此后端接口仅为本服务提供，禁止用于其他用途。
 
-跨域支持域名：`https://xk2.zkllab.com`和`http://localhost:8080-8089`
-
 ### API 1
 
 #### URL
 
 ```
-GET https://app.zkllab.com/xk/courses/info
+GET https://xk2.zkllab.com/api/courses/info
 ```
 
 #### 返回结果示例：
@@ -23,7 +21,7 @@ GET https://app.zkllab.com/xk/courses/info
   "backend": "http://xk.autoisp.shu.edu.cn:8084/", 
   "hash": "ec17f6e2", 
   "trimester": "2019-2020\u5b66\u5e74\u6625\u5b63\u5b66\u671f", 
-  "url": "https://app.zkllab.com/xk/courses/ec17f6e2.json"
+  "url": "https://xk2.zkllab.com/api/courses/ec17f6e2.json"
 }
 ```
 
@@ -34,14 +32,14 @@ GET https://app.zkllab.com/xk/courses/info
 | backend    | `String` | 选课后端地址，不用解释     |
 | hash       | `String` | 课程列表的哈希值           |
 | trimester  | `String` | 学期名称                   |
-| url        | `String` | 获取课程列表的URL（API 2） |
+| url        | `String` | **废弃** 获取课程列表的URL |
 
 ### API 2
 
 #### URL
 
 ```
-GET https://app.zkllab.com/xk/courses/{hash}.json
+GET https://xk2.zkllab.com/api/courses/{hash}.json
 ```
 
 #### <span id="api-2-example">返回结果示例</span>
