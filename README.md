@@ -96,6 +96,8 @@ $ yarn build
 │   │       └── main.js
 │   ├── plugins
 │   │   └── ant-design-vue.js
+│   ├── workers   # Workers
+│   │   └── ......
 │   ├── storage.js   # Data persistence (compression)
 │   ├── store.js   # Core part processing data
 │   └── utils.js   # Some reusable logics

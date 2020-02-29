@@ -95,6 +95,8 @@ $ yarn build
 │   │       └── main.js
 │   ├── plugins
 │   │   └── ant-design-vue.js
+│   ├── workers   # 运行者
+│   │   └── ......
 │   ├── storage.js   # 处理数据压缩与持久化
 │   ├── store.js   # 数据处理的核心部分
 │   └── utils.js   # 一些可复用的逻辑
