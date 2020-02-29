@@ -1,3 +1,5 @@
+const WorkerPlugin = require('worker-plugin');
+
 module.exports = {
   devServer: {
     proxy: {
@@ -6,6 +8,11 @@ module.exports = {
         changeOrigin: true
       },
     },
+  },
+  configureWebpack: {
+    plugins: [
+      new WorkerPlugin(),
+    ],
   },
   pages: {
     index: {
