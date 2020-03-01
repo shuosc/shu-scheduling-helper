@@ -5,13 +5,15 @@ module.exports = {
     proxy: {
       '/api': {
         target: 'https://xk2.zkllab.com',
-        changeOrigin: true
+        changeOrigin: true,
       },
     },
   },
   configureWebpack: {
     plugins: [
-      new WorkerPlugin(),
+      new WorkerPlugin({
+        globalObject: 'self',
+      }),
     ],
   },
   pages: {
