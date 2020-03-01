@@ -10,6 +10,16 @@ export const dataManagerMixin = {
             this.activeTab = 'lookup';
           }
         }
+        // 确保reservedClasses里有campus
+        (() => {
+          let keys = Object.keys(this.$store.state.reservedClasses);
+          if (keys.length > 0) {
+            let cKey = Object.keys(this.$store.state.reservedClasses[keys[0]].classes)[0];
+            if (!this.$store.state.reservedClasses[keys[0]].classes[cKey].hasOwnProperty('campus')) {
+              this.$store.dispatch('updateFromDataString', this.$store.getters.currentData);
+            }
+          }
+        })();
         this.$store.dispatch('checkUpdateAllClasses').then((data) => {
           if (data != null) {
             const hide2 = this.$message.loading('正在更新课程数据...', 0);

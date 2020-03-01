@@ -1,7 +1,7 @@
 <template>
   <div :class="{ 'course-meta': true, 'course-meta-all-conflicted': allConflicted }">
     <a-badge class="credit-badge" :count="`${course.credit}学分`" />
-    <span class="course-name">{{ course.courseName }}</span>
+    <span class="course-name">{{ course.courseName }}</span>&nbsp;
     <small>({{ id }})</small>
     <a-icon v-if="allConflicted" class="all-conflicted-icon" type="warning" />
     <template v-if="selectedClassKey !== null && !expanded">
@@ -9,8 +9,12 @@
       {{ course.classes[selectedClassKey].teacherName }}
       <small>({{ selectedClassKey }})</small>
       <a-divider type="vertical" />
-      <small class="selected-class-time">
+      <small class="selected-info">
         {{ course.classes[selectedClassKey].classTime }}
+      </small>
+      <a-divider type="vertical" />
+      <small class="selected-info">
+        {{ course.classes[selectedClassKey].campus }}
       </small>
     </template>
   </div>
@@ -66,7 +70,7 @@
     margin: 0 0 3px 5px;
   }
 
-  .selected-class-time {
+  .selected-info {
     color: rgba(0, 0, 0, 0.45);
   }
 

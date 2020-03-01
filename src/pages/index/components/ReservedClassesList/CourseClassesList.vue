@@ -5,9 +5,14 @@
       slot="header"
       v-if="selectedClassKey !== null && expanded"
     >
-      <a-list-item-meta :description="course.classes[selectedClassKey].classTime">
+      <a-list-item-meta>
         <template slot="title">{{ course.classes[selectedClassKey].teacherName }}
           <small>({{ selectedClassKey }})</small>
+        </template>
+        <template slot="description">
+          {{ course.classes[selectedClassKey].classTime }}
+          <a-divider type="vertical" />
+          {{ course.classes[selectedClassKey].campus }}
         </template>
         <a-avatar slot="avatar" class="selected-avatar">已选</a-avatar>
       </a-list-item-meta>
@@ -27,9 +32,14 @@
         解决冲突...
       </a-button>
       <a-button slot="actions" type="dashed" :disabled="storageBusy" @click="doRemoveReservedClass(key)">- 待选</a-button>
-      <a-list-item-meta :description="course.classes[key].classTime">
+      <a-list-item-meta>
         <template slot="title">{{ course.classes[key].teacherName }}
           <small>({{ key }})</small>
+        </template>
+        <template slot="description">
+          {{ course.classes[key].classTime }}
+          <a-divider type="vertical" />
+          {{ course.classes[key].campus }}
         </template>
       </a-list-item-meta>
     </a-list-item>

@@ -232,6 +232,7 @@ export default new Vuex.Store({
               reservedCopy[courseId].credit = context.state.allCoursesMap[courseId]['credit'];
               for (let teacherId in reservedCopy[courseId].classes) {
                 if (reservedCopy[courseId].classes.hasOwnProperty(teacherId)) {
+                  reservedCopy[courseId].classes[teacherId].campus = context.state.allClassesMap[`${courseId}-${teacherId}`]['campus'];
                   reservedCopy[courseId].classes[teacherId].classTime = context.state.allClassesMap[`${courseId}-${teacherId}`]['class_time'];
                   reservedCopy[courseId].classes[teacherId].teacherName = context.state.allClassesMap[`${courseId}-${teacherId}`]['teacher_name'];
                 }
@@ -289,8 +290,9 @@ export default new Vuex.Store({
           };
         }
         copy[data['course_id']].classes[data['teacher_id']] = {
-          teacherName: data['teacher_name'],
+          campus: data['campus'],
           classTime: data['class_time'],
+          teacherName: data['teacher_name'],
         };
         context.commit('RESERVED_CLASSES', copy);
         context.commit('HISTORY_PUSH', {
@@ -447,8 +449,9 @@ export default new Vuex.Store({
               };
             }
             reserved[courseId].classes[teacherId] = {
-              teacherName: context.state.allClassesMap[`${courseId}-${teacherId}`]['teacher_name'],
+              campus: context.state.allClassesMap[`${courseId}-${teacherId}`]['campus'],
               classTime: context.state.allClassesMap[`${courseId}-${teacherId}`]['class_time'],
+              teacherName: context.state.allClassesMap[`${courseId}-${teacherId}`]['teacher_name'],
             };
             if (isSelected) {
               selected[courseId] = {
@@ -500,8 +503,9 @@ export default new Vuex.Store({
                 };
               }
               reserved[courseId].classes[teacherId] = {
-                teacherName: classesMap[`${courseId}-${teacherId}`]['teacher_name'],
+                campus: classesMap[`${courseId}-${teacherId}`]['campus'],
                 classTime: classesMap[`${courseId}-${teacherId}`]['class_time'],
+                teacherName: classesMap[`${courseId}-${teacherId}`]['teacher_name'],
               };
               if (isSelected) {
                 selected[courseId] = {

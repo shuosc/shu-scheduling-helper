@@ -9,8 +9,12 @@
       {{ course.classes[selectedClassKey].teacherName }}
       <small>({{ selectedClassKey }})</small>
       <a-divider type="vertical" />
-      <small class="selected-class-time">
+      <small class="selected-info">
         {{ course.classes[selectedClassKey].classTime }}
+      </small>
+      <a-divider type="vertical" />
+      <small class="selected-info">
+        {{ course.classes[selectedClassKey].campus }}
       </small>
     </template>
   </div>
@@ -66,7 +70,7 @@
     margin: 0 0 3px 5px;
   }
 
-  .selected-class-time {
+  .selected-info {
     color: rgba(0, 0, 0, 0.45);
   }
 
