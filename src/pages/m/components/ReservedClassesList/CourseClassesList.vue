@@ -1,5 +1,5 @@
 <template>
-  <a-list size="small" class="classes-list" :data-source="classesKeys">
+  <a-list size="small" class="classes-list" :data-source="shownClassesKeys">
     <a-list-item
       class="selected-class-list-item"
       slot="header"
@@ -50,6 +50,9 @@
         type: String,
       },
       expanded: {
+        type: Boolean,
+      },
+      hideConflict: {
         type: Boolean,
       },
     },

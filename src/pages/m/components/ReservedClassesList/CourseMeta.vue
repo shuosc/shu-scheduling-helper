@@ -3,7 +3,6 @@
     <a-badge class="credit-badge" :count="`${course.credit}学分`" />
     <span class="course-name">{{ course.courseName }}</span>
     <small>({{ id }})</small>
-    <a-icon v-if="allConflicted" class="all-conflicted-icon" type="warning" />
     <template v-if="selectedClassKey !== null && !expanded">
       <br />
       {{ course.classes[selectedClassKey].teacherName }}
@@ -33,6 +32,9 @@
         type: String,
       },
       expanded: {
+        type: Boolean,
+      },
+      allConflicted: {
         type: Boolean,
       },
     },

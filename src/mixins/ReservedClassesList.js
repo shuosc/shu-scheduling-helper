@@ -1,6 +1,11 @@
 import {getColor, getPeriods} from '../utils';
 
 export const ReservedClassesListMixin = {
+  data() {
+    return {
+      hideConflict: false,
+    }
+  },
   computed: {
     reservedClasses() {
       return this.$store.state.reservedClasses;
@@ -14,16 +19,19 @@ export const ReservedClassesListMixin = {
       });
       return keys;
     },
+    shownReservedClassesKeys() {
+      return this.reservedClassesKeys.filter(key => !(this.hideConflict && this.allConflicted[key]));
+    },
     reservedClassesDividers() {
       let result = {
         unselectedCourse: -1,
         selectedCourse: -1,
       };
-      for (let i = 0; i < this.reservedClassesKeys.length; i++) {
-        if (i === 0 && !this.$store.state.selectedClasses.hasOwnProperty(this.reservedClassesKeys[i])) {
+      for (let i = 0; i < this.shownReservedClassesKeys.length; i++) {
+        if (i === 0 && !this.$store.state.selectedClasses.hasOwnProperty(this.shownReservedClassesKeys[i])) {
           result.unselectedCourse = 0;
         }
-        if (this.$store.state.selectedClasses.hasOwnProperty(this.reservedClassesKeys[i])) {
+        if (this.$store.state.selectedClasses.hasOwnProperty(this.shownReservedClassesKeys[i])) {
           result.selectedCourse = i;
           break;
         }
@@ -32,6 +40,34 @@ export const ReservedClassesListMixin = {
     },
     credits() {
       return this.$store.getters.credits;
+    },
+    allConflicted() {
+      let result = {};
+      this.reservedClassesKeys.forEach((key) => {
+        let flag = false;
+        if (!this.$store.state.selectedClasses.hasOwnProperty(key)) {
+          flag = true;
+          for (let teacherId in this.$store.state.reservedClasses[key].classes) {
+            if (this.$store.state.reservedClasses[key].classes.hasOwnProperty(teacherId)) {
+              let isConflicted = false;
+              getPeriods(this.$store.state.reservedClasses[key].classes[teacherId].classTime).forEach((period) => {
+                if (!isConflicted) {
+                  let cell = this.$store.getters.scheduleTableRows[period[0]][period[1]];
+                  if (cell !== null && cell.courseId !== key) {
+                    isConflicted = true;
+                  }
+                }
+              });
+              if (!isConflicted) {
+                flag = false;
+                break;
+              }
+            }
+          }
+        }
+        result[key] = flag;
+      });
+      return result;
     },
     openedCourseId: {
       get() {
@@ -82,6 +118,9 @@ export const CourseClassesListMixin = {
       let keys = Object.keys(this.course.classes).filter(key => key !== this.selectedClassKey);
       keys.sort();
       return keys;
+    },
+    shownClassesKeys() {
+      return this.classesKeys.filter(key => !(this.hideConflict && this.isConflicted(key)));
     },
     selectedClassKey() {
       if (this.$store.state.selectedClasses.hasOwnProperty(this.id)) {
@@ -187,29 +226,5 @@ export const CourseMetaMixin = {
         return null;
       }
     },
-    allConflicted() {
-      if (this.selectedClassKey != null) {
-        return false;
-      }
-      let flag = true;
-      for (let teacherId in this.$store.state.reservedClasses[this.id].classes) {
-        if (this.$store.state.reservedClasses[this.id].classes.hasOwnProperty(teacherId)) {
-          let isConflicted = false;
-          getPeriods(this.$store.state.reservedClasses[this.id].classes[teacherId].classTime).forEach((period) => {
-            if (!isConflicted) {
-              let cell = this.$store.getters.scheduleTableRows[period[0]][period[1]];
-              if (cell !== null && cell.courseId !== this.id) {
-                isConflicted = true;
-              }
-            }
-          });
-          if (!isConflicted) {
-            flag = false;
-            break;
-          }
-        }
-      }
-      return flag;
-    }
   },
 };

@@ -11,7 +11,7 @@
       />
       <!--suppress JSUnresolvedVariable -->
       <a-collapse v-model="openedCourseId" accordion :bordered="false">
-        <template v-for="(key, index) in reservedClassesKeys">
+        <template v-for="(key, index) in shownReservedClassesKeys">
           <a-collapse-panel
             v-if="index === reservedClassesDividers.unselectedCourse"
             :key="`${key}-divider`"
@@ -21,10 +21,11 @@
           >
             <template slot="header">
               未选课程
+              <a-checkbox class="hide-conflict" v-model="hideConflict">隐藏时间冲突选项</a-checkbox>
             </template>
           </a-collapse-panel>
           <a-collapse-panel
-            v-else-if="index === reservedClassesDividers.selectedCourse"
+            v-if="index === reservedClassesDividers.selectedCourse"
             :key="`${key}-divider`"
             class="list-header"
             :show-arrow="false"
@@ -32,13 +33,17 @@
           >
             <template slot="header">
               已选课程 ( <span class="credits-wrapper"><strong class="credits">{{ credits }}</strong> 学分</span> )
+              <a-checkbox class="hide-conflict" v-model="hideConflict"
+                          v-if="reservedClassesDividers.unselectedCourse < 0">隐藏时间冲突选项
+              </a-checkbox>
             </template>
           </a-collapse-panel>
           <a-collapse-panel :ref="`course-${key}`" class="course" :key="key">
             <template slot="header">
               <CourseColor :course-id="key" :course-name="reservedClasses[key].courseName" />
               <!--suppress JSUnresolvedVariable -->
-              <CourseMeta :course="reservedClasses[key]" :id="key" :expanded="openedCourseId === key" />
+              <CourseMeta :course="reservedClasses[key]" :id="key" :expanded="openedCourseId === key"
+                          :all-conflicted="allConflicted[key]" />
             </template>
             <!--suppress JSUnresolvedVariable -->
             <CourseClassesList :course="reservedClasses[key]" :id="key" :expanded="openedCourseId === key"
@@ -83,6 +88,10 @@
 
   .reserved-classes-list-empty {
     padding: 50px 0;
+  }
+
+  .hide-conflict {
+    float: right;
   }
 
   /*noinspection CssUnusedSymbol*/
