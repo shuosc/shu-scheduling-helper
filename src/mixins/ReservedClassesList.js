@@ -117,6 +117,7 @@ export const CourseClassesListMixin = {
       });
     },
     unselectClass() {
+      this.$emit('unselect', this.id);
       return this.$store.dispatch('unselectClass', {
         'course_id': this.id,
         'teacher_id': this.selectedClassKey,

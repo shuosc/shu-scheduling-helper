@@ -41,7 +41,8 @@
               <CourseMeta :course="reservedClasses[key]" :id="key" :expanded="openedCourseId === key" />
             </template>
             <!--suppress JSUnresolvedVariable -->
-            <CourseClassesList :course="reservedClasses[key]" :id="key" :expanded="openedCourseId === key" />
+            <CourseClassesList :course="reservedClasses[key]" :id="key" :expanded="openedCourseId === key"
+                               @unselect="scrollTo" />
           </a-collapse-panel>
         </template>
       </a-collapse>
