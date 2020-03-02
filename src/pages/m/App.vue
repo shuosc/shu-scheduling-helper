@@ -153,6 +153,9 @@
       });
       this.updateData();
       addEventListener('storage', this.handleStorage);
+      setInterval(() => {
+        this.$store.dispatch('updateAllClassesExtra');
+      }, 600000);
     },
     beforeDestroy() {
       removeEventListener('storage', this.handleStorage);

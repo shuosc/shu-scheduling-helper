@@ -15,6 +15,8 @@ export default new Vuex.Store({
     allCoursesMap: {},
     allClassesMap: {},
     allClassesHash: null, // 持久化
+    allClassesExtra: {}, // 持久化
+    allClassesExtraUpdateTime: null, // 持久化
     reservedClasses: {}, // 持久化
     selectedClasses: {}, // 持久化
     trimester: null, // 持久化
@@ -102,6 +104,12 @@ export default new Vuex.Store({
     ALL_CLASSES_HASH(state, value) {
       state.allClassesHash = value;
     },
+    ALL_CLASSES_EXTRA(state, value) {
+      state.allClassesExtra = value;
+    },
+    ALL_CLASSES_EXTRA_UPDATE_TIME(state, value) {
+      state.allClassesExtraUpdateTime = value;
+    },
     RESERVED_CLASSES(state, value) {
       state.reservedClasses = value;
       state.previewClass = null;
@@ -165,6 +173,8 @@ export default new Vuex.Store({
         Promise.all([
           Storage.get('allClasses', []),
           Storage.get('allClassesHash', null),
+          Storage.get('allClassesExtra', {}),
+          Storage.get('allClassesExtraUpdateTime', null),
           Storage.get('reservedClasses', {}),
           Storage.get('selectedClasses', {}),
           Storage.get('trimester', null),
@@ -173,16 +183,18 @@ export default new Vuex.Store({
         ]).then((values) => {
           context.commit('ALL_CLASSES', values[0]);
           context.commit('ALL_CLASSES_HASH', values[1]);
-          context.commit('RESERVED_CLASSES', values[2]);
-          context.commit('SELECTED_CLASSES', values[3]);
-          context.commit('TRIMESTER', values[4]);
-          context.commit('BACKEND', values[5]);
+          context.commit('ALL_CLASSES_EXTRA', values[2]);
+          context.commit('ALL_CLASSES_EXTRA_UPDATE_TIME', values[3]);
+          context.commit('RESERVED_CLASSES', values[4]);
+          context.commit('SELECTED_CLASSES', values[5]);
+          context.commit('TRIMESTER', values[6]);
+          context.commit('BACKEND', values[7]);
           context.commit('HISTORY_CLEAR');
           context.commit('HISTORY_PUSH', {
             data: context.getters.currentData,
             msg: null,
           });
-          context.dispatch('setColorSeed', values[6]).then(() => {
+          context.dispatch('setColorSeed', values[8]).then(() => {
             resolve();
           });
         });
@@ -255,6 +267,27 @@ export default new Vuex.Store({
           ]).then(() => {
             resolve(changeList);
           });
+        }).catch(() => {
+          reject();
+        });
+      });
+    },
+    updateAllClassesExtra(context) {
+      // 从远程更新课程扩展数据
+      return new Promise((resolve, reject) => {
+        axios.get(apiConfig.extraApi).then((response) => {
+          if (response.data['hash'] === context.state.allClassesHash) {
+            context.commit('ALL_CLASSES_EXTRA', response.data['data']);
+            context.commit('ALL_CLASSES_EXTRA_UPDATE_TIME', response.data['update_time']);
+            Promise.all([
+              Storage.set('allClassesExtra', response.data['data']),
+              Storage.set('allClassesExtraUpdateTime', response.data['update_time']),
+            ]).then(() => {
+              resolve();
+            });
+          } else {
+            resolve(response.data['hash']);
+          }
         }).catch(() => {
           reject();
         });
@@ -414,7 +447,6 @@ export default new Vuex.Store({
     clearAllUserData(context) {
       // 清除所有用户数据
       return new Promise((resolve) => {
-        context.commit('ALL_CLASSES', []);
         context.commit('RESERVED_CLASSES', {});
         context.commit('SELECTED_CLASSES', {});
         context.commit('HISTORY_CLEAR');
@@ -423,7 +455,6 @@ export default new Vuex.Store({
           msg: null,
         });
         Promise.all([
-          Storage.set('allClasses', []),
           Storage.set('reservedClasses', {}),
           Storage.set('selectedClasses', {}),
         ]).then(() => {

@@ -31,13 +31,16 @@ export const dataManagerMixin = {
             }).catch(() => {
               this.$message.error('更新课程数据时出错，请刷新页面重试！', 30);
             }).finally(() => {
+              this.$store.dispatch('updateAllClassesExtra');
               this.$store.commit('LOADED', true);
               hide2();
             });
           } else {
+            this.$store.dispatch('updateAllClassesExtra');
             this.$store.commit('LOADED', true);
           }
         }).catch(() => {
+          this.$store.dispatch('updateAllClassesExtra');
           this.$store.commit('LOADED', true);
           this.$message.error('检查课程数据更新时出错，请刷新页面重试！', 30);
         }).finally(() => {

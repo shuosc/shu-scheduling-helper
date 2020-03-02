@@ -38,6 +38,13 @@
       this.updateData();
       addEventListener('storage', this.handleStorage);
       addEventListener('keydown', this.handleKeydown);
+      setInterval(() => {
+        this.$store.dispatch('updateAllClassesExtra').then((update) => {
+          if (update) {
+            this.updateData();
+          }
+        });
+      }, 600000);
     },
     beforeDestroy() {
       removeEventListener('storage', this.handleStorage);
@@ -71,8 +78,9 @@
           if (targetTagName === 'textarea') {
             isInput = true;
           } else if (targetTagName === 'input') {
-            if (['text', 'password', 'number', 'email', 'tel', 'url', 'search', 'date', 'datetime', 'datetime-local',
-              'time', 'month', 'week'].indexOf(event.target.getAttribute('type').toLowerCase()) >= 0) {
+            let type = event.target.getAttribute('type');
+            if (type != null && ['text', 'password', 'number', 'email', 'tel', 'url', 'search', 'date', 'datetime', 'datetime-local',
+              'time', 'month', 'week'].indexOf(type.toLowerCase()) >= 0) {
               isInput = true;
             }
           }
