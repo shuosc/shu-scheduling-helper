@@ -16,6 +16,7 @@ import {
   Form,
   Icon,
   Input,
+  InputNumber,
   Layout,
   List,
   LocaleProvider,
@@ -23,12 +24,14 @@ import {
   Modal,
   Pagination,
   Popconfirm,
+  Popover,
   Radio,
   Select,
   Spin,
   Switch,
   Table,
   Tabs,
+  Tag,
   Tooltip,
   Upload,
   message,
@@ -50,6 +53,7 @@ Vue.use(Empty);
 Vue.use(Form);
 Vue.use(Icon);
 Vue.use(Input);
+Vue.use(InputNumber);
 Vue.use(Layout);
 Vue.use(List);
 Vue.use(LocaleProvider);
@@ -57,12 +61,14 @@ Vue.use(Menu);
 Vue.use(Modal);
 Vue.use(Pagination);
 Vue.use(Popconfirm);
+Vue.use(Popover);
 Vue.use(Radio);
 Vue.use(Select);
 Vue.use(Spin);
 Vue.use(Switch);
 Vue.use(Table);
 Vue.use(Tabs);
+Vue.use(Tag);
 Vue.use(Tooltip);
 Vue.use(Upload);
 

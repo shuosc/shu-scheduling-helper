@@ -1,6 +1,8 @@
 <template>
   <div :class="{ 'course-meta': true, 'course-meta-all-conflicted': allConflicted }">
     <a-badge class="credit-badge" :count="`${course.credit}学分`" />
+    <NumberCapacity v-if="selectedClassKey !== null && !expanded" slot="actions" class="number-capacity"
+                    :class-key="`${id}-${selectedClassKey}`" />
     <span class="course-meta-inner"><span
       class="course-name">{{ course.courseName }}</span> <small>({{ id }})</small>
     <template v-if="selectedClassKey !== null && !expanded">
@@ -15,15 +17,29 @@
       <small class="selected-info">
         {{ course.classes[selectedClassKey].campus }}
       </small>
+      <a-divider type="vertical" />
+      <small class="selected-info">
+        {{ $store.getters.extra(`${id}-${selectedClassKey}`).venue }}
+      </small>
+      <br v-if="$store.getters.extra(`${id}-${selectedClassKey}`).limitations.length > 0" />
+      <a-tag
+        v-for="(limitation, index) in $store.getters.extra(`${id}-${selectedClassKey}`).limitations"
+        class="limitation-tag"
+        :key="index"
+      >
+        {{ limitation }}
+      </a-tag>
     </template></span>
   </div>
 </template>
 
 <script>
   import {CourseMetaMixin} from '../../../../mixins/ReservedClassesList';
+  import NumberCapacity from './NumberCapacity';
 
   export default {
     name: 'CourseMeta',
+    components: {NumberCapacity},
     props: {
       course: {
         type: Object,
@@ -51,8 +67,6 @@
   }
 
   .course-meta-inner {
-    transform-origin: left 50%;
-    display: inline-block;
     transition: all 0.2s;
   }
 
@@ -66,11 +80,6 @@
     font-style: italic;
     margin-right: 1px;
     font-weight: bold;
-  }
-
-  .all-conflicted-icon {
-    margin-left: 10px;
-    color: #FFC107;
   }
 
   .credit-badge {
@@ -87,5 +96,14 @@
     background: white;
     color: #999999;
     box-shadow: 0 0 0 1px #d9d9d9 inset;
+  }
+
+  .limitation-tag {
+    margin-top: 2px;
+  }
+
+  .number-capacity {
+    float: right;
+    margin-right: 8px;
   }
 </style>

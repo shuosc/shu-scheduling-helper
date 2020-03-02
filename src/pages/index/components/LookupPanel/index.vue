@@ -7,8 +7,13 @@
       class="table"
       :data-source="rows"
       :locale="{emptyText: '没有匹配的记录'}"
-      :pagination="{showTotal: total => `${total} 条记录`}"
+      :pagination="{position: 'both', showTotal: total => `${total} 条记录`}"
     >
+      <a-table-column title="人数" data-index="number">
+        <template v-slot="number">
+          <NumberCapacity :class-key="number.key" />
+        </template>
+      </a-table-column>
       <a-table-column title="课程" data-index="course">
         <template v-slot="course">
           <strong>{{ course.name }}</strong>
@@ -19,7 +24,7 @@
       </a-table-column>
       <a-table-column title="教师" data-index="teacher">
         <template v-slot="teacher">
-          {{ teacher.name }}<br /><small class="id-info">{{ teacher.id }}</small>
+          {{ teacher.name }}<br /><small class="id-info teacher-id-info">{{ teacher.id }}</small>
         </template>
       </a-table-column>
       <a-table-column title="上课时间" data-index="class_time_info">
@@ -48,11 +53,45 @@
             @mouseenter="previewClass(class_time_info.row)"
             @mouseleave="cancelPreviewClass(class_time_info.row)"
           />
+          <br v-if="$store.getters.extra(class_time_info.key).limitations.length > 0" />
+          <a-tag
+            v-for="(limitation, index) in $store.getters.extra(class_time_info.key).limitations"
+            class="limitation-tag"
+            :color="getLimitationColor(limitation)"
+            :key="index"
+          >
+            {{ limitation }}
+          </a-tag>
         </template>
       </a-table-column>
-      <a-table-column title="校区" data-index="campus" width="70px" />
+      <a-table-column title="地点" data-index="venue">
+        <template v-slot="venue">
+          {{ venue.campus }}<br />
+          <small class="detail-venue">{{ $store.getters.extra(venue.key).venue }}</small>
+        </template>
+      </a-table-column>
       <!--suppress HtmlDeprecatedAttribute -->
       <a-table-column data-index="action" width="160px">
+        <div slot="title" class="about-data-wrapper">
+          <a-popover placement="leftBottom">
+            <div slot="content" class="about-data">
+              人数等所有数据<strong>【非实时】</strong>，视情况可能存在高达数日的误差，仅供参考。<br />
+              更新时间：
+              <a-tag>
+                <a-icon type="clock-circle" />
+                <a-divider type="vertical" />
+                <span>{{ new Date($store.state.allClassesExtraUpdateTime).toLocaleString() }}</span>
+              </a-tag>
+              数据HASH：
+              <a-tag>
+                <a-icon type="tag" />
+                <a-divider type="vertical" />
+                <span>{{ $store.state.allClassesHash }}</span>
+              </a-tag>
+            </div>
+            <a-button size="small" type="link" icon="info-circle">说明</a-button>
+          </a-popover>
+        </div>
         <template v-slot="action">
           <!--suppress JSUnresolvedVariable, ES6ModulesDependencies -->
           <a-dropdown-button
@@ -100,12 +139,14 @@
 
 <script>
   import LookupConditions from './LookupConditions';
+  import NumberCapacity from './NumberCapacity';
   import {conflictSolvingMixin} from '../../../../mixins/common/conflictsSolver';
   import {LookupPanelMixin} from '../../../../mixins/LookupPanel';
 
   export default {
     name: 'LookupPanel',
     components: {
+      NumberCapacity,
       LookupConditions,
     },
     mixins: [conflictSolvingMixin, LookupPanelMixin],
@@ -123,6 +164,20 @@
     margin-right: 16px;
   }
 
+  .table >>> .ant-table-thead th {
+    white-space: nowrap;
+  }
+
+  /*noinspection CssUnusedSymbol*/
+  .table >>> .ant-table-thead th, .table >>> .ant-table-row td {
+    padding: 12px;
+  }
+
+  /*noinspection CssUnusedSymbol*/
+  .table >>> .ant-table-thead th:first-child, .table >>> .ant-table-row td:first-child {
+    padding-left: 16px;
+  }
+
   .credit-badge {
     margin-left: 7px;
   }
@@ -135,18 +190,59 @@
   }
 
   .id-info {
+    color: rgba(0, 0, 0, 0.35);
     font-size: 12px;
-    opacity: 0.6;
+  }
+
+  .teacher-id-info {
+    display: inline-block;
+    width: 60px;
   }
 
   .conflict-info {
+    display: inline-block;
+    padding-bottom: 2px;
     font-size: 12px;
-    opacity: 0.6;
-    color: #F44336;
+    color: rgba(244, 67, 54, 0.8);
   }
 
   .selected-info {
+    display: inline-block;
+    padding-bottom: 2px;
     font-size: 12px;
     color: #52c41a;
+  }
+
+  .limitation-tag {
+    margin-top: 2px;
+  }
+
+  .detail-venue {
+    color: rgba(0, 0, 0, 0.35);
+    text-overflow: ellipsis;
+    vertical-align: middle;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    font-size: 12px;
+    width: 60px;
+  }
+
+  /*noinspection CssUnusedSymbol*/
+  .table >>> .ant-table-row:hover .detail-venue {
+    white-space: inherit;
+  }
+
+  /*noinspection CssUnusedSymbol*/
+  .table >>> .ant-pagination.ant-table-pagination:first-child {
+    margin-top: 0;
+  }
+
+  .about-data-wrapper {
+    text-align: right;
+  }
+
+  .about-data {
+    line-height: 2;
   }
 </style>

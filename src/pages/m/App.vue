@@ -154,7 +154,11 @@
       this.updateData();
       addEventListener('storage', this.handleStorage);
       setInterval(() => {
-        this.$store.dispatch('updateAllClassesExtra');
+        this.$store.dispatch('updateAllClassesExtra').then((update) => {
+          if (update) {
+            this.updateData();
+          }
+        });
       }, 600000);
     },
     beforeDestroy() {

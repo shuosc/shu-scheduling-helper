@@ -41,6 +41,9 @@
     <a-form-item label="筛除时间冲突选项">
       <a-switch v-model="conditions.filterConflicts" checked-children="是" un-checked-children="否" />
     </a-form-item>
+    <a-form-item label="容量至少剩余">
+      <a-input-number class="w-80px" v-model.number="conditions.number" placeholder="不限" :min="0" :max="9999" />
+    </a-form-item>
     <a-form-item label="显示选项">
       <a-radio-group v-model="conditions.displayOption" button-style="solid">
         <a-radio-button :value="0">全部</a-radio-button>

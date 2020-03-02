@@ -5,9 +5,26 @@
       slot="header"
       v-if="selectedClassKey !== null && expanded"
     >
-      <a-list-item-meta :description="course.classes[selectedClassKey].classTime">
+      <a-list-item-meta>
         <template slot="title">{{ course.classes[selectedClassKey].teacherName }}
           <small>({{ selectedClassKey }})</small>
+        </template>
+        <template slot="description">
+          <NumberCapacity slot="actions" :class-key="`${id}-${selectedClassKey}`" class="number-capacity" />
+          <a-divider type="vertical" />
+          {{ course.classes[selectedClassKey].classTime }}
+          <a-divider type="vertical" />
+          {{ course.classes[selectedClassKey].campus }}
+          <a-divider type="vertical" />
+          {{ $store.getters.extra(`${id}-${selectedClassKey}`).venue }}
+          <br v-if="$store.getters.extra(`${id}-${selectedClassKey}`).limitations.length > 0" />
+          <a-tag
+            v-for="(limitation, index) in $store.getters.extra(`${id}-${selectedClassKey}`).limitations"
+            class="limitation-tag"
+            :key="index"
+          >
+            {{ limitation }}
+          </a-tag>
         </template>
         <a-avatar slot="avatar">已选</a-avatar>
       </a-list-item-meta>
@@ -22,14 +39,31 @@
         选择
       </a-button>
       <a-button v-else slot="actions" type="danger" @click="conflictsSolving(key)">
-        解决冲突...
+        冲突
       </a-button>
       <a-button slot="actions" type="dashed" :disabled="storageBusy" @click="doRemoveReservedClass(key)">
         - 待选
       </a-button>
-      <a-list-item-meta :description="course.classes[key].classTime">
+      <a-list-item-meta>
         <template slot="title">{{ course.classes[key].teacherName }}
           <small>({{ key }})</small>
+        </template>
+        <template slot="description">
+          <NumberCapacity slot="actions" :class-key="`${id}-${key}`" class="number-capacity" />
+          <a-divider type="vertical" />
+          {{ course.classes[key].classTime }}
+          <a-divider type="vertical" />
+          {{ course.classes[key].campus }}
+          <a-divider type="vertical" />
+          {{ $store.getters.extra(`${id}-${key}`).venue }}
+          <br v-if="$store.getters.extra(`${id}-${key}`).limitations.length > 0" />
+          <a-tag
+            v-for="(limitation, index) in $store.getters.extra(`${id}-${key}`).limitations"
+            class="limitation-tag"
+            :key="index"
+          >
+            {{ limitation }}
+          </a-tag>
         </template>
       </a-list-item-meta>
     </a-list-item>
@@ -39,9 +73,11 @@
 <script>
   import {conflictSolvingMixin} from '../../../../mixins/common/conflictsSolver';
   import {CourseClassesListMixin} from '../../../../mixins/ReservedClassesList';
+  import NumberCapacity from './NumberCapacity';
 
   export default {
     name: 'CourseClassesList',
+    components: {NumberCapacity},
     props: {
       course: {
         type: Object,
@@ -98,5 +134,13 @@
   /*noinspection CssUnusedSymbol*/
   .ant-list-item-meta-avatar {
     margin-top: 6px;
+  }
+
+  .number-capacity {
+    cursor: auto;
+  }
+
+  .limitation-tag {
+    margin-top: 2px;
   }
 </style>

@@ -1,8 +1,8 @@
 <template>
   <div>
-    <sup>{{ extra.number }}</sup>
+    <sup><strong>{{ extra.number }}</strong></sup>
     <span></span>
-    <sub>{{ extra.capacity }}</sub>
+    <sub>{{ extra.capacity }}人</sub>
   </div>
 </template>
 
@@ -24,13 +24,16 @@
 
 <style scoped>
   div {
-    min-width: 30px;
     white-space: nowrap;
     text-align: center;
+    line-height: 32px;
+    min-width: 30px;
+    height: 32px;
   }
 
   sup {
-    top: -1em;
+    color: rgba(0, 0, 0, 0.65);
+    top: -0.875em;
     right: -1px;
   }
 
@@ -44,6 +47,7 @@
   }
 
   sub {
-    bottom: -0.25em;
+    color: rgba(0, 0, 0, 0.45);
+    bottom: -0.5em;
   }
 </style>

@@ -25,6 +25,19 @@ registerPromiseWorker(function (message) {
     }
     return false;
   };
+  const isNumberExceeded = (data, condition) => {
+    let conditionNumber = parseInt(condition);
+    if (Number.isInteger(conditionNumber) && conditionNumber > 0) {
+      if (message.allClassesExtra.hasOwnProperty(`${data['course_id']}-${data['teacher_id']}`)) {
+        let capacity = parseInt(message.allClassesExtra[`${data['course_id']}-${data['teacher_id']}`].capacity);
+        let number = parseInt(message.allClassesExtra[`${data['course_id']}-${data['teacher_id']}`].number);
+        if (Number.isInteger(capacity) && Number.isInteger(number)) {
+          return capacity - number < conditionNumber;
+        }
+      }
+    }
+    return false;
+  };
   const getConflicts = (courseId, classTime) => {
     let courseConflicts = {};
     getPeriods(classTime).forEach((period) => {
@@ -43,6 +56,9 @@ registerPromiseWorker(function (message) {
     }
   }
   message.allClasses.forEach((row) => {
+    if (isNumberExceeded(row, message.conditions.number)) {
+      return;
+    }
     for (let condition in conditionsRegExp) {
       if (conditionsRegExp.hasOwnProperty(condition)) {
         if (!conditionsRegExp[condition].test(row[condition])) {
@@ -60,8 +76,16 @@ registerPromiseWorker(function (message) {
       id: newRow['teacher_id'],
       name: newRow['teacher_name'],
     };
+    newRow['venue'] = {
+      key: `${newRow['course_id']}-${newRow['teacher_id']}`,
+      campus: newRow['campus'],
+    };
+    newRow['number'] = {
+      key: `${newRow['course_id']}-${newRow['teacher_id']}`,
+    };
     newRow['class_time_info'] = {
       row: row,
+      key: `${newRow['course_id']}-${newRow['teacher_id']}`,
       isSelected: isSelected(row),
       canPreview: getPeriods(newRow['class_time']).length > 0,
       conflicts: getConflicts(newRow['course_id'], newRow['class_time']),

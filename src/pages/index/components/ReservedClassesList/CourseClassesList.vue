@@ -13,9 +13,20 @@
           {{ course.classes[selectedClassKey].classTime }}
           <a-divider type="vertical" />
           {{ course.classes[selectedClassKey].campus }}
+          <a-divider type="vertical" />
+          {{ $store.getters.extra(`${id}-${selectedClassKey}`).venue }}
+          <br v-if="$store.getters.extra(`${id}-${selectedClassKey}`).limitations.length > 0" />
+          <a-tag
+            v-for="(limitation, index) in $store.getters.extra(`${id}-${selectedClassKey}`).limitations"
+            class="limitation-tag"
+            :key="index"
+          >
+            {{ limitation }}
+          </a-tag>
         </template>
         <a-avatar slot="avatar" class="selected-avatar">已选</a-avatar>
       </a-list-item-meta>
+      <NumberCapacity slot="actions" :class-key="`${id}-${selectedClassKey}`" class="number-capacity" />
       <a-button slot="actions" @click="unselectClass">取消选择</a-button>
     </a-list-item>
     <a-list-item
@@ -25,11 +36,12 @@
       @mouseenter="previewClass(key)"
       @mouseleave="cancelPreviewClass(key)"
     >
+      <NumberCapacity slot="actions" :class-key="`${id}-${key}`" class="number-capacity" />
       <a-button v-if="!isConflicted(key)" type="primary" slot="actions" @click="selectClass(key)">
         选择
       </a-button>
       <a-button v-else type="danger" slot="actions" @click="conflictsSolving(key)">
-        解决冲突...
+        冲突
       </a-button>
       <a-button slot="actions" type="dashed" :disabled="storageBusy" @click="doRemoveReservedClass(key)">- 待选</a-button>
       <a-list-item-meta>
@@ -40,6 +52,16 @@
           {{ course.classes[key].classTime }}
           <a-divider type="vertical" />
           {{ course.classes[key].campus }}
+          <a-divider type="vertical" />
+          {{ $store.getters.extra(`${id}-${key}`).venue }}
+          <br v-if="$store.getters.extra(`${id}-${key}`).limitations.length > 0" />
+          <a-tag
+            v-for="(limitation, index) in $store.getters.extra(`${id}-${key}`).limitations"
+            class="limitation-tag"
+            :key="index"
+          >
+            {{ limitation }}
+          </a-tag>
         </template>
       </a-list-item-meta>
     </a-list-item>
@@ -49,9 +71,11 @@
 <script>
   import {conflictSolvingMixin} from '../../../../mixins/common/conflictsSolver';
   import {CourseClassesListMixin} from '../../../../mixins/ReservedClassesList';
+  import NumberCapacity from './NumberCapacity';
 
   export default {
     name: 'CourseClassesList',
+    components: {NumberCapacity},
     props: {
       course: {
         type: Object,
@@ -103,5 +127,13 @@
   /*noinspection CssUnusedSymbol*/
   .ant-list-item-meta-avatar {
     margin-top: 6px;
+  }
+
+  .number-capacity {
+    cursor: auto;
+  }
+
+  .limitation-tag {
+    margin-top: 2px;
   }
 </style>

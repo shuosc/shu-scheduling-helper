@@ -1,8 +1,7 @@
 <template>
   <div>
-    <sup><strong>{{ extra.number }}</strong></sup>
-    <span></span>
-    <sub>{{ extra.capacity }}人</sub>
+    <strong>{{ extra.number }}</strong>
+    <span>/</span>{{ extra.capacity }}人
   </div>
 </template>
 
@@ -24,30 +23,17 @@
 
 <style scoped>
   div {
+    color: rgba(0, 0, 0, 0.45);
+    display: inline-block;
     white-space: nowrap;
-    text-align: center;
-    line-height: 32px;
-    min-width: 30px;
-    height: 32px;
   }
 
-  sup {
+  strong {
     color: rgba(0, 0, 0, 0.65);
-    top: -0.875em;
-    right: -1px;
   }
 
   span {
-    background: rgba(0, 0, 0, 0.2);
-    transform: rotate(45deg);
-    display: inline-block;
+    color: rgba(0, 0, 0, 0.2);
     user-select: none;
-    height: 1em;
-    width: 1px;
-  }
-
-  sub {
-    color: rgba(0, 0, 0, 0.45);
-    bottom: -0.5em;
   }
 </style>

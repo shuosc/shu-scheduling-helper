@@ -42,7 +42,11 @@ export const LookupPanelMixin = {
           this.rows = rows;
           this.storageBusy = false;
           if (toPageOne) {
-            this.$refs.table.$children[0].sPagination.current = 1;
+            if (this.$refs.hasOwnProperty('table')) {
+              this.$refs.table.$children[0].sPagination.current = 1;
+            } else if (this.$refs.hasOwnProperty('list')) {
+              this.$refs.list.paginationCurrent = 1;
+            }
           }
         });
       }, delay);
@@ -53,6 +57,7 @@ export const LookupPanelMixin = {
         reservedClasses: this.$store.state.reservedClasses,
         selectedClasses: this.$store.state.selectedClasses,
         scheduleTableRows: this.$store.getters.scheduleTableRows,
+        allClassesExtra: this.$store.state.allClassesExtra,
         conditions,
       });
     },
@@ -101,6 +106,18 @@ export const LookupPanelMixin = {
         this.$store.commit('PREVIEW_CLASS', null);
       }
     },
+    getLimitationColor(limitation) {
+      switch (limitation) {
+        case '禁止选课':
+          return 'red';
+        case '禁止退课':
+          return 'blue';
+        case '限制人数':
+          return 'orange';
+        default:
+          return null;
+      }
+    },
   },
 };
 
@@ -109,25 +126,30 @@ export const LookupConditionsMixin = {
     return {
       conditions: {
         search: {
-          course_id: '',
-          course_name: '',
-          credit: '',
-          teacher_id: '',
-          teacher_name: '',
-          class_time: '',
-          campus: '',
+          'course_id': '',
+          'course_name': '',
+          'credit': '',
+          'teacher_id': '',
+          'teacher_name': '',
+          'class_time': '',
+          'campus': '',
         },
         filterConflicts: false,
         displayOption: 0,
+        number: '',
       },
     };
   },
   watch: {
     conditions: {
       handler() {
+        if (this.conditions.number === '0' || this.conditions.number === 0 || parseInt(this.conditions.number) === 0) {
+          this.conditions.number = '';
+        }
         this.$emit('filter');
       },
       deep: true,
     },
+
   },
 };

@@ -86,6 +86,25 @@ export default new Vuex.Store({
       // 形势与政策是否已选
       return state.selectedClasses.hasOwnProperty('16583109');
     },
+    extra(state) {
+      return (key) => {
+        if (state.allClassesExtra.hasOwnProperty(key)) {
+          return {
+            capacity: state.allClassesExtra[key]['capacity'] || '-',
+            limitations: state.allClassesExtra[key]['limitations'] || [],
+            number: state.allClassesExtra[key]['number'] || '-',
+            venue: state.allClassesExtra[key]['venue'] || '/',
+          };
+        } else {
+          return {
+            capacity: '-',
+            limitations: [],
+            number: '-',
+            venue: '/',
+          };
+        }
+      };
+    },
   },
   mutations: {
     LOADED(state, value) {
