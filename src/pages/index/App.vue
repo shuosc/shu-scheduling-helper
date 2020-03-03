@@ -28,6 +28,7 @@
       return {
         zh_CN,
         collapsed: false,
+        updateTimer: null,
       };
     },
     created() {
@@ -38,7 +39,8 @@
       this.updateData();
       addEventListener('storage', this.handleStorage);
       addEventListener('keydown', this.handleKeydown);
-      setInterval(() => {
+      clearInterval(this.updateTimer);
+      this.updateTimer = setInterval(() => {
         this.$store.dispatch('updateAllClassesExtra').then((update) => {
           if (update) {
             this.updateData();
