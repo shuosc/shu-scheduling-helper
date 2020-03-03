@@ -1,6 +1,7 @@
 export const dataManagerMixin = {
   methods: {
     updateData() {
+      this.$destroyAll();
       const hide = this.$message.loading('正在检查课程数据更新...', 0);
       this.$store.dispatch('updateFromStorage').then(() => {
         if (Object.keys(this.$store.state.reservedClasses).length === 0) {
@@ -11,15 +12,13 @@ export const dataManagerMixin = {
           }
         }
         // 确保reservedClasses里有campus
-        (() => {
-          let keys = Object.keys(this.$store.state.reservedClasses);
-          if (keys.length > 0) {
-            let cKey = Object.keys(this.$store.state.reservedClasses[keys[0]].classes)[0];
-            if (!this.$store.state.reservedClasses[keys[0]].classes[cKey].hasOwnProperty('campus')) {
-              this.$store.dispatch('updateFromDataString', this.$store.getters.currentData);
-            }
+        let keys = Object.keys(this.$store.state.reservedClasses);
+        if (keys.length > 0) {
+          let cKey = Object.keys(this.$store.state.reservedClasses[keys[0]].classes)[0];
+          if (!this.$store.state.reservedClasses[keys[0]].classes[cKey].hasOwnProperty('campus')) {
+            this.$store.dispatch('updateFromDataString', this.$store.getters.currentData);
           }
-        })();
+        }
         this.$store.dispatch('checkUpdateAllClasses').then((data) => {
           if (data != null) {
             const hide2 = this.$message.loading('正在更新课程数据...', 0);
