@@ -16,10 +16,14 @@
       </a-table-column>
       <a-table-column title="课程" data-index="course">
         <template v-slot="course">
-          <strong>{{ course.name }}</strong>
-          <!--suppress JSUnresolvedVariable, ES6ModulesDependencies -->
+          <a class="course-intro-link" :title="getLinkTitle(course)" target="_blank" rel="external nofollow"
+             :href="`${$store.state.backend}DataQuery/QueryCourseIntro?courseNo=${course.id}`"
+             @click="showCourseIntroduction($event, `${$store.state.backend}DataQuery/QueryCourseIntro?courseNo=${course.id}`)">
+            <strong>{{ course.name }}</strong>
+          </a>
           <a-badge class="credit-badge" :count="`${course.credit}学分`" />
-          <br /><small class="id-info">{{ course.id }}</small>
+          <br />
+          <small class="id-info">{{ course.id }}</small>
         </template>
       </a-table-column>
       <a-table-column title="教师" data-index="teacher">
@@ -142,6 +146,7 @@
   import NumberCapacity from './NumberCapacity';
   import {conflictSolvingMixin} from '../../../../mixins/common/conflictsSolver';
   import {LookupPanelMixin} from '../../../../mixins/LookupPanel';
+  import {isMacLike} from '../../../../utils';
 
   export default {
     name: 'LookupPanel',
@@ -150,6 +155,51 @@
       LookupConditions,
     },
     mixins: [conflictSolvingMixin, LookupPanelMixin],
+    data() {
+      return {
+        showNotification: true,
+      };
+    },
+    methods: {
+      getLinkTitle(course) {
+        let modifiedName = course.name.replace('《', '〈').replace('》', '〉');
+        return `点击查看《${modifiedName}》(${course.id}) 的课程简介\n[按住${isMacLike ? '⌘' : 'Ctrl'}点击，可在新标签页打开]`;
+      },
+      showCourseIntroduction(event, href) {
+        if (isMacLike ? event.metaKey : event.ctrlKey) {
+          return true;
+        }
+        if (this.showNotification) {
+          this.$notification.info({
+            key: 'introduction',
+            message: '弹出窗口需要登录？打开的是选课系统首页？',
+            description: '如有上述情况，请确认选课系统登录状态，关闭弹出的窗口，然后【重新点击链接】。',
+            duration: 0,
+            btn: (h) => {
+              return h('a-button', {
+                props: {
+                  type: 'link',
+                  size: 'small',
+                },
+                on: {
+                  click: () => {
+                    this.showNotification = false;
+                    this.$notification.close('introduction')
+                  },
+                },
+              }, '本次不再提示');
+            },
+            style: {
+              width: '480px',
+              marginLeft: `${384 - 480}px`,
+            },
+          });
+        }
+        event.preventDefault();
+        open(href, 'course-introduction', `left=0,top=0,width=800,height=600`);
+        return false;
+      },
+    },
   };
 </script>
 
@@ -179,7 +229,9 @@
   }
 
   .credit-badge {
+    position: relative;
     margin-left: 7px;
+    top: -1px;
   }
 
   /*noinspection CssUnusedSymbol*/
@@ -244,5 +296,26 @@
 
   .about-data {
     line-height: 2;
+  }
+
+  .course-intro-link {
+    border-bottom: 1px solid transparent;
+    line-height: 24px;
+    color: rgba(0, 0, 0, 0.65);
+    text-decoration: none;
+    padding-bottom: 2px;
+  }
+
+  /*noinspection CssUnusedSymbol*/
+  .course-intro-link:focus, .table >>> .ant-table-row:hover .course-intro-link {
+    border-bottom: 1px dotted rgba(0, 0, 0, 0.35);
+  }
+
+  .course-intro-link:hover {
+    color: #64B5F6;
+  }
+
+  .course-intro-link:active {
+    color: #1976D2;
   }
 </style>

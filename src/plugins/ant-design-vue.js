@@ -35,6 +35,7 @@ import {
   Tooltip,
   Upload,
   message,
+  notification,
 } from 'ant-design-vue';
 
 Vue.use(Alert);
@@ -73,6 +74,7 @@ Vue.use(Tooltip);
 Vue.use(Upload);
 
 Vue.prototype.$message = message;
+Vue.prototype.$notification = notification;
 Vue.prototype.$info = Modal.info;
 Vue.prototype.$success = Modal.success;
 Vue.prototype.$error = Modal.error;
