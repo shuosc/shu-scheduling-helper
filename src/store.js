@@ -27,6 +27,7 @@ export default new Vuex.Store({
     history: [],
     historyPos: 0,
     historyHold: false,
+    showIntroductionNotification: true,
   },
   getters: {
     scheduleTableRows(state) {
@@ -183,6 +184,9 @@ export default new Vuex.Store({
     },
     HISTORY_HOLD(state, value) {
       state.historyHold = value;
+    },
+    IGNORE_INTRODUCTION_NOTIFICATION(state) {
+      state.showIntroductionNotification = false;
     },
   },
   actions: {

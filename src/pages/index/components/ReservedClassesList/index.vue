@@ -108,8 +108,16 @@
   }
 
   /*noinspection CssUnusedSymbol*/
-  .course >>> .ant-collapse-header:hover .course-meta-inner {
+  .course >>> .ant-collapse-header:hover .course-name, .course >>> .ant-collapse-header:hover .course-id,
+  .course >>> .ant-collapse-header:hover .teacher-name, .course >>> .ant-collapse-header:hover .teacher-id,
+  .course >>> .ant-collapse-header:hover .selected-info, .course >>> .ant-collapse-header:hover .credit-badge,
+  .course >>> .ant-collapse-header:hover .number-capacity {
     opacity: 0.7;
+  }
+
+  /*noinspection CssUnusedSymbol*/
+  .course >>> .ant-collapse-header:hover .course-intro-link {
+    opacity: 1 !important;
   }
 
   /*noinspection CssUnusedSymbol*/

@@ -17,8 +17,7 @@
       <a-table-column title="课程" data-index="course">
         <template v-slot="course">
           <a class="course-intro-link" :title="getLinkTitle(course)" target="_blank" rel="external nofollow"
-             :href="`${$store.state.backend}DataQuery/QueryCourseIntro?courseNo=${course.id}`"
-             @click="showCourseIntroduction($event, `${$store.state.backend}DataQuery/QueryCourseIntro?courseNo=${course.id}`)">
+             :href="getLinkHref(course.id)" @click="showCourseIntroduction($event, getLinkHref(course.id))">
             <strong>{{ course.name }}</strong>
           </a>
           <a-badge class="credit-badge" :count="`${course.credit}学分`" />
@@ -146,7 +145,7 @@
   import NumberCapacity from './NumberCapacity';
   import {conflictSolvingMixin} from '../../../../mixins/common/conflictsSolver';
   import {LookupPanelMixin} from '../../../../mixins/LookupPanel';
-  import {isMacLike} from '../../../../utils';
+  import {introductionOpenerMixin} from '../../../../mixins/common/introductionOpener';
 
   export default {
     name: 'LookupPanel',
@@ -154,52 +153,7 @@
       NumberCapacity,
       LookupConditions,
     },
-    mixins: [conflictSolvingMixin, LookupPanelMixin],
-    data() {
-      return {
-        showNotification: true,
-      };
-    },
-    methods: {
-      getLinkTitle(course) {
-        let modifiedName = course.name.replace('《', '〈').replace('》', '〉');
-        return `点击查看《${modifiedName}》(${course.id}) 的课程简介\n[按住${isMacLike ? '⌘' : 'Ctrl'}点击，可在新标签页打开]`;
-      },
-      showCourseIntroduction(event, href) {
-        if (isMacLike ? event.metaKey : event.ctrlKey) {
-          return true;
-        }
-        if (this.showNotification) {
-          this.$notification.info({
-            key: 'introduction',
-            message: '弹出窗口需要登录？打开的是选课系统首页？',
-            description: '如有上述情况，请确认选课系统登录状态，关闭弹出的窗口，然后【重新点击链接】。',
-            duration: 0,
-            btn: (h) => {
-              return h('a-button', {
-                props: {
-                  type: 'link',
-                  size: 'small',
-                },
-                on: {
-                  click: () => {
-                    this.showNotification = false;
-                    this.$notification.close('introduction')
-                  },
-                },
-              }, '本次不再提示');
-            },
-            style: {
-              width: '480px',
-              marginLeft: `${384 - 480}px`,
-            },
-          });
-        }
-        event.preventDefault();
-        open(href, 'course-introduction', `left=0,top=0,width=800,height=600`);
-        return false;
-      },
-    },
+    mixins: [introductionOpenerMixin, conflictSolvingMixin, LookupPanelMixin],
   };
 </script>
 
@@ -300,10 +254,10 @@
 
   .course-intro-link {
     border-bottom: 1px solid transparent;
-    line-height: 24px;
     color: rgba(0, 0, 0, 0.65);
     text-decoration: none;
     padding-bottom: 2px;
+    line-height: 24px;
   }
 
   /*noinspection CssUnusedSymbol*/
