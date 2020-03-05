@@ -50,8 +50,10 @@ export function getPeriods(str) {
     let execResult = pattern.exec(str);
     while (execResult !== null) {
       let from = parseInt(execResult[2]), to = execResult[3] != null ? parseInt(execResult[3]) : from;
-      for (let i = from; i <= to; i++) {
-        result.push([i - 1, ['一', '二', '三', '四', '五'].indexOf(execResult[1]), i === from, to - from + 1]);
+      if (from >= 1 && from <= 13 && to >= 1 && to <= 13 && from <= to) {
+        for (let i = from; i <= to; i++) {
+          result.push([i - 1, ['一', '二', '三', '四', '五'].indexOf(execResult[1]), i === from, to - from + 1]);
+        }
       }
       execResult = pattern.exec(str);
     }
@@ -161,7 +163,12 @@ export function processSelectedClasses(selectedClasses, reservedClasses) {
   let node = edges.join(',');
   frontier.push([node, 0, '']);
 
+  let loopCount = 0;
   while (node !== '') {
+    // 无解情况强行中断
+    if (++loopCount > 100) {
+      break;
+    }
     frontier.sort((a, b) => a[1] - b[1]);
     let front = frontier.shift();
     let cost = front[1];
