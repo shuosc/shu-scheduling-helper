@@ -23,11 +23,13 @@
     "core-js": "^3.3.2",
     "crypto-js": "^3.1.9-1",
     "file-saver": "^2.0.2",
+    "html2canvas": "^1.0.0-rc.5",
     "localforage": "^1.7.3",
     "mobile-detect": "^1.4.4",
     "murmurhash-js": "^1.0.0",
     "pako": "^1.0.10",
     "promise-worker": "^2.0.1",
+    "v-viewer": "^1.5.1",
     "vue": "^2.6.10",
     "vue-clipboard2": "^0.3.1",
     "vuex": "^3.0.1"

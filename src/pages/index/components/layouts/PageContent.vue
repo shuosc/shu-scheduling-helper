@@ -51,13 +51,13 @@
       </div>
       <a-back-top class="back-top" />
     </a-spin>
-    <a-modal v-model="exportDialogVisible" :title="null" :width="400" :footer="null" destroy-on-close>
+    <a-modal v-model="exportDialogVisible" :width="400" :footer="null" destroy-on-close>
       <ExportDialog />
     </a-modal>
-    <a-modal v-model="backupAndRestoreDialogVisible" :title="null" :width="480" :footer="null" destroy-on-close>
+    <a-modal v-model="backupAndRestoreDialogVisible" :width="480" :footer="null" destroy-on-close>
       <BackupAndRestoreDialog @ok="backupAndRestoreDialogVisible = false" />
     </a-modal>
-    <a-modal v-model="colorSeedDialogVisible" :title="null" :width="520" :footer="null" destroy-on-close>
+    <a-modal v-model="colorSeedDialogVisible" :width="520" :footer="null" destroy-on-close>
       <ColorSeedDialog @ok="colorSeedDialogVisible = false" />
     </a-modal>
   </a-layout-content>

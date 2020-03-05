@@ -41,8 +41,9 @@ export default new Vuex.Store({
           let teacherId = state.selectedClasses[courseId].teacherId;
           state.selectedClasses[courseId].periods.forEach((period) => {
             rows[period[0]][period[1]] = {
-              courseId: courseId,
+              courseId,
               courseName: state.reservedClasses[courseId].courseName,
+              teacherId,
               teacherName: state.reservedClasses[courseId].classes[teacherId].teacherName,
               first: period[2],
               span: period[3],

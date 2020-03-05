@@ -1,39 +1,65 @@
 <template>
-  <div class="schedule-table-wrapper">
-    <table class="schedule-table">
-      <thead>
-      <tr>
-        <th class="header-number">&nbsp;</th>
-        <th class="header-period">&nbsp;</th>
-        <th class="header-week" v-for="week in ['一', '二', '三', '四', '五']" :key="week">{{ week }}</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr v-for="(row, index) in rows" :key="index">
-        <th>{{ index + 1 }}</th>
-        <td class="class-period">
-          <p>{{ classPeriods[index][0] }}</p>
-          <p>- {{ classPeriods[index][1] }}</p>
-        </td>
-        <template v-for="(course, index2) in row">
-          <td v-if="course === null || course.first" :key="index2" :rowspan="course !== null ? course.span : 1">
-            <ClassCard :course="course" v-if="course !== null"
-                       @click.native="handleClassCardClick(course.courseId)" />
+  <div ref="wrapper" :class="{'schedule-table-wrapper': true, 'schedule-table-wrapper-capturing': capturing}">
+    <a-config-provider :get-popup-container="() => $refs.setting" :auto-insert-space-in-button="false">
+      <table class="schedule-table">
+        <thead>
+        <tr>
+          <td class="header-setting">
+            <div ref="setting" :class="{ setting: true, 'setting-show': venueMode }">
+              <a-button size="small" shape="circle" icon="camera" @click="saveImage" />
+              {{ ' ' }}
+              <a-dropdown v-if="!venueMode">
+                <a-button shape="circle" size="small" icon="setting" />
+                <a-menu slot="overlay">
+                  <a-menu-item @click="venueMode = true">显示上课地点</a-menu-item>
+                </a-menu>
+              </a-dropdown>
+              <a-button v-else size="small" shape="round" @click="venueMode = false">复原</a-button>
+            </div>
+            <div v-show="capturing" class="brand">
+              <img src="../../../../assets/logo.png" alt="Logo" />
+              课程表
+            </div>
           </td>
-        </template>
-      </tr>
-      </tbody>
-    </table>
+          <th class="header-period">&nbsp;</th>
+          <th class="header-week" v-for="week in ['一', '二', '三', '四', '五']" :key="week">{{ week }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="(row, index) in rows" :key="index">
+          <th>{{ index + 1 }}</th>
+          <td class="class-period">
+            <p>{{ classPeriods[index][0] }}</p>
+            <p>- {{ classPeriods[index][1] }}</p>
+          </td>
+          <template v-for="(course, index2) in row">
+            <td v-if="course == null || course.first" :key="index2" :rowspan="course != null ? course.span : 1">
+              <ClassCard :course="course" v-if="course != null && !course.qr" :venue="venueMode"
+                         @click.native="handleClassCardClick(course.courseId)" />
+              <QrCard v-if="course != null && course.qr" />
+            </td>
+          </template>
+        </tr>
+        </tbody>
+      </table>
+    </a-config-provider>
+    <a-modal v-model="saveImageDialogVisible" :footer="null" destroy-on-close>
+      <SaveImageDialog :blob="imageBlob" @ok="saveImageDialogVisible = false" />
+    </a-modal>
   </div>
 </template>
 
 <script>
   import ClassCard from './ClassCard';
+  import QrCard from './QrCard';
+  import SaveImageDialog from '../modals/SaveImageDialog';
   import {ScheduleTableMixin} from '../../../../mixins/ScheduleTable';
 
   export default {
     name: 'ScheduleTable',
     components: {
+      QrCard,
+      SaveImageDialog,
       ClassCard,
     },
     mixins: [ScheduleTableMixin],
@@ -41,6 +67,7 @@
 </script>
 
 <style scoped>
+  /*noinspection CssUnusedSymbol*/
   .schedule-table-wrapper {
     padding: 8px;
   }
@@ -89,7 +116,8 @@
     color: rgba(0, 0, 0, 0.35);
   }
 
-  .header-number {
+  .header-setting {
+    position: relative;
     width: 28px;
   }
 
@@ -99,5 +127,55 @@
 
   .header-week {
     width: 20%;
+  }
+
+  /*noinspection CssUnusedSymbol*/
+  .setting {
+    transition: all 0.2s;
+    white-space: nowrap;
+    position: absolute;
+    text-align: left;
+    opacity: 0;
+    left: 2px;
+    top: 2px;
+  }
+
+  /*noinspection CssUnusedSymbol*/
+  .setting-show {
+    opacity: 1;
+  }
+
+  /*noinspection CssUnusedSymbol*/
+  .schedule-table-wrapper:hover .setting {
+    opacity: 1;
+  }
+
+  /*noinspection CssUnusedSymbol*/
+  .schedule-table-wrapper-capturing {
+    position: absolute;
+    overflow: visible;
+    width: 480px;
+  }
+
+  /*noinspection CssUnusedSymbol*/
+  .schedule-table-wrapper-capturing .setting {
+    display: none;
+  }
+
+  .brand {
+    color: rgba(0, 0, 0, 0.45);
+    white-space: nowrap;
+    position: absolute;
+    line-height: 18px;
+    font-size: 12px;
+    display: block;
+    width: 100%;
+    left: 2px;
+    top: 2px;
+  }
+
+  .brand img {
+    height: 18px;
+    width: 18px;
   }
 </style>
