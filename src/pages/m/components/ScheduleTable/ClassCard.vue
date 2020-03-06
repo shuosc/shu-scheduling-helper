@@ -14,6 +14,14 @@
       course: {
         type: Object,
       },
+      venue: {
+        type: Boolean,
+        default: false,
+      },
+      capturing: {
+        type: Boolean,
+        default: false,
+      },
     },
     mixins: [ClassCardMixin],
   };

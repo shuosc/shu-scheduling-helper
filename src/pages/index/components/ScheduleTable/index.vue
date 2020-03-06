@@ -42,7 +42,7 @@
           </td>
           <template v-for="(course, index2) in row">
             <td v-if="course == null || course.first" :key="index2" :rowspan="course != null ? course.span : 1">
-              <ClassCard :course="course" v-if="course != null && !course.qr" :venue="venueMode"
+              <ClassCard :course="course" v-if="course != null && !course.qr" :venue="venueMode" :capturing="capturing"
                          @click.native="handleClassCardClick(course.courseId)" />
               <QrCard v-if="course != null && course.qr" />
             </td>

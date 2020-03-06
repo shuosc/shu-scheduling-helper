@@ -121,6 +121,9 @@ export const ClassCardMixin = {
       }
     },
     isHover() {
+      if (this.capturing) {
+        return false;
+      }
       return this.$store.state.hoverCourseId === this.course.courseId;
     },
   },

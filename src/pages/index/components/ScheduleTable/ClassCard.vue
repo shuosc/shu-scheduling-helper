@@ -23,6 +23,9 @@
       venue: {
         type: Boolean,
       },
+      capturing: {
+        type: Boolean,
+      },
     },
     mixins: [ClassCardMixin],
   };
