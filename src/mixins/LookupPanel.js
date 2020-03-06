@@ -140,6 +140,27 @@ export const LookupConditionsMixin = {
       },
     };
   },
+  computed: {
+    placeholder() {
+      let result = {
+        'course_name': null,
+        'credit': null,
+        'teacher_name': null,
+        'class_time': null,
+      };
+      if (this.$store.state.allCoursesMap.hasOwnProperty(this.conditions.search['course_id'])) {
+        const row = this.$store.state.allCoursesMap[this.conditions.search['course_id']];
+        result['course_name'] = row['course_name'];
+        result['credit'] = row['credit'];
+        if (this.$store.state.allClassesMap.hasOwnProperty(`${this.conditions.search['course_id']}-${this.conditions.search['teacher_id']}`)) {
+          const row2 = this.$store.state.allClassesMap[`${this.conditions.search['course_id']}-${this.conditions.search['teacher_id']}`];
+          result['teacher_name'] = row2['teacher_name'];
+          result['class_time'] = row2['class_time'];
+        }
+      }
+      return result;
+    },
+  },
   watch: {
     conditions: {
       handler() {
@@ -150,6 +171,5 @@ export const LookupConditionsMixin = {
       },
       deep: true,
     },
-
   },
 };

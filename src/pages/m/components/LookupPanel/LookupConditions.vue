@@ -6,12 +6,12 @@
       </a-input>
     </a-form-item>
     <a-form-item>
-      <a-input v-model="conditions.search['course_name']" allow-clear>
+      <a-input v-model="conditions.search['course_name']" allow-clear :placeholder="placeholder['course_name']">
         <span class="label" slot="prefix">课程名称：</span>
       </a-input>
     </a-form-item>
     <a-form-item>
-      <a-input v-model="conditions.search['credit']" allow-clear>
+      <a-input v-model="conditions.search['credit']" allow-clear :placeholder="placeholder['credit']">
         <span class="label" slot="prefix">学分数：</span>
       </a-input>
     </a-form-item>
@@ -21,12 +21,12 @@
       </a-input>
     </a-form-item>
     <a-form-item>
-      <a-input v-model="conditions.search['teacher_name']" allow-clear>
+      <a-input v-model="conditions.search['teacher_name']" allow-clear :placeholder="placeholder['teacher_name']">
         <span class="label" slot="prefix">教师姓名：</span>
       </a-input>
     </a-form-item>
     <a-form-item>
-      <a-input v-model="conditions.search['class_time']" allow-clear>
+      <a-input v-model="conditions.search['class_time']" allow-clear :placeholder="placeholder['class_time']">
         <span class="label" slot="prefix">上课时间：</span>
       </a-input>
     </a-form-item>

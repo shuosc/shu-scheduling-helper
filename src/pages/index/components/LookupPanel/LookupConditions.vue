@@ -5,19 +5,23 @@
         <a-input class="w-120px" v-model="conditions.search['course_id']" allow-clear />
       </a-form-item>
       <a-form-item label="课程名称">
-        <a-input class="w-200px" v-model="conditions.search['course_name']" allow-clear />
+        <a-input class="w-200px" v-model="conditions.search['course_name']" allow-clear
+                 :placeholder="placeholder['course_name']" />
       </a-form-item>
       <a-form-item label="学分数">
-        <a-input class="w-80px" v-model="conditions.search['credit']" allow-clear />
+        <a-input class="w-80px" v-model="conditions.search['credit']" allow-clear
+                 :placeholder="placeholder['credit']" />
       </a-form-item>
       <a-form-item label="教师号">
         <a-input class="w-100px" v-model="conditions.search['teacher_id']" allow-clear />
       </a-form-item>
       <a-form-item label="教师姓名">
-        <a-input class="w-120px" v-model="conditions.search['teacher_name']" allow-clear />
+        <a-input class="w-120px" v-model="conditions.search['teacher_name']" allow-clear
+                 :placeholder="placeholder['teacher_name']" />
       </a-form-item>
       <a-form-item label="上课时间">
-        <a-input class="w-140px" v-model="conditions.search['class_time']" allow-clear />
+        <a-input class="w-140px" v-model="conditions.search['class_time']" allow-clear
+                 :placeholder="placeholder['class_time']" />
       </a-form-item>
       <a-form-item label="校区">
         <a-select v-model="conditions.search['campus']">
