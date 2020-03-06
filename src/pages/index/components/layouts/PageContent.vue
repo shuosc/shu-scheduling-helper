@@ -24,11 +24,6 @@
               <a-icon type="database" />
               备份与还原...
             </a-menu-item>
-            <a-menu-divider />
-            <a-menu-item @click="colorSeedDialogVisible = true">
-              <a-icon type="experiment" />
-              色彩随机种子... {{ colorSeedShortcut }}
-            </a-menu-item>
           </a-menu>
         </a-dropdown-button>
       </a-tabs>
@@ -60,6 +55,9 @@
     <a-modal v-model="colorSeedDialogVisible" :width="520" :footer="null" destroy-on-close>
       <ColorSeedDialog @ok="colorSeedDialogVisible = false" />
     </a-modal>
+    <a-modal v-model="saveImageDialogVisible" :footer="null" destroy-on-close>
+      <SaveImageDialog :blob="imageBlob" @ok="saveImageDialogVisible = false" />
+    </a-modal>
   </a-layout-content>
 </template>
 
@@ -69,8 +67,9 @@
   import ScheduleTable from '../ScheduleTable';
   import ExportDialog from '../modals/ExportDialog';
   import BackupAndRestoreDialog from '../modals/BackupAndRestoreDialog';
+  import SaveImageDialog from '../modals/SaveImageDialog';
   import ColorSeedDialog from '../modals/ColorSeedDialog';
-  import {isMacLike} from '../../../../utils';
+  import Vue from 'vue';
 
   export default {
     name: 'PageContent',
@@ -81,6 +80,7 @@
       LookupPanel,
       ReservedClassesList,
       ScheduleTable,
+      SaveImageDialog,
     },
     props: {
       showScheduleTable: {
@@ -94,7 +94,8 @@
         exportDialogVisible: false,
         backupAndRestoreDialogVisible: false,
         colorSeedDialogVisible: false,
-        colorSeedShortcut: isMacLike ? '⇧⌘K' : 'Ctrl+Shift+K',
+        saveImageDialogVisible: false,
+        imageBlob: null,
       };
     },
     computed: {
@@ -114,6 +115,13 @@
     },
     created() {
       addEventListener('unload', this.closeQuickInputting);
+      Vue.prototype.$showColorSeedDialog = () => {
+        this.colorSeedDialogVisible = true;
+      };
+      Vue.prototype.$showSaveImageDialog = (blob) => {
+        this.imageBlob = blob;
+        this.saveImageDialogVisible = true;
+      };
     },
     beforeDestroy() {
       removeEventListener('unload', this.closeQuickInputting);

@@ -1,5 +1,5 @@
 import html2canvas from 'html2canvas';
-import {getColor, getPeriods} from '../utils';
+import {getColor, getPeriods, isMacLike} from '../utils';
 
 export const ScheduleTableMixin = {
   data() {
@@ -21,8 +21,7 @@ export const ScheduleTableMixin = {
       ],
       venueMode: false,
       capturing: false,
-      saveImageDialogVisible: false,
-      imageBlob: null,
+      colorSeedShortcut: isMacLike ? '⇧⌘K' : 'Ctrl+Shift+K',
     };
   },
   computed: {
@@ -92,8 +91,7 @@ export const ScheduleTableMixin = {
           windowWidth: 480,
         }).then((canvas) => {
           canvas.toBlob((blob) => {
-            this.imageBlob = blob;
-            this.saveImageDialogVisible = true;
+            this.$showSaveImageDialog(blob);
           });
         }).catch(() => {
           this.$message.error('截图失败！');

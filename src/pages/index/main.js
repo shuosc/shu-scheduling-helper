@@ -23,6 +23,12 @@ Viewer.setDefaults({
 });
 
 Vue.config.productionTip = false;
+if (!Vue.prototype.$showColorSeedDialog) {
+  Vue.prototype.$showColorSeedDialog = () => void 0;
+}
+if (!Vue.prototype.$showSaveImageDialog) {
+  Vue.prototype.$showSaveImageDialog = () => void 0;
+}
 
 // noinspection JSUnusedGlobalSymbols
 new Vue({

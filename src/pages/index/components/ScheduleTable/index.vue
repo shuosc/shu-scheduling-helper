@@ -6,19 +6,27 @@
         <tr>
           <td class="header-setting">
             <div ref="setting" :class="{ setting: true, 'setting-show': venueMode }">
-              <a-button size="small" shape="circle" icon="camera" @click="saveImage" />
+              <a-button :type="venueMode ? 'primary' : null" size="small" shape="circle" icon="camera"
+                        @click="saveImage" />
               {{ ' ' }}
               <a-dropdown v-if="!venueMode">
                 <a-button shape="circle" size="small" icon="setting" />
                 <a-menu slot="overlay">
-                  <a-menu-item @click="venueMode = true">显示上课地点</a-menu-item>
+                  <a-menu-item @click="venueMode = true">
+                    <a-icon type="bank" />
+                    显示上课地点
+                  </a-menu-item>
+                  <a-menu-divider />
+                  <a-menu-item @click="$showColorSeedDialog">
+                    <a-icon type="experiment" />
+                    色彩随机种子 {{ colorSeedShortcut }}
+                  </a-menu-item>
                 </a-menu>
               </a-dropdown>
-              <a-button v-else size="small" shape="round" @click="venueMode = false">复原</a-button>
+              <a-button v-else type="danger" size="small" shape="round" @click="venueMode = false">复原</a-button>
             </div>
             <div v-show="capturing" class="brand">
               <img src="../../../../assets/logo.png" alt="Logo" />
-              课程表
             </div>
           </td>
           <th class="header-period">&nbsp;</th>
@@ -43,23 +51,18 @@
         </tbody>
       </table>
     </a-config-provider>
-    <a-modal v-model="saveImageDialogVisible" :footer="null" destroy-on-close>
-      <SaveImageDialog :blob="imageBlob" @ok="saveImageDialogVisible = false" />
-    </a-modal>
   </div>
 </template>
 
 <script>
   import ClassCard from './ClassCard';
   import QrCard from './QrCard';
-  import SaveImageDialog from '../modals/SaveImageDialog';
   import {ScheduleTableMixin} from '../../../../mixins/ScheduleTable';
 
   export default {
     name: 'ScheduleTable',
     components: {
       QrCard,
-      SaveImageDialog,
       ClassCard,
     },
     mixins: [ScheduleTableMixin],
@@ -170,8 +173,8 @@
     font-size: 12px;
     display: block;
     width: 100%;
-    left: 2px;
-    top: 2px;
+    top: 3px;
+    left: 0;
   }
 
   .brand img {

@@ -166,7 +166,7 @@ export function processSelectedClasses(selectedClasses, reservedClasses) {
   let loopCount = 0;
   while (node !== '') {
     // 无解情况强行中断
-    if (++loopCount > 100) {
+    if (++loopCount > 300) {
       break;
     }
     frontier.sort((a, b) => a[1] - b[1]);
