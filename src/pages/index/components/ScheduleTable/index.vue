@@ -6,9 +6,9 @@
         <tr>
           <td class="header-setting">
             <div ref="setting" :class="{ setting: true, 'setting-show': venueMode }">
-              <a-button :type="venueMode ? 'primary' : null" size="small" shape="circle" icon="camera"
-                        @click="saveImage" />
-              {{ ' ' }}
+              <!--<a-button :type="venueMode ? 'primary' : null" size="small" shape="circle" icon="camera"-->
+              <!--@click="saveImage" />-->
+              <!--{{ ' ' }}-->
               <a-dropdown v-if="!venueMode">
                 <a-button shape="circle" size="small" icon="setting" />
                 <a-menu slot="overlay">
