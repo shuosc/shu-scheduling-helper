@@ -8,6 +8,8 @@
       :data-source="rows"
       :locale="{emptyText: '没有匹配的记录'}"
       :pagination="{position: 'both', showTotal: total => `${total} 条记录`}"
+      :scroll="{x: 480}"
+      :custom-row="customRow"
     >
       <a-table-column title="人数" data-index="number">
         <template v-slot="number">
@@ -46,16 +48,7 @@
             </small>
           </template>
           <!--suppress JSUnresolvedVariable, ES6ModulesDependencies -->
-          <a-button
-            v-else-if="class_time_info.canPreview"
-            class="lookup-class-time-preview"
-            type="link"
-            shape="circle"
-            icon="eye"
-            :disabled="storageBusy"
-            @mouseenter="previewClass(class_time_info.row)"
-            @mouseleave="cancelPreviewClass(class_time_info.row)"
-          />
+          <a-icon v-else-if="class_time_info.canPreview" class="previewing" type="eye" />
           <br v-if="$store.getters.extra(class_time_info.key).limitations.length > 0" />
           <a-tag
             v-for="(limitation, index) in $store.getters.extra(class_time_info.key).limitations"
@@ -271,5 +264,17 @@
 
   .course-intro-link:active {
     color: #1976D2;
+  }
+
+  .previewing {
+    color: #64B5F6;
+    font-size: 12px;
+    display: none;
+    position: absolute;
+    margin: 5px 0 0 5px;
+  }
+
+  .table >>> .ant-table-row:hover .previewing {
+    display: inline;
   }
 </style>

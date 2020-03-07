@@ -124,8 +124,8 @@
   }
 
   /*noinspection CssUnusedSymbol*/
-  .page-sider.ant-layout-sider-collapsed + .page-content .lookup-class-time-preview {
-    display: none;
+  .page-sider.ant-layout-sider-collapsed + .page-content .previewing {
+    display: none !important;
   }
 
   /*noinspection CssUnusedSymbol*/

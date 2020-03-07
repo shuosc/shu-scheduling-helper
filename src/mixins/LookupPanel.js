@@ -118,6 +118,21 @@ export const LookupPanelMixin = {
           return null;
       }
     },
+    customRow(row) {
+      // noinspection JSUnusedGlobalSymbols
+      return {
+        on: {
+          mouseenter: () => {
+            if (Object.keys(row['class_time_info'].conflicts).length === 0 && !row['class_time_info'].isSelected && row['class_time_info'].canPreview) {
+              this.previewClass(row);
+            }
+          },
+          mouseleave: () => {
+            this.cancelPreviewClass(row);
+          },
+        }
+      }
+    },
   },
 };
 

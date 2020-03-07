@@ -30,6 +30,7 @@
   }
 
   sup {
+    font-size: 12px;
     right: -1px;
     top: -1em;
   }
@@ -44,6 +45,7 @@
   }
 
   sub {
+    font-size: 12px;
     bottom: -0.25em;
   }
 </style>
