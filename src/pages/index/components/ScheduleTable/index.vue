@@ -27,6 +27,7 @@
             </div>
             <div v-show="capturing" class="brand">
               <img src="../../../../assets/logo.png" alt="Logo" />
+              {{ $store.getters.credits }} 学分
             </div>
           </td>
           <th class="header-period">&nbsp;</th>
@@ -51,17 +52,23 @@
         </tbody>
       </table>
     </a-config-provider>
+    <div class="no-period-class-card-wrapper" v-if="capturing && noPeriodClasses.length > 0">
+      <NoPeriodClassCard v-for="(course, index) in noPeriodClasses" :course="course" :key="index" :venue="venueMode"
+                         :capturing="capturing" />
+    </div>
   </div>
 </template>
 
 <script>
   import ClassCard from './ClassCard';
+  import NoPeriodClassCard from './NoPeriodClassCard';
   import QrCard from './QrCard';
   import {ScheduleTableMixin} from '../../../../mixins/ScheduleTable';
 
   export default {
     name: 'ScheduleTable',
     components: {
+      NoPeriodClassCard,
       QrCard,
       ClassCard,
     },
@@ -180,5 +187,10 @@
   .brand img {
     height: 18px;
     width: 18px;
+  }
+
+  .no-period-class-card-wrapper {
+    margin: 8px -4px 0 0;
+    text-align: center;
   }
 </style>

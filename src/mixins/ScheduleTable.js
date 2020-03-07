@@ -73,6 +73,23 @@ export const ScheduleTableMixin = {
         return rows;
       }
     },
+    noPeriodClasses() {
+      let keys = Object.keys(this.$store.state.selectedClasses);
+      keys = keys.filter((courseId) => {
+        let teacherId = this.$store.state.selectedClasses[courseId].teacherId;
+        return getPeriods(this.$store.state.reservedClasses[courseId].classes[teacherId].classTime).length === 0;
+      });
+      return keys.map((courseId) => {
+        let teacherId = this.$store.state.selectedClasses[courseId].teacherId;
+        return {
+          courseId,
+          teacherId,
+          courseName: this.$store.state.reservedClasses[courseId].courseName,
+          teacherName: this.$store.state.reservedClasses[courseId].classes[teacherId].teacherName,
+          color: this.$store.state.selectedClasses[courseId].themeColor,
+        };
+      });
+    },
   },
   methods: {
     handleClassCardClick(courseId) {
@@ -83,22 +100,24 @@ export const ScheduleTableMixin = {
       this.capturing = true;
       const hide = this.$message.loading('正在截图...');
       this.$nextTick(() => {
-        html2canvas(this.$refs.wrapper, {
-          scale: 3,
-          width: 480,
-          scrollX: 0,
-          scrollY: 0,
-          windowWidth: 480,
-        }).then((canvas) => {
-          canvas.toBlob((blob) => {
-            this.$showSaveImageDialog(blob);
+        setTimeout(() => {
+          html2canvas(this.$refs.wrapper, {
+            scale: 3,
+            width: 480,
+            scrollX: 0,
+            scrollY: 0,
+            windowWidth: 480,
+          }).then((canvas) => {
+            canvas.toBlob((blob) => {
+              this.$showSaveImageDialog(blob);
+            });
+          }).catch(() => {
+            this.$message.error('截图失败！');
+          }).finally(() => {
+            this.capturing = false;
+            hide();
           });
-        }).catch(() => {
-          this.$message.error('截图失败！');
-        }).finally(() => {
-          this.capturing = false;
-          hide();
-        });
+        }, 0);
       });
     },
   },
@@ -109,7 +128,7 @@ export const ClassCardMixin = {
     style() {
       return {
         color: 'rgba(255, 255, 255, 0.95)',
-        borderTopColor: `rgba(${parseInt(this.course.color.substr(1, 2), 16)}, ${parseInt(this.course.color.substr(3, 2), 16)}, ${parseInt(this.course.color.substr(5, 2), 16)}, 1.0)`,
+        borderColor: `rgba(${parseInt(this.course.color.substr(1, 2), 16)}, ${parseInt(this.course.color.substr(3, 2), 16)}, ${parseInt(this.course.color.substr(5, 2), 16)}, 1.0)`,
         background: `rgba(${parseInt(this.course.color.substr(1, 2), 16)}, ${parseInt(this.course.color.substr(3, 2), 16)}, ${parseInt(this.course.color.substr(5, 2), 16)}, 0.75)`,
         opacity: this.course.isPreview ? '0.5' : '1',
       };
