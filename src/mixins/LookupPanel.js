@@ -97,6 +97,7 @@ export const LookupPanelMixin = {
           teacherName: row['teacher_name'],
           classTime: row['class_time'],
         });
+        this.$store.commit('PREVIEW_CLASS_CONFLICTS', row['class_time_info'].conflicts);
       }
     },
     cancelPreviewClass(row) {
@@ -123,7 +124,7 @@ export const LookupPanelMixin = {
       return {
         on: {
           mouseenter: () => {
-            if (Object.keys(row['class_time_info'].conflicts).length === 0 && !row['class_time_info'].isSelected && row['class_time_info'].canPreview) {
+            if (!row['class_time_info'].isSelected && row['class_time_info'].canPreview) {
               this.previewClass(row);
             }
           },

@@ -53,7 +53,9 @@ export const ScheduleTableMixin = {
         let rows = JSON.parse(JSON.stringify(this.$store.getters.scheduleTableRows));
         rows.forEach((row, i) => {
           row.forEach((cell, j) => {
-            if (cell !== null && cell.courseId === this.$store.state.previewClass.courseId) {
+            if (cell !== null
+              && (cell.courseId === this.$store.state.previewClass.courseId
+                || this.$store.state.previewClassConflicts.hasOwnProperty(cell.courseId))) {
               rows[i][j] = null;
             }
           });

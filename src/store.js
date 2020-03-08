@@ -24,6 +24,7 @@ export default new Vuex.Store({
     openedCourseId: null,
     hoverCourseId: null,
     previewClass: null,
+    previewClassConflicts: {},
     history: [],
     historyPos: 0,
     historyHold: false,
@@ -134,10 +135,12 @@ export default new Vuex.Store({
     RESERVED_CLASSES(state, value) {
       state.reservedClasses = value;
       state.previewClass = null;
+      state.previewClassConflicts = {};
     },
     SELECTED_CLASSES(state, value) {
       state.selectedClasses = value;
       state.previewClass = null;
+      state.previewClassConflicts = {};
     },
     TRIMESTER(state, value) {
       state.trimester = value;
@@ -154,8 +157,14 @@ export default new Vuex.Store({
     PREVIEW_CLASS(state, value) {
       if (value == null || (state.selectedClasses.hasOwnProperty(value.courseId) && state.selectedClasses[value.courseId].teacherId === value.teacherId)) {
         state.previewClass = null;
+        state.previewClassConflicts = {};
       } else {
         state.previewClass = value;
+      }
+    },
+    PREVIEW_CLASS_CONFLICTS(state, value) {
+      if (state.previewClass != null) {
+        state.previewClassConflicts = value;
       }
     },
     HISTORY_CLEAR(state) {

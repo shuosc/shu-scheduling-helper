@@ -47,6 +47,7 @@
       <a-list-item-meta>
         <template slot="title">{{ course.classes[key].teacherName }}
           <small>({{ key }})</small>
+          <a-icon class="previewing" type="eye" />
         </template>
         <template slot="description">
           {{ course.classes[key].classTime }}
@@ -135,5 +136,17 @@
 
   .limitation-tag {
     margin-top: 2px;
+  }
+
+  .previewing {
+    margin: 6px 0 0 5px;
+    position: absolute;
+    font-size: 12px;
+    color: #64B5F6;
+    display: none;
+  }
+
+  .classes-list-item:hover .previewing {
+    display: inline;
   }
 </style>

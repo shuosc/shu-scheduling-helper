@@ -36,6 +36,8 @@
         <template v-slot="class_time_info">
           {{ class_time_info.row['class_time'] }}
           <!--suppress JSUnresolvedVariable, ES6ModulesDependencies -->
+          <a-icon v-if="!class_time_info.isSelected && class_time_info.canPreview" class="previewing" type="eye" />
+          <!--suppress JSUnresolvedVariable, ES6ModulesDependencies -->
           <template v-if="Object.keys(class_time_info.conflicts).length > 0">
             <br /><small class="conflict-info">时间冲突</small>
           </template>
@@ -47,8 +49,6 @@
               已选
             </small>
           </template>
-          <!--suppress JSUnresolvedVariable, ES6ModulesDependencies -->
-          <a-icon v-else-if="class_time_info.canPreview" class="previewing" type="eye" />
           <br v-if="$store.getters.extra(class_time_info.key).limitations.length > 0" />
           <a-tag
             v-for="(limitation, index) in $store.getters.extra(class_time_info.key).limitations"
@@ -267,11 +267,11 @@
   }
 
   .previewing {
-    color: #64B5F6;
-    font-size: 12px;
-    display: none;
-    position: absolute;
     margin: 5px 0 0 5px;
+    position: absolute;
+    font-size: 12px;
+    color: #64B5F6;
+    display: none;
   }
 
   .table >>> .ant-table-row:hover .previewing {

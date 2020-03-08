@@ -172,15 +172,14 @@ export const CourseClassesListMixin = {
       });
     },
     previewClass(key) {
-      if (!this.isConflicted(key)) {
-        this.$store.commit('PREVIEW_CLASS', {
-          courseId: this.id,
-          courseName: this.course.courseName,
-          teacherId: key,
-          teacherName: this.course.classes[key].teacherName,
-          classTime: this.course.classes[key].classTime,
-        });
-      }
+      this.$store.commit('PREVIEW_CLASS', {
+        courseId: this.id,
+        courseName: this.course.courseName,
+        teacherId: key,
+        teacherName: this.course.classes[key].teacherName,
+        classTime: this.course.classes[key].classTime,
+      });
+      this.$store.commit('PREVIEW_CLASS_CONFLICTS', this.conflicts[key]);
     },
     cancelPreviewClass(key) {
       if (this.$store.state.previewClass !== null
