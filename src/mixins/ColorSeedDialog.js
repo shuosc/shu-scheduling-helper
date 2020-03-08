@@ -38,5 +38,10 @@ export const ColorSeedDialogMixin = {
       this.submit();
       this.$message.success(`已将“${this.value}”设置为色彩随机种子。`);
     },
+    reset() {
+      this.value = '2';
+      this.submit();
+      this.$message.success(`已将“2”设置为色彩随机种子。`);
+    },
   },
 };

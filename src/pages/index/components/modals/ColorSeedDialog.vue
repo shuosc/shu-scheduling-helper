@@ -5,6 +5,7 @@
       <small>
         <a-icon type="experiment" />
       </small>
+      <a-button v-if="originalValue !== 2" class="reset" type="link" @click="reset">重置</a-button>
     </h3>
     <p class="hint">
       请输入0<span> ~ </span>9<span>,</span>999<span>,</span>999<span>,</span>999之间的整数：<br />
@@ -64,7 +65,7 @@
     user-select: none;
   }
 
-  .random {
+  .random, .reset {
     margin-left: 10px;
   }
 </style>
