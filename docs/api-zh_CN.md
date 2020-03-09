@@ -181,6 +181,7 @@ ec17f6e2:00000000+1002,00000000-1001
 | openedCourseId                                          | `String?`                         | `null`  | 待选列表展开课程的课程号                       |        |
 | hoverCourseId                                           | `String?`                         | `null`  | 课程表里鼠标悬浮课程的课程号                   |        |
 | previewClass                                            | `String?`                         | `null`  | 预览课程的课程号                               |        |
+| <span id="state-previewclassconflicts">previewClassConflicts</span>                                   | `Object`                          | `{}` [示例](#previewclassconflicts)   | 预览课程的课程号                               |        |
 | <span id="state-history">history</span>                 | `Array` [示例](#history)          | `[]`    | 历史记录                                       |        |
 | historyPos                                              | `Number`                          | `0`     | 新历史记录将要处在的位置                       |        |
 | historyHold                                             | `Boolean`                         | `false` | 为`true`时暂停历史记录写入                     |        |
@@ -266,6 +267,15 @@ ec17f6e2:00000000+1002,00000000-1001
     ],
     themeColor: "#7B1FA2",
   },
+}
+```
+
+##### [previewClassesConflicts](#state-previewclassesconflicts)
+
+```javascript
+{
+  "00853621": true,
+  "08305074": true,
 }
 ```
 
