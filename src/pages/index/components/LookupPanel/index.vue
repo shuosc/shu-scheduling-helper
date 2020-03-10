@@ -151,6 +151,10 @@
 </script>
 
 <style scoped>
+  .table >>> td {
+    position: relative;
+  }
+
   .lookup-panel-wrapper {
     padding-top: 16px;
   }
