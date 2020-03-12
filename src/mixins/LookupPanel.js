@@ -223,8 +223,6 @@ export const LookupConditionsMixin = {
           try {
             new RegExp(this.conditions.search[name], 'i');
           } catch (e) {
-            // eslint-disable-next-line
-            console.log(e);
             result[name] = 'error';
           }
         }
