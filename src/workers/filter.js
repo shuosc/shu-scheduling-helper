@@ -97,6 +97,9 @@ registerPromiseWorker(function (message) {
     }
   }
   message.allClasses.forEach((row) => {
+    if (message.conditions.limitRows > 0 && rows.length >= message.conditions.limitRows) {
+      return;
+    }
     if (isNumberExceeded(row, message.conditions.number)
       || isLimitationsFiltered(row, message.conditions.filterLimitations)
       || isVenueFiltered(row, message.conditions.filterVenue)) {
@@ -193,7 +196,7 @@ registerPromiseWorker(function (message) {
             return (`${row1['course_id']}-${row1['teacher_id']}`.localeCompare(
               `${row2['course_id']}-${row2['teacher_id']}`
             )) * (desc ? -1 : 1);
-          })
+          });
       }
     });
     rows.sort((row1, row2) => {
@@ -204,7 +207,7 @@ registerPromiseWorker(function (message) {
         }
       }
       return 0;
-    })
+    });
   }
   return rows;
 });

@@ -162,6 +162,7 @@ export const LookupConditionsMixin = {
         number: '',
         regexpMode: false,
         sortBy: ['+de'],
+        limitRows: 0,
       },
       labelCol: {span: 6},
       wrapperCol: {span: 17, offset: 1},
@@ -205,6 +206,31 @@ export const LookupConditionsMixin = {
       }
       return result;
     },
+    regexpValidateStatus() {
+      let result = {
+        'course_id': null,
+        'course_name': null,
+        'credit': null,
+        'teacher_id': null,
+        'teacher_name': null,
+        'class_time': null,
+      };
+      if (!this.conditions.regexpMode) {
+        return result;
+      }
+      for (let name in result) {
+        if (result.hasOwnProperty(name)) {
+          try {
+            new RegExp(this.conditions.search[name], 'i');
+          } catch (e) {
+            // eslint-disable-next-line
+            console.log(e);
+            result[name] = 'error';
+          }
+        }
+      }
+      return result;
+    },
   },
   watch: {
     conditions: {
@@ -221,6 +247,7 @@ export const LookupConditionsMixin = {
       this.moreOptionActivated = Object.values(this.conditions.filterLimitations).filter((value) => value !== 'default').length !== 0
         || this.conditions.filterVenue !== 'default'
         || this.conditions.regexpMode
+        || this.conditions.limitRows > 0
         || this.conditions.sortBy.length > 1;
     },
   },
