@@ -44,7 +44,52 @@
           <a-radio :value="2">只显示已待选</a-radio>
         </a-radio-group>
       </a-form-item>
+      <a-form-item>
+        <a-button :class="{'more-options': true, 'more-options-activated': moreOptionActivated}" type="link"
+                  size="small" @click="moreOptionsVisible = true">
+          更多选项...
+        </a-button>
+      </a-form-item>
     </a-form>
+    <a-modal v-model="moreOptionsVisible" :footer="null" destroy-on-hide>
+      <h3 class="modal-title">更多课程检索选项</h3>
+      <a-form ref="modalForm" class="modal-form" :label-col="labelCol" :wrapper-col="wrapperCol">
+        <a-form-item label="正则表达式模式" validate-messages="123">
+          <a-switch v-model="conditions.regexpMode" checked-children="开" un-checked-children="关" />
+        </a-form-item>
+        <a-form-item label="选课限制(AND)">
+          <div>
+            <a-tag color="orange">限制人数</a-tag>
+            <a-radio-group class="options" :options="limitationOptions"
+                           v-model="conditions.filterLimitations['xian_zhi_ren_shu']" />
+          </div>
+          <div>
+            <a-tag color="red">禁止选课</a-tag>
+            <a-radio-group class="options" :options="limitationOptions"
+                           v-model="conditions.filterLimitations['jin_zhi_xuan_ke']" />
+          </div>
+          <div>
+            <a-tag color="blue">禁止退课</a-tag>
+            <a-radio-group class="options" :options="limitationOptions"
+                           v-model="conditions.filterLimitations['jin_zhi_tui_ke']" />
+          </div>
+          <div>
+            <a-tag>地点不开</a-tag>
+            <a-radio-group class="options" :options="limitationOptions" v-model="conditions.filterVenue" />
+          </div>
+        </a-form-item>
+        <a-config-provider :get-popup-container="() => $refs.sortBy.$el">
+          <a-form-item ref="sortBy" label="排序依据">
+            <a-select
+              v-for="(options, index) in sortByOptionsList" :key="`${index}`"
+              :options="options"
+              :default-value="`${index}+de`"
+              @change="changeSortBy"
+            />
+          </a-form-item>
+        </a-config-provider>
+      </a-form>
+    </a-modal>
   </a-card>
 </template>
 
@@ -80,5 +125,29 @@
 
   .w-80px {
     width: 80px;
+  }
+
+  @media screen and (max-width: 575px) {
+    .w-200px, .w-140px, .w-120px, .w-100px, .w-80px {
+      width: 100%;
+    }
+  }
+
+  .options {
+    margin-left: 15px;
+  }
+
+  .modal-title {
+    margin-bottom: 18px;
+  }
+
+  /*noinspection CssUnusedSymbol*/
+  .modal-form >>> .ant-form-item {
+    margin-bottom: 12px;
+  }
+
+  /*noinspection CssUnusedSymbol*/
+  .more-options-activated {
+    font-weight: bold;
   }
 </style>

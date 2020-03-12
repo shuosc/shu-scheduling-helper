@@ -137,6 +137,7 @@ export const LookupPanelMixin = {
   },
 };
 
+// noinspection JSUnusedGlobalSymbols
 export const LookupConditionsMixin = {
   data() {
     return {
@@ -150,10 +151,38 @@ export const LookupConditionsMixin = {
           'class_time': '',
           'campus': '',
         },
+        filterLimitations: {
+          'xian_zhi_ren_shu': 'default',
+          'jin_zhi_xuan_ke': 'default',
+          'jin_zhi_tui_ke': 'default',
+        },
+        filterVenue: 'default',
         filterConflicts: false,
         displayOption: 0,
         number: '',
+        regexpMode: false,
+        sortBy: ['+de'],
       },
+      labelCol: {span: 6},
+      wrapperCol: {span: 17, offset: 1},
+      limitationOptions: [
+        {label: '默认', value: 'default'},
+        {label: '排除', value: 'exclude'},
+        {label: '仅保留', value: 'include'},
+      ],
+      sortByOptionsList: [[
+        {label: '首要依据：默认', value: '0+de'},
+        {label: '容量人数差升序', value: '0+cn'},
+        {label: '容量人数差降序', value: '0-cn'},
+        {label: '学分数升序', value: '0+cr'},
+        {label: '学分数降序', value: '0-cr'},
+        {label: '选课人数升序', value: '0+nu'},
+        {label: '选课人数降序', value: '0-nu'},
+        {label: '总容量升序', value: '0+ca'},
+        {label: '总容量降序', value: '0-ca'},
+      ]],
+      moreOptionsVisible: false,
+      moreOptionActivated: false,
     };
   },
   computed: {
@@ -186,6 +215,48 @@ export const LookupConditionsMixin = {
         this.$emit('filter');
       },
       deep: true,
+    },
+    moreOptionsVisible() {
+      // noinspection JSUnusedGlobalSymbols
+      this.moreOptionActivated = Object.values(this.conditions.filterLimitations).filter((value) => value !== 'default').length !== 0
+        || this.conditions.filterVenue !== 'default'
+        || this.conditions.regexpMode
+        || this.conditions.sortBy.length > 1;
+    },
+  },
+  methods: {
+    changeSortBy(indexValue) {
+      const parts = indexValue.split(/[+-]/), value = /[+-]\S{2}$/.exec(indexValue)[0];
+      const index = parseInt(parts[0]), name = parts[1];
+      // noinspection JSUnresolvedVariable
+      this.sortByOptionsList.splice(index + 1);
+      this.conditions.sortBy.splice(index);
+      this.conditions.sortBy.push(value);
+      let flags = {};
+      this.conditions.sortBy.forEach((value) => {
+        flags[value.slice(1)] = true;
+      });
+      flags.de = false;
+      if ([flags.cn, flags.ca, flags.nu].filter(value1 => value1).length >= 2) {
+        flags.cn = true;
+        flags.ca = true;
+        flags.nu = true;
+      }
+      if (name !== 'de') {
+        // noinspection JSUnresolvedVariable
+        let options = JSON.parse(JSON.stringify(this.sortByOptionsList[this.sortByOptionsList.length - 1])).filter((option) => {
+          return !flags[option.value.slice(-2)];
+        });
+        options.forEach((option, _index) => {
+          options[_index].value = `${index + 1}${option.value.slice(-3)}`;
+        });
+        options[0].label = `第${['二', '三', '四', '五', '六', '七', '八', '九', '十'][index]}依据：默认`;
+        this.$nextTick(() => {
+          // noinspection JSUnresolvedVariable
+          this.sortByOptionsList.push(options);
+          this.conditions.sortBy.push('+de');
+        });
+      }
     },
   },
 };

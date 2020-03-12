@@ -38,6 +38,39 @@ registerPromiseWorker(function (message) {
     }
     return false;
   };
+  const isLimitationsFiltered = (data, conditions) => {
+    for (let condition in conditions) {
+      if (conditions.hasOwnProperty(condition)) {
+        if (conditions[condition] === 'default') {
+          continue;
+        }
+        const name = {
+          'xian_zhi_ren_shu': '限制人数',
+          'jin_zhi_xuan_ke': '禁止选课',
+          'jin_zhi_tui_ke': '禁止退课',
+        }[condition] || '';
+        const limitations = message.allClassesExtra[`${data['course_id']}-${data['teacher_id']}`].limitations;
+        if (conditions[condition] === 'exclude' && limitations.indexOf(name) >= 0) {
+          return true;
+        } else if (conditions[condition] === 'include' && limitations.indexOf(name) < 0) {
+          return true;
+        }
+      }
+    }
+    return false;
+  };
+  const isVenueFiltered = (data, condition) => {
+    if (condition === 'default') {
+      return false;
+    }
+    const venue = message.allClassesExtra[`${data['course_id']}-${data['teacher_id']}`].venue;
+    if (condition === 'exclude' && venue === '不开') {
+      return true;
+    } else if (condition === 'include' && venue !== '不开') {
+      return true;
+    }
+    return false;
+  };
   const getConflicts = (courseId, classTime) => {
     let courseConflicts = {};
     getPeriods(classTime).forEach((period) => {
@@ -52,11 +85,21 @@ registerPromiseWorker(function (message) {
   let conditionsRegExp = {};
   for (let condition in message.conditions.search) {
     if (message.conditions.search.hasOwnProperty(condition)) {
-      conditionsRegExp[condition] = concatRegExp(message.conditions.search[condition].split(/\s+/))
+      if (message.conditions.regexpMode) {
+        try {
+          conditionsRegExp[condition] = new RegExp(message.conditions.search[condition], 'i');
+        } catch (e) {
+          conditionsRegExp[condition] = concatRegExp(message.conditions.search[condition].split(/\s+/));
+        }
+      } else {
+        conditionsRegExp[condition] = concatRegExp(message.conditions.search[condition].split(/\s+/));
+      }
     }
   }
   message.allClasses.forEach((row) => {
-    if (isNumberExceeded(row, message.conditions.number)) {
+    if (isNumberExceeded(row, message.conditions.number)
+      || isLimitationsFiltered(row, message.conditions.filterLimitations)
+      || isVenueFiltered(row, message.conditions.filterVenue)) {
       return;
     }
     for (let condition in conditionsRegExp) {
@@ -103,5 +146,65 @@ registerPromiseWorker(function (message) {
       rows.push(newRow);
     }
   });
+  if (message.conditions.sortBy.length > 1) {
+    rows.forEach((row) => {
+      let capacity = NaN, number = NaN, capacityNumber = NaN;
+      if (message.allClassesExtra.hasOwnProperty(`${row['course_id']}-${row['teacher_id']}`)) {
+        capacity = parseInt(message.allClassesExtra[`${row['course_id']}-${row['teacher_id']}`].capacity);
+        number = parseInt(message.allClassesExtra[`${row['course_id']}-${row['teacher_id']}`].number);
+        if (Number.isInteger(capacity) && Number.isInteger(number)) {
+          capacityNumber = capacity - number;
+        }
+      }
+      row['sorts_value'] = {
+        capacity, number, capacityNumber,
+        credit: parseFloat(row['credit']),
+      };
+    });
+    const getFn = (key, desc) => {
+      return (row1, row2) => {
+        if (Number.isNaN(row1['sorts_value'][key])) {
+          return 99999;
+        }
+        if (Number.isNaN(row2['sorts_value'][key])) {
+          return -99999;
+        }
+        return (row1['sorts_value'][key] - row2['sorts_value'][key]) * (desc ? -1 : 1);
+      };
+    };
+    let sorts = [];
+    message.conditions.sortBy.forEach((value) => {
+      let desc = value.charAt(0) === '-';
+      switch (value.slice(1)) {
+        case 'cn':
+          sorts.push(getFn('capacityNumber', desc));
+          break;
+        case 'ca':
+          sorts.push(getFn('capacity', desc));
+          break;
+        case 'nu':
+          sorts.push(getFn('number', desc));
+          break;
+        case 'cr':
+          sorts.push(getFn('credit', desc));
+          break;
+        default:
+          sorts.push((row1, row2) => {
+            return (`${row1['course_id']}-${row1['teacher_id']}`.localeCompare(
+              `${row2['course_id']}-${row2['teacher_id']}`
+            )) * (desc ? -1 : 1);
+          })
+      }
+    });
+    rows.sort((row1, row2) => {
+      for (let i = 0, len = sorts.length; i < len; i++) {
+        let result = sorts[i](row1, row2);
+        if (result !== 0) {
+          return result;
+        }
+      }
+      return 0;
+    })
+  }
   return rows;
 });
