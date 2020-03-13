@@ -27,11 +27,11 @@ registerPromiseWorker(function (message) {
   };
   const isNumberExceeded = (data, condition) => {
     let conditionNumber = parseInt(condition);
-    if (Number.isInteger(conditionNumber) && conditionNumber > 0) {
+    if (Number.isSafeInteger(conditionNumber) && conditionNumber > 0) {
       if (message.allClassesExtra.hasOwnProperty(`${data['course_id']}-${data['teacher_id']}`)) {
         let capacity = parseInt(message.allClassesExtra[`${data['course_id']}-${data['teacher_id']}`].capacity);
         let number = parseInt(message.allClassesExtra[`${data['course_id']}-${data['teacher_id']}`].number);
-        if (Number.isInteger(capacity) && Number.isInteger(number)) {
+        if (Number.isSafeInteger(capacity) && Number.isSafeInteger(number)) {
           return capacity - number < conditionNumber;
         }
       }
@@ -151,25 +151,26 @@ registerPromiseWorker(function (message) {
   });
   if (message.conditions.sortBy.length > 1) {
     rows.forEach((row) => {
-      let capacity = NaN, number = NaN, capacityNumber = NaN;
+      let capacity = NaN, number = NaN, capacityNumber = NaN, numberCapacity = NaN;
       if (message.allClassesExtra.hasOwnProperty(`${row['course_id']}-${row['teacher_id']}`)) {
         capacity = parseInt(message.allClassesExtra[`${row['course_id']}-${row['teacher_id']}`].capacity);
         number = parseInt(message.allClassesExtra[`${row['course_id']}-${row['teacher_id']}`].number);
-        if (Number.isInteger(capacity) && Number.isInteger(number)) {
+        if (Number.isSafeInteger(capacity) && Number.isSafeInteger(number)) {
           capacityNumber = capacity - number;
+          numberCapacity = number / capacity;
         }
       }
       row['sorts_value'] = {
-        capacity, number, capacityNumber,
+        capacity, number, capacityNumber, numberCapacity,
         credit: parseFloat(row['credit']),
       };
     });
     const getFn = (key, desc) => {
       return (row1, row2) => {
-        if (Number.isNaN(row1['sorts_value'][key])) {
+        if (!isFinite(row1['sorts_value'][key])) {
           return 99999;
         }
-        if (Number.isNaN(row2['sorts_value'][key])) {
+        if (!isFinite(row2['sorts_value'][key])) {
           return -99999;
         }
         return (row1['sorts_value'][key] - row2['sorts_value'][key]) * (desc ? -1 : 1);
@@ -187,6 +188,9 @@ registerPromiseWorker(function (message) {
           break;
         case 'nu':
           sorts.push(getFn('number', desc));
+          break;
+        case 'nc':
+          sorts.push(getFn('numberCapacity', desc));
           break;
         case 'cr':
           sorts.push(getFn('credit', desc));

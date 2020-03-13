@@ -173,10 +173,12 @@ export const LookupConditionsMixin = {
       ],
       sortByOptionsList: [[
         {label: '首要依据：默认', value: '0+de'},
-        {label: '容量人数差升序', value: '0+cn'},
-        {label: '容量人数差降序', value: '0-cn'},
         {label: '学分数升序', value: '0+cr'},
         {label: '学分数降序', value: '0-cr'},
+        {label: '容量人数差升序', value: '0+cn'},
+        {label: '容量人数差降序', value: '0-cn'},
+        {label: '人数容量比升序', value: '0+nc'},
+        {label: '人数容量比降序', value: '0-nc'},
         {label: '选课人数升序', value: '0+nu'},
         {label: '选课人数降序', value: '0-nu'},
         {label: '总容量升序', value: '0+ca'},
@@ -262,8 +264,13 @@ export const LookupConditionsMixin = {
         flags[value.slice(1)] = true;
       });
       flags.de = false;
-      if ([flags.cn, flags.ca, flags.nu].filter(value1 => value1).length >= 2) {
+      if (flags.cn || flags.nc) {
         flags.cn = true;
+        flags.nc = true;
+      }
+      if ([flags.cn, flags.nc, flags.ca, flags.nu].filter(value1 => value1).length >= 3) {
+        flags.cn = true;
+        flags.nc = true;
         flags.ca = true;
         flags.nu = true;
       }
