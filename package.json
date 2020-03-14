@@ -38,6 +38,7 @@
     "@vue/cli-plugin-babel": "^4.0.0",
     "@vue/cli-plugin-eslint": "^4.0.0",
     "@vue/cli-service": "^4.0.0",
+    "acorn": "^7.1.1",
     "babel-eslint": "^10.0.3",
     "babel-plugin-import": "^1.12.2",
     "cz-conventional-changelog": "3.1.0",
