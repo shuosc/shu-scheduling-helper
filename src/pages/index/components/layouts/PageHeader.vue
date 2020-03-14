@@ -42,7 +42,7 @@
             </a-menu-item>
             <a-menu-item>
               <a href="https://support.qq.com/products/120502" target="_blank" rel="external nofollow">
-                吐个槽平台
+                腾讯兔小巢(原吐个槽)平台
               </a>
             </a-menu-item>
           </a-sub-menu>
