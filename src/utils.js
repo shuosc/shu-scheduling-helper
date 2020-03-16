@@ -75,7 +75,7 @@ export function getClassesChangeList(before, after, reserved, selected, timeTabl
       if (reserved.hasOwnProperty(currentRowsMap[key]['course_id']) && reserved[currentRowsMap[key]['course_id']].classes.hasOwnProperty(currentRowsMap[key]['teacher_id'])) {
         // 现在还有判断
         if (rowsMap.hasOwnProperty(key)) {
-          if (currentRowsMap[key]['class_time'] !== rowsMap[key]['class_time']) {
+          if (selected.hasOwnProperty(currentRowsMap[key]['course_id']) && selected[currentRowsMap[key]['course_id']].teacherId === currentRowsMap[key]['teacher_id'] && currentRowsMap[key]['class_time'] !== rowsMap[key]['class_time']) {
             getPeriods(rowsMap[key]['class_time']).forEach((period) => {
               let cell = timeTable[period[0]][period[1]];
               if (cell != null && cell.courseId !== rowsMap[key]['course_id']) {
