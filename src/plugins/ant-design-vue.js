@@ -7,6 +7,7 @@ import {
   Button,
   Card,
   Checkbox,
+  Col,
   Collapse,
   ConfigProvider,
   Divider,
@@ -26,6 +27,7 @@ import {
   Popconfirm,
   Popover,
   Radio,
+  Row,
   Select,
   Spin,
   Switch,
@@ -45,6 +47,7 @@ Vue.use(BackTop);
 Vue.use(Button);
 Vue.use(Card);
 Vue.use(Checkbox);
+Vue.use(Col);
 Vue.use(Collapse);
 Vue.use(ConfigProvider);
 Vue.use(Divider);
@@ -64,6 +67,7 @@ Vue.use(Pagination);
 Vue.use(Popconfirm);
 Vue.use(Popover);
 Vue.use(Radio);
+Vue.use(Row);
 Vue.use(Select);
 Vue.use(Spin);
 Vue.use(Switch);
