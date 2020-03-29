@@ -93,8 +93,8 @@
   /*noinspection CssUnusedSymbol*/
   .credit-badge >>> .ant-badge-count {
     box-shadow: 0 0 0 1px #d9d9d9 inset;
+    color: rgba(0, 0, 0, 0.65);
     background: white;
-    color: #999999;
   }
 
   .limitation-tag {

@@ -11,21 +11,26 @@
         <a-tab-pane tab="课程检索" key="lookup">
           <LookupPanel />
         </a-tab-pane>
-        <a-dropdown-button slot="tabBarExtraContent" class="tabs-actions" @click="quickInputting">
-          <a-icon type="rocket" />
-          快捷选课...
-          <a-menu slot="overlay">
-            <a-menu-item @click="exportDialogVisible = true">
-              <a-icon type="export" />
-              导出已选课程文本...
-            </a-menu-item>
-            <a-menu-divider />
-            <a-menu-item @click="backupAndRestoreDialogVisible = true">
-              <a-icon type="database" />
-              备份与还原...
-            </a-menu-item>
-          </a-menu>
-        </a-dropdown-button>
+        <div slot="tabBarExtraContent">
+          <div class="credits-wrapper" title="已选学分">
+            <strong class="credits">{{ $store.getters.credits }}</strong> 学分
+          </div>
+          <a-dropdown-button class="tabs-actions" @click="quickInputting">
+            <a-icon type="rocket" />
+            快捷选课...
+            <a-menu slot="overlay">
+              <a-menu-item @click="exportDialogVisible = true">
+                <a-icon type="export" />
+                导出已选课程文本...
+              </a-menu-item>
+              <a-menu-divider />
+              <a-menu-item @click="backupAndRestoreDialogVisible = true">
+                <a-icon type="database" />
+                备份与还原...
+              </a-menu-item>
+            </a-menu>
+          </a-dropdown-button>
+        </div>
       </a-tabs>
       <div class="content-footer">
         <div>
@@ -85,7 +90,7 @@
     props: {
       showScheduleTable: {
         type: Boolean,
-      }
+      },
     },
     data() {
       return {
@@ -104,7 +109,7 @@
       },
       trimester() {
         return this.$store.state.trimester;
-      }
+      },
     },
     watch: {
       showScheduleTable() {
@@ -206,6 +211,19 @@
   .back-top {
     bottom: 20px;
     right: 20px;
+  }
+
+  .credits-wrapper {
+    color: rgba(0, 0, 0, 0.45);
+    display: inline-block;
+    vertical-align: top;
+    margin-right: 12px;
+    line-height: 32px;
+    height: 32px;
+  }
+
+  .credits {
+    color: rgba(0, 0, 0, 0.65);
   }
 
   /*noinspection CssUnusedSymbol*/

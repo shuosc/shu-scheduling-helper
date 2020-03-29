@@ -32,9 +32,10 @@
             disabled
           >
             <template slot="header">
-              已选课程 ( <span class="credits-wrapper"><strong class="credits">{{ credits }}</strong> 学分</span> )
+              已选课程
               <a-checkbox class="hide-conflict" v-model="hideConflict"
-                          v-if="reservedClassesDividers.unselectedCourse < 0">隐藏时间冲突选项
+                          v-if="reservedClassesDividers.unselectedCourse < 0">
+                隐藏时间冲突选项
               </a-checkbox>
             </template>
           </a-collapse-panel>
