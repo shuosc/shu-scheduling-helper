@@ -79,14 +79,6 @@
 </script>
 
 <style scoped>
-  .credits-wrapper {
-    color: rgba(0, 0, 0, 0.65);
-  }
-
-  .credits {
-    color: rgba(0, 0, 0, 0.85);
-  }
-
   .reserved-classes-list-empty {
     padding: 50px 0;
   }
