@@ -1,7 +1,12 @@
 <template>
   <div class="class-card" :style="style">
     <div class="course-name"><strong>{{ course.courseName }}</strong></div>
-    <div class="teacher-name">{{ course.teacherName }}</div>
+    <div class="teacher-name-venue" v-if="!venue">
+      {{ course.teacherName }}
+    </div>
+    <div class="venue" v-else>
+      <span class="venue-at">@</span>{{ $store.getters.extra(`${course.courseId}-${course.teacherId}`).venue }}
+    </div>
   </div>
 </template>
 
@@ -51,8 +56,20 @@
     font-size: 13px;
   }
 
-  .teacher-name {
+  .teacher-name-venue {
+    color: rgba(255, 255, 255, 0.85);
     line-height: 1.25;
     font-size: 12px;
+  }
+
+  .venue {
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 1.25;
+    font-size: 12px;
+  }
+
+  .venue-at {
+    font-weight: bold;
+    color: white;
   }
 </style>

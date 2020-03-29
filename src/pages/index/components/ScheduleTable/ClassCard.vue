@@ -83,7 +83,7 @@
   }
 
   .venue-at {
-    color: white;
     font-weight: bold;
+    color: white;
   }
 </style>

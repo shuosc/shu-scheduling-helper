@@ -12,12 +12,16 @@
         <th>{{ index + 1 }}</th>
         <template v-for="(course, index2) in row">
           <td v-if="course === null || course.first" :key="index2" :rowspan="course !== null ? course.span : 1">
-            <ClassCard :course="course" v-if="course !== null" @click.native="handleClassCardClick(course.courseId)" />
+            <ClassCard v-if="course !== null" :course="course" :venue="venueMode"
+                       @click.native="handleClassCardClick(course.courseId)" />
           </td>
         </template>
       </tr>
       </tbody>
     </table>
+    <div class="show-venue-wrapper">
+      <a-checkbox v-model="venueMode">显示上课地点</a-checkbox>
+    </div>
   </div>
 </template>
 
@@ -71,5 +75,11 @@
 
   .header-week {
     width: 20%;
+  }
+
+  .show-venue-wrapper {
+    text-align: center;
+    margin-top: 6px;
+    padding: 8px 0;
   }
 </style>
