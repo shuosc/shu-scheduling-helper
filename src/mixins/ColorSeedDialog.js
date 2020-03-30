@@ -34,7 +34,7 @@ export const ColorSeedDialogMixin = {
       this.status = /^[0-9]{1,10}$/.test(this.value) ? 'success' : 'error';
     },
     useRandomNumber() {
-      this.value = Math.floor(Math.random() * 9999999999).toString();
+      this.value = Math.floor(Math.random() * 99999).toString();
       this.submit();
       this.$message.success(`已将“${this.value}”设置为色彩随机种子。`);
     },
