@@ -1,16 +1,16 @@
 <template>
-  <div ref="wrapper" :class="{'schedule-table-wrapper': true, 'schedule-table-wrapper-capturing': capturing}">
-    <a-config-provider :get-popup-container="() => $refs.setting" :auto-insert-space-in-button="false">
+  <div :class="{'schedule-table-wrapper': true, 'schedule-table-wrapper-capturing': capturing}" ref="wrapper">
+    <a-config-provider :auto-insert-space-in-button="false" :get-popup-container="() => $refs.setting">
       <table class="schedule-table">
         <thead>
         <tr>
           <td class="header-setting">
-            <div ref="setting" :class="{ setting: true, 'setting-show': venueMode }">
+            <div :class="{ setting: true, 'setting-show': venueMode }" ref="setting">
               <!--<a-button :type="venueMode ? 'primary' : null" size="small" shape="circle" icon="camera"-->
               <!--@click="saveImage" />-->
               <!--{{ ' ' }}-->
               <a-dropdown v-if="!venueMode">
-                <a-button shape="circle" size="small" icon="setting" />
+                <a-button icon="setting" shape="circle" size="small" />
                 <a-menu slot="overlay">
                   <a-menu-item @click="venueMode = true">
                     <a-icon type="bank" />
@@ -23,28 +23,28 @@
                   </a-menu-item>
                 </a-menu>
               </a-dropdown>
-              <a-button v-else type="danger" size="small" shape="round" @click="venueMode = false">复原</a-button>
+              <a-button @click="venueMode = false" shape="round" size="small" type="danger" v-else>复原</a-button>
             </div>
-            <div v-show="capturing" class="brand">
-              <img src="../../../../assets/logo.png" alt="Logo" />
+            <div class="brand" v-show="capturing">
+              <img alt="Logo" src="../../../../assets/logo.png" />
               {{ $store.getters.credits }} 学分
             </div>
           </td>
           <th class="header-period">&nbsp;</th>
-          <th class="header-week" v-for="week in ['一', '二', '三', '四', '五']" :key="week">{{ week }}</th>
+          <th :key="week" class="header-week" v-for="week in ['一', '二', '三', '四', '五']">{{ week }}</th>
         </tr>
         </thead>
         <tbody>
-        <tr v-for="(row, index) in rows" :key="index">
+        <tr :key="index" v-for="(row, index) in rows">
           <th>{{ index + 1 }}</th>
           <td class="class-period">
             <p>{{ classPeriods[index][0] }}</p>
             <p>- {{ classPeriods[index][1] }}</p>
           </td>
           <template v-for="(course, index2) in row">
-            <td v-if="course == null || course.first" :key="index2" :rowspan="course != null ? course.span : 1">
-              <ClassCard :course="course" v-if="course != null && !course.qr" :venue="venueMode" :capturing="capturing"
-                         @click.native="handleClassCardClick(course.courseId)" />
+            <td :key="index2" :rowspan="course != null ? course.span : 1" v-if="course == null || course.first">
+              <ClassCard :capturing="capturing" :course="course" :venue="venueMode" @click.native="handleClassCardClick(course.courseId)"
+                         v-if="course != null && !course.qr" />
               <QrCard v-if="course != null && course.qr" />
             </td>
           </template>
@@ -53,8 +53,8 @@
       </table>
     </a-config-provider>
     <div class="no-period-class-card-wrapper" v-if="capturing && noPeriodClasses.length > 0">
-      <NoPeriodClassCard v-for="(course, index) in noPeriodClasses" :course="course" :key="index" :venue="venueMode"
-                         :capturing="capturing" />
+      <NoPeriodClassCard :capturing="capturing" :course="course" :key="index" :venue="venueMode"
+                         v-for="(course, index) in noPeriodClasses" />
     </div>
   </div>
 </template>
@@ -83,13 +83,13 @@
   }
 
   .schedule-table {
+    font-size: 13px;
+    width: 100%;
     margin: 0;
     padding: 0;
     table-layout: fixed;
     border-collapse: collapse;
-    width: 100%;
     text-align: center;
-    font-size: 13px;
   }
 
   .schedule-table thead tr {
@@ -141,13 +141,13 @@
 
   /*noinspection CssUnusedSymbol*/
   .setting {
-    transition: all 0.2s;
-    white-space: nowrap;
     position: absolute;
-    text-align: left;
-    opacity: 0;
-    left: 2px;
     top: 2px;
+    left: 2px;
+    transition: all 0.2s;
+    text-align: left;
+    white-space: nowrap;
+    opacity: 0;
   }
 
   /*noinspection CssUnusedSymbol*/
@@ -173,20 +173,20 @@
   }
 
   .brand {
-    color: rgba(0, 0, 0, 0.45);
-    white-space: nowrap;
-    position: absolute;
-    line-height: 18px;
     font-size: 12px;
-    display: block;
-    width: 100%;
+    line-height: 18px;
+    position: absolute;
     top: 3px;
     left: 0;
+    display: block;
+    width: 100%;
+    white-space: nowrap;
+    color: rgba(0, 0, 0, 0.45);
   }
 
   .brand img {
-    height: 18px;
     width: 18px;
+    height: 18px;
   }
 
   .no-period-class-card-wrapper {

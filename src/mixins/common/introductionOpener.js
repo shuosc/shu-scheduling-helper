@@ -28,7 +28,7 @@ export const introductionOpenerMixin = {
               on: {
                 click: () => {
                   this.$store.commit('IGNORE_INTRODUCTION_NOTIFICATION');
-                  this.$notification.close('introduction')
+                  this.$notification.close('introduction');
                 },
               },
             }, '本次不再提示');

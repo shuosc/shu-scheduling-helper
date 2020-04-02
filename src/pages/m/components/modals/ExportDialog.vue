@@ -4,11 +4,11 @@
       <template v-if="activeTab === 'content'">
         导出已选课程文本
         <a-button
-          type="link"
           icon="snippets"
+          type="link"
           v-clipboard:copy="content"
-          v-clipboard:success="handleCopied"
           v-clipboard:error="handleCopyError"
+          v-clipboard:success="handleCopied"
         >
           复制
         </a-button>
@@ -17,34 +17,34 @@
         设置
       </template>
     </h3>
-    <a-alert v-if="!$store.getters.currentAffairsAndStatePoliciesSelected" class="casp-alert" message="未选形势与政策"
-             type="info" close-text="忽略" show-icon />
+    <a-alert class="casp-alert" close-text="忽略" message="未选形势与政策"
+             show-icon type="info" v-if="!$store.getters.currentAffairsAndStatePoliciesSelected" />
     <a-tabs class="tabs" v-model="activeTab">
-      <a-tab-pane key="content" force-render>
+      <a-tab-pane force-render key="content">
         <a-icon slot="tab" type="file-text" />
         <a-textarea
-          ref="content"
-          class="content-area"
           :value="content"
-          autosize
-          read-only
-          spellcheck="false"
-          @mouseenter="handleTextareaMouseenter"
           @focus="handleTextareaFocus"
+          @mouseenter="handleTextareaMouseenter"
+          autosize
+          class="content-area"
+          read-only
+          ref="content"
+          spellcheck="false"
         />
       </a-tab-pane>
-      <a-tab-pane key="setting" force-render>
+      <a-tab-pane force-render key="setting">
         <a-icon slot="tab" type="setting" />
         <a-table
-          class="courses-table"
           :data-source="rows"
-          :row-selection="rowSelection"
-          :pagination="false"
-          size="middle"
           :locale="{emptyText: '没有已选的课程'}"
+          :pagination="false"
+          :row-selection="rowSelection"
           bordered
+          class="courses-table"
+          size="middle"
         >
-          <a-table-column title="选择要显示的课程" data-index="course">
+          <a-table-column data-index="course" title="选择要显示的课程">
             <template v-slot="course">
               <strong>{{ course.name }}</strong>
               <br /><small class="id-info">{{ course.id }}</small>
@@ -67,8 +67,8 @@
 
 <style scoped>
   .title {
-    margin-bottom: 10px;
     line-height: 32px;
+    margin-bottom: 10px;
   }
 
   .courses-table >>> th, .courses-table >>> td {

@@ -5,9 +5,9 @@
       <img :src="blobUrl" alt="课程表图片" />
     </div>
     <div class="input-wrapper">
-      <a-input v-model="fileName" addon-before="保存文件名：" addon-after=".png" :placeholder="defaultFileName" />
+      <a-input :placeholder="defaultFileName" addon-after=".png" addon-before="保存文件名：" v-model="fileName" />
     </div>
-    <a-button type="primary" icon="download" @click="download">下载</a-button>
+    <a-button @click="download" icon="download" type="primary">下载</a-button>
   </div>
 </template>
 
@@ -75,12 +75,12 @@
   }
 
   img {
+    max-width: 100%;
+    max-height: 240px;
+    cursor: pointer;
+    text-align: center;
     border: 1px solid rgba(0, 0, 0, 0.1);
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    text-align: center;
-    max-height: 240px;
-    max-width: 100%;
-    cursor: pointer;
   }
 
   .input-wrapper {

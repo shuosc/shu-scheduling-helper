@@ -4,7 +4,7 @@ export const conflictSolvingMixin = {
       const h = this.$createElement;
       let cancelKeys = [];
       let content = [h('div', {
-        'class': {'conflict-list-hint': true}
+        'class': {'conflict-list-hint': true},
       }, '以下课程和待选的课程冲突，请先取消选择。')];
       let modal = this.$confirm({
         icon: 'warning',
@@ -14,7 +14,7 @@ export const conflictSolvingMixin = {
         okButtonProps: {
           props: {
             disabled: true,
-          }
+          },
         },
         cancelText: '取消',
         onOk: async () => {
@@ -33,7 +33,7 @@ export const conflictSolvingMixin = {
             this.$success({
               title: '冲突解决完毕，已选择以下课程：',
               content: h('p', {
-                'class': {'conflict-list-class-meta': true}
+                'class': {'conflict-list-class-meta': true},
               }, [
                 `${row['course_name']} `,
                 h('small', `(${row['course_id']})`),
@@ -41,11 +41,11 @@ export const conflictSolvingMixin = {
                 `${row['teacher_name']} `,
                 h('small', `(${row['teacher_id']})`),
                 h('a-divider', {
-                  props: {type: 'vertical'}
+                  props: {type: 'vertical'},
                 }),
                 h('span', {
-                  'class': {'conflict-list-class-meta-time': true}
-                }, row['class_time'])
+                  'class': {'conflict-list-class-meta-time': true},
+                }, row['class_time']),
               ]),
               okText: '确定',
             });
@@ -67,14 +67,14 @@ export const conflictSolvingMixin = {
                 okButtonProps: {
                   props: {
                     disabled: cancelKeys.indexOf(false) >= 0,
-                  }
+                  },
                 },
               });
             },
           },
         }, [
           h('span', {
-            'class': {'conflict-solving-list-class-meta': true}
+            'class': {'conflict-solving-list-class-meta': true},
           }, [
             `${this.$store.state.reservedClasses[courseId].courseName} `,
             h('small', `(${courseId})`),

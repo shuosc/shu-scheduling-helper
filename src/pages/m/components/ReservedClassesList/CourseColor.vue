@@ -1,5 +1,5 @@
 <template>
-  <div class="course-color" :style="style"></div>
+  <div :style="style" class="course-color"></div>
 </template>
 
 <script>
@@ -26,9 +26,9 @@
 <style scoped>
   .course-color {
     position: absolute;
-    display: block;
-    height: 15px;
-    width: 8px;
     top: 16px;
+    display: block;
+    width: 8px;
+    height: 15px;
   }
 </style>

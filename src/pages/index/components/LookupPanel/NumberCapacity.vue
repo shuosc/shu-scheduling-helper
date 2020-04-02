@@ -24,24 +24,24 @@
 
 <style scoped>
   div {
-    white-space: nowrap;
-    text-align: center;
     min-width: 30px;
+    text-align: center;
+    white-space: nowrap;
   }
 
   sup {
     font-size: 12px;
-    right: -1px;
     top: -1em;
+    right: -1px;
   }
 
   span {
-    background: rgba(0, 0, 0, 0.2);
-    transform: rotate(45deg);
     display: inline-block;
-    user-select: none;
-    height: 1em;
     width: 1px;
+    height: 1em;
+    user-select: none;
+    transform: rotate(45deg);
+    background: rgba(0, 0, 0, 0.2);
   }
 
   sub {

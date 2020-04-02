@@ -1,12 +1,12 @@
 <template>
   <a-layout-sider
-    class="page-sider"
-    width="480px"
-    theme="light"
-    breakpoint="lg"
-    collapsed-width="0"
     :trigger="null"
     @collapse="handleCollapse"
+    breakpoint="lg"
+    class="page-sider"
+    collapsed-width="0"
+    theme="light"
+    width="480px"
   >
     <ScheduleTable @click="$emit('click')" />
   </a-layout-sider>
@@ -31,9 +31,9 @@
 <style scoped>
   .page-sider {
     position: fixed;
-    overflow: auto;
     top: 64px;
     bottom: 0;
     left: 0;
+    overflow: auto;
   }
 </style>

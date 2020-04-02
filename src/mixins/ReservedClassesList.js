@@ -4,7 +4,7 @@ export const ReservedClassesListMixin = {
   data() {
     return {
       hideConflict: false,
-    }
+    };
   },
   computed: {
     reservedClasses() {
@@ -88,11 +88,11 @@ export const ReservedClassesListMixin = {
             // noinspection JSUnresolvedVariable
             scrollTo({
               top: element.offsetTop + this.offset,
-              behavior: 'smooth'
+              behavior: 'smooth',
             });
             ['webkitTransitionEnd', 'mozTransitionEnd', 'MSTransitionEnd', 'otransitionend', 'transitionend'].forEach((value) => {
               panel.removeEventListener(value, doScrollTo);
-            })
+            });
           };
           if (panel.classList.contains('ant-motion-collapse')) {
             ['webkitTransitionEnd', 'mozTransitionEnd', 'MSTransitionEnd', 'otransitionend', 'transitionend'].forEach((value) => {

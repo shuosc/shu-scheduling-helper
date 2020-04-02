@@ -131,8 +131,8 @@ export const LookupPanelMixin = {
           mouseleave: () => {
             this.cancelPreviewClass(row);
           },
-        }
-      }
+        },
+      };
     },
   },
 };

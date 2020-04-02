@@ -198,7 +198,7 @@ registerPromiseWorker(function (message) {
         default:
           sorts.push((row1, row2) => {
             return (`${row1['course_id']}-${row1['teacher_id']}`.localeCompare(
-              `${row2['course_id']}-${row2['teacher_id']}`
+              `${row2['course_id']}-${row2['teacher_id']}`,
             )) * (desc ? -1 : 1);
           });
       }

@@ -1,5 +1,5 @@
 <template>
-  <a-list size="small" class="classes-list" :data-source="shownClassesKeys">
+  <a-list :data-source="shownClassesKeys" class="classes-list" size="small">
     <a-list-item
       class="selected-class-list-item"
       slot="header"
@@ -17,33 +17,33 @@
           {{ $store.getters.extra(`${id}-${selectedClassKey}`).venue }}
           <br v-if="$store.getters.extra(`${id}-${selectedClassKey}`).limitations.length > 0" />
           <a-tag
-            v-for="(limitation, index) in $store.getters.extra(`${id}-${selectedClassKey}`).limitations"
-            class="limitation-tag"
             :key="index"
+            class="limitation-tag"
+            v-for="(limitation, index) in $store.getters.extra(`${id}-${selectedClassKey}`).limitations"
           >
             {{ limitation }}
           </a-tag>
         </template>
-        <a-avatar slot="avatar" class="selected-avatar">已选</a-avatar>
+        <a-avatar class="selected-avatar" slot="avatar">已选</a-avatar>
       </a-list-item-meta>
-      <NumberCapacity slot="actions" :class-key="`${id}-${selectedClassKey}`" class="number-capacity" />
-      <a-button slot="actions" @click="unselectClass">取消选择</a-button>
+      <NumberCapacity :class-key="`${id}-${selectedClassKey}`" class="number-capacity" slot="actions" />
+      <a-button @click="unselectClass" slot="actions">取消选择</a-button>
     </a-list-item>
     <a-list-item
+      @mouseenter="previewClass(key)"
+      @mouseleave="cancelPreviewClass(key)"
       class="classes-list-item"
       slot="renderItem"
       slot-scope="key"
-      @mouseenter="previewClass(key)"
-      @mouseleave="cancelPreviewClass(key)"
     >
-      <NumberCapacity slot="actions" :class-key="`${id}-${key}`" class="number-capacity" />
-      <a-button v-if="!isConflicted(key)" type="primary" slot="actions" @click="selectClass(key)">
+      <NumberCapacity :class-key="`${id}-${key}`" class="number-capacity" slot="actions" />
+      <a-button @click="selectClass(key)" slot="actions" type="primary" v-if="!isConflicted(key)">
         选择
       </a-button>
-      <a-button v-else type="danger" slot="actions" @click="conflictsSolving(key)">
+      <a-button @click="conflictsSolving(key)" slot="actions" type="danger" v-else>
         冲突
       </a-button>
-      <a-button slot="actions" type="dashed" :disabled="storageBusy" @click="doRemoveReservedClass(key)">- 待选</a-button>
+      <a-button :disabled="storageBusy" @click="doRemoveReservedClass(key)" slot="actions" type="dashed">- 待选</a-button>
       <a-list-item-meta>
         <template slot="title">{{ course.classes[key].teacherName }}
           <small>({{ key }})</small>
@@ -57,9 +57,9 @@
           {{ $store.getters.extra(`${id}-${key}`).venue }}
           <br v-if="$store.getters.extra(`${id}-${key}`).limitations.length > 0" />
           <a-tag
-            v-for="(limitation, index) in $store.getters.extra(`${id}-${key}`).limitations"
-            class="limitation-tag"
             :key="index"
+            class="limitation-tag"
+            v-for="(limitation, index) in $store.getters.extra(`${id}-${key}`).limitations"
           >
             {{ limitation }}
           </a-tag>
@@ -139,11 +139,11 @@
   }
 
   .previewing {
-    margin: 6px 0 0 5px;
-    position: absolute;
     font-size: 12px;
-    color: #64B5F6;
+    position: absolute;
     display: none;
+    margin: 6px 0 0 5px;
+    color: #64b5f6;
   }
 
   .classes-list-item:hover .previewing {

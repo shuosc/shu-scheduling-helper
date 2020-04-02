@@ -50,7 +50,7 @@ export default new Vuex.Store({
               span: period[3],
               color: state.selectedClasses[courseId].themeColor,
               isPreview: false,
-            }
+            };
           });
         }
       }
@@ -342,7 +342,7 @@ export default new Vuex.Store({
         ]).then(() => {
           resolve();
         });
-      })
+      });
     },
     reserveClass(context, data) {
       // 添加待选课程
@@ -597,7 +597,7 @@ export default new Vuex.Store({
                     span: period[3],
                     color: selected[courseId].themeColor,
                     isPreview: false,
-                  }
+                  };
                 });
               }
             }

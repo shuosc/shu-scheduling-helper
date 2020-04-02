@@ -5,12 +5,12 @@
         <template slot="renderEmpty">
           <a-empty description="没有已选的课程" />
         </template>
-        <a-list item-layout="vertical" :data-source="selectedClassesList">
+        <a-list :data-source="selectedClassesList" item-layout="vertical">
           <!--suppress CommaExpressionJS -->
           <a-list-item slot="renderItem" slot-scope="item, index">
             <a-list-item-meta>
               <div slot="title">
-                <a-badge class="credit-badge" :count="`${item.credit}学分`" />
+                <a-badge :count="`${item.credit}学分`" class="credit-badge" />
                 {{ item.courseName }}
               </div>
               <div slot="description">
@@ -19,40 +19,40 @@
                   <a-divider type="vertical" />
                   {{ item.teacherName }}
                 </div>
-                <div class="input-wrapper" @mouseenter="handleInputWrapperMouseenter">
+                <div @mouseenter="handleInputWrapperMouseenter" class="input-wrapper">
                   <a-input
-                    v-model="item.courseId"
+                    @copy="handleKeyboardCopied"
+                    @focus="handleInputFocus"
                     addon-before="课程号"
                     read-only
-                    @focus="handleInputFocus"
-                    @copy="handleKeyboardCopied"
+                    v-model="item.courseId"
                   >
-                    <a-tooltip slot="addonAfter" title="复制课程号" placement="topRight">
+                    <a-tooltip placement="topRight" slot="addonAfter" title="复制课程号">
                       <a-button
                         class="btn-clipboard"
                         icon="snippets"
                         v-clipboard:copy="item.courseId"
-                        v-clipboard:success="handleCopied"
                         v-clipboard:error="handleCopyError"
+                        v-clipboard:success="handleCopied"
                       />
                     </a-tooltip>
                   </a-input>
                 </div>
-                <div class="input-wrapper" @mouseenter="handleInputWrapperMouseenter">
+                <div @mouseenter="handleInputWrapperMouseenter" class="input-wrapper">
                   <a-input
-                    v-model="item.teacherId"
+                    @copy="handleKeyboardCopied"
+                    @focus="handleInputFocus"
                     addon-before="教师号"
                     read-only
-                    @focus="handleInputFocus"
-                    @copy="handleKeyboardCopied"
+                    v-model="item.teacherId"
                   >
-                    <a-tooltip slot="addonAfter" title="复制教师号" placement="bottomRight">
+                    <a-tooltip placement="bottomRight" slot="addonAfter" title="复制教师号">
                       <a-button
                         class="btn-clipboard"
                         icon="snippets"
                         v-clipboard:copy="item.teacherId"
-                        v-clipboard:success="handleCopied"
                         v-clipboard:error="handleCopyError"
+                        v-clipboard:success="handleCopied"
                       />
                     </a-tooltip>
                   </a-input>
@@ -62,16 +62,16 @@
             </a-list-item-meta>
           </a-list-item>
           <!--suppress CommaExpressionJS -->
-          <div slot="header" class="header">
+          <div class="header" slot="header">
             <h3>
               <a-icon type="rocket" />
               快捷选课 <small class="quick-input-trimester">{{ $store.state.trimester }}</small>
             </h3>
-            <a-popconfirm title="关闭选课窗口并退出快捷选课？" placement="bottom" @confirm="back">
-              <a-button type="link" size="small">返回</a-button>
+            <a-popconfirm @confirm="back" placement="bottom" title="关闭选课窗口并退出快捷选课？">
+              <a-button size="small" type="link">返回</a-button>
             </a-popconfirm>
-            <a-alert v-if="!$store.getters.currentAffairsAndStatePoliciesSelected" class="casp-alert"
-                     message="未选形势与政策" type="info" close-text="忽略" show-icon />
+            <a-alert class="casp-alert" close-text="忽略"
+                     message="未选形势与政策" show-icon type="info" v-if="!$store.getters.currentAffairsAndStatePoliciesSelected" />
           </div>
         </a-list>
       </a-config-provider>
@@ -228,16 +228,16 @@
   }
 
   .btn-clipboard {
-    border-bottom-left-radius: 0;
-    border-top-left-radius: 0;
-    margin: -1px -12px;
     overflow: hidden;
+    margin: -1px -12px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
   }
 
   /*noinspection CssUnusedSymbol*/
   .ant-list-item-meta-title {
-    margin-bottom: 0 !important;
     font-size: 15px !important;
+    margin-bottom: 0 !important;
   }
 
   /*noinspection CssUnusedSymbol*/
@@ -252,9 +252,9 @@
 
   /*noinspection CssUnusedSymbol*/
   .credit-badge >>> .ant-badge-count {
-    box-shadow: 0 0 0 1px #d9d9d9 inset;
     color: rgba(0, 0, 0, 0.65);
     background: white;
+    box-shadow: 0 0 0 1px #d9d9d9 inset;
   }
 
   .casp-alert {

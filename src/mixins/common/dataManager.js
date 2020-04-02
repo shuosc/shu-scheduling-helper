@@ -59,7 +59,7 @@ export const dataManagerMixin = {
       }
       const h = this.$createElement;
       let list = [h('div', {
-        'class': {'conflict-list-hint': true}
+        'class': {'conflict-list-hint': true},
       }, '以下课程被移出已选或待选列表，时间冲突的课程如有需要可重新选择。')];
       changeList.forEach((change) => {
         if (change.type === 'deleted-silent') {
@@ -67,7 +67,7 @@ export const dataManagerMixin = {
         }
         let newClassTime = change.type === 'conflicted' ? this.$store.state.allClassesMap[`${change['course_id']}-${change['teacher_id']}`]['class_time'] : null;
         list.push(h('p', {
-          'class': {'conflict-list-class-meta': true}
+          'class': {'conflict-list-class-meta': true},
         }, [
           h('b', change.type === 'conflicted' ? '变更后时间冲突：' : '移除：'),
           h('br'),
@@ -77,11 +77,11 @@ export const dataManagerMixin = {
           `${change['teacher_name']} `,
           h('small', `(${change['teacher_id']})`),
           h('a-divider', {
-            props: {type: 'vertical'}
+            props: {type: 'vertical'},
           }),
           h('span', {
-            'class': {'conflict-list-class-meta-time': true}
-          }, newClassTime == null || change['class_time'] === newClassTime ? change['class_time'] : `${change['class_time']} → ${newClassTime}`)
+            'class': {'conflict-list-class-meta-time': true},
+          }, newClassTime == null || change['class_time'] === newClassTime ? change['class_time'] : `${change['class_time']} → ${newClassTime}`),
         ]));
       });
       this.$warning({

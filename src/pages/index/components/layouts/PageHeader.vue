@@ -1,19 +1,19 @@
 <template>
-  <a-layout-header ref="header" class="page-header">
+  <a-layout-header class="page-header" ref="header">
     <a-config-provider :get-popup-container="() => $refs.header.$el">
-      <a-menu class="header-menu" theme="light" mode="horizontal" :selectable="false">
+      <a-menu :selectable="false" class="header-menu" mode="horizontal" theme="light">
         <a-menu-item class="header-title-wrapper">
           <div class="header-title-container">
             <div class="header-title">SHU排课助手 <small>OL/Beta</small></div>
             <div class="header-trimester">{{ $store.state.trimester }}</div>
           </div>
         </a-menu-item>
-        <a-menu-item class="actions-menu-item" :disabled="!canUndo" @click="undo">
+        <a-menu-item :disabled="!canUndo" @click="undo" class="actions-menu-item">
           <a-tooltip :title="undoTitle" placement="bottom">
             <a-icon type="undo" />
           </a-tooltip>
         </a-menu-item>
-        <a-menu-item class="actions-menu-item" :disabled="!canRedo" @click="redo">
+        <a-menu-item :disabled="!canRedo" @click="redo" class="actions-menu-item">
           <a-tooltip :title="redoTitle" placement="bottom">
             <a-icon type="redo" />
           </a-tooltip>
@@ -24,7 +24,7 @@
             关于
           </template>
           <a-menu-item>
-            <a href="https://github.com/ZKLlab/shu-scheduling-helper-frontend" target="_blank" rel="external nofollow">
+            <a href="https://github.com/ZKLlab/shu-scheduling-helper-frontend" rel="external nofollow" target="_blank">
               <a-icon type="github" />
               项目Github主页
             </a>
@@ -35,13 +35,13 @@
               意见反馈
             </template>
             <a-menu-item>
-              <a href="https://github.com/ZKLlab/shu-scheduling-helper-frontend/issues" target="_blank"
-                 rel="external nofollow">
+              <a href="https://github.com/ZKLlab/shu-scheduling-helper-frontend/issues" rel="external nofollow"
+                 target="_blank">
                 去Github提Issue
               </a>
             </a-menu-item>
             <a-menu-item>
-              <a href="https://support.qq.com/products/120502" target="_blank" rel="external nofollow">
+              <a href="https://support.qq.com/products/120502" rel="external nofollow" target="_blank">
                 腾讯兔小巢(原吐个槽)平台
               </a>
             </a-menu-item>
@@ -84,48 +84,48 @@
 
 <style scoped>
   .page-header {
-    user-select: none;
-    background: white;
     position: fixed;
     z-index: 999;
-    height: 64px;
-    padding: 0;
+    top: 0;
     right: 0;
     left: 0;
-    top: 0;
+    height: 64px;
+    padding: 0;
+    user-select: none;
+    background: white;
   }
 
   .header-title-wrapper {
-    pointer-events: none;
-    white-space: nowrap;
-    padding: 0 24px;
     float: left;
+    padding: 0 24px;
+    white-space: nowrap;
+    pointer-events: none;
   }
 
   .header-title-wrapper:before {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    margin-right: 12px;
+    content: " ";
+    user-select: none;
+    vertical-align: middle;
     background: url("../../../../assets/logo.png") no-repeat center center;
     background-size: contain;
-    vertical-align: middle;
-    display: inline-block;
-    margin-right: 12px;
-    user-select: none;
-    height: 32px;
-    content: " ";
-    width: 32px;
   }
 
   .header-title-container {
-    justify-content: center;
-    flex-direction: column;
-    vertical-align: middle;
     display: inline-flex;
-    text-align: center;
+    flex-direction: column;
+    justify-content: center;
     height: 64px;
+    text-align: center;
+    vertical-align: middle;
   }
 
   .header-title {
-    line-height: 28px;
     font-size: 18px;
+    line-height: 28px;
     height: 28px;
     margin: 0;
   }
@@ -136,8 +136,8 @@
   }
 
   .header-trimester {
-    line-height: 20px;
     font-size: 12px;
+    line-height: 20px;
     height: 20px;
     opacity: 0.6;
   }
@@ -147,13 +147,13 @@
   }
 
   .actions-menu-item {
-    text-align: center;
     float: left;
+    text-align: center;
   }
 
   .actions-menu-item-right {
-    padding-right: 12px;
     float: right;
+    padding-right: 12px;
   }
 
   /*noinspection CssUnusedSymbol*/

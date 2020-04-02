@@ -4,16 +4,16 @@
       <thead>
       <tr>
         <th class="header-number">&nbsp;</th>
-        <th class="header-week" v-for="week in ['一', '二', '三', '四', '五']" :key="week">{{ week }}</th>
+        <th :key="week" class="header-week" v-for="week in ['一', '二', '三', '四', '五']">{{ week }}</th>
       </tr>
       </thead>
       <tbody>
-      <tr v-for="(row, index) in rows" :key="index">
+      <tr :key="index" v-for="(row, index) in rows">
         <th>{{ index + 1 }}</th>
         <template v-for="(course, index2) in row">
-          <td v-if="course === null || course.first" :key="index2" :rowspan="course !== null ? course.span : 1">
-            <ClassCard v-if="course !== null" :course="course" :venue="venueMode"
-                       @click.native="handleClassCardClick(course.courseId)" />
+          <td :key="index2" :rowspan="course !== null ? course.span : 1" v-if="course === null || course.first">
+            <ClassCard :course="course" :venue="venueMode" @click.native="handleClassCardClick(course.courseId)"
+                       v-if="course !== null" />
           </td>
         </template>
       </tr>
@@ -44,13 +44,13 @@
   }
 
   .schedule-table {
+    font-size: 13px;
+    width: 100%;
     margin: 0;
     padding: 0;
     table-layout: fixed;
     border-collapse: collapse;
-    width: 100%;
     text-align: center;
-    font-size: 13px;
   }
 
   .schedule-table thead tr {
@@ -78,8 +78,8 @@
   }
 
   .show-venue-wrapper {
-    text-align: center;
     margin-top: 6px;
     padding: 8px 0;
+    text-align: center;
   }
 </style>

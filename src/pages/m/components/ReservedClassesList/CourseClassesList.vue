@@ -1,5 +1,5 @@
 <template>
-  <a-list size="small" class="classes-list" :data-source="shownClassesKeys">
+  <a-list :data-source="shownClassesKeys" class="classes-list" size="small">
     <a-list-item
       class="selected-class-list-item"
       slot="header"
@@ -10,7 +10,7 @@
           <small>({{ selectedClassKey }})</small>
         </template>
         <template slot="description">
-          <NumberCapacity slot="actions" :class-key="`${id}-${selectedClassKey}`" class="number-capacity" />
+          <NumberCapacity :class-key="`${id}-${selectedClassKey}`" class="number-capacity" slot="actions" />
           <a-divider type="vertical" />
           {{ course.classes[selectedClassKey].classTime }}
           <a-divider type="vertical" />
@@ -19,29 +19,29 @@
           {{ $store.getters.extra(`${id}-${selectedClassKey}`).venue }}
           <br v-if="$store.getters.extra(`${id}-${selectedClassKey}`).limitations.length > 0" />
           <a-tag
-            v-for="(limitation, index) in $store.getters.extra(`${id}-${selectedClassKey}`).limitations"
-            class="limitation-tag"
             :key="index"
+            class="limitation-tag"
+            v-for="(limitation, index) in $store.getters.extra(`${id}-${selectedClassKey}`).limitations"
           >
             {{ limitation }}
           </a-tag>
         </template>
         <a-avatar slot="avatar">已选</a-avatar>
       </a-list-item-meta>
-      <a-button slot="actions" @click="unselectClass">取消选择</a-button>
+      <a-button @click="unselectClass" slot="actions">取消选择</a-button>
     </a-list-item>
     <a-list-item
       class="classes-list-item"
       slot="renderItem"
       slot-scope="key"
     >
-      <a-button v-if="!isConflicted(key)" slot="actions" type="primary" @click="selectClass(key)">
+      <a-button @click="selectClass(key)" slot="actions" type="primary" v-if="!isConflicted(key)">
         选择
       </a-button>
-      <a-button v-else slot="actions" type="danger" @click="conflictsSolving(key)">
+      <a-button @click="conflictsSolving(key)" slot="actions" type="danger" v-else>
         冲突
       </a-button>
-      <a-button slot="actions" type="dashed" :disabled="storageBusy" @click="doRemoveReservedClass(key)">
+      <a-button :disabled="storageBusy" @click="doRemoveReservedClass(key)" slot="actions" type="dashed">
         - 待选
       </a-button>
       <a-list-item-meta>
@@ -49,7 +49,7 @@
           <small>({{ key }})</small>
         </template>
         <template slot="description">
-          <NumberCapacity slot="actions" :class-key="`${id}-${key}`" class="number-capacity" />
+          <NumberCapacity :class-key="`${id}-${key}`" class="number-capacity" slot="actions" />
           <a-divider type="vertical" />
           {{ course.classes[key].classTime }}
           <a-divider type="vertical" />
@@ -58,9 +58,9 @@
           {{ $store.getters.extra(`${id}-${key}`).venue }}
           <br v-if="$store.getters.extra(`${id}-${key}`).limitations.length > 0" />
           <a-tag
-            v-for="(limitation, index) in $store.getters.extra(`${id}-${key}`).limitations"
-            class="limitation-tag"
             :key="index"
+            class="limitation-tag"
+            v-for="(limitation, index) in $store.getters.extra(`${id}-${key}`).limitations"
           >
             {{ limitation }}
           </a-tag>

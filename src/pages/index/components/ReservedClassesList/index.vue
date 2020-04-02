@@ -5,19 +5,19 @@
     </template>
     <div>
       <a-empty
-        v-if="reservedClassesKeys.length === 0"
         class="reserved-classes-list-empty"
         description="待选课程列表为空"
+        v-if="reservedClassesKeys.length === 0"
       />
       <!--suppress JSUnresolvedVariable -->
-      <a-collapse v-model="openedCourseId" accordion force-render :bordered="false">
+      <a-collapse :bordered="false" accordion force-render v-model="openedCourseId">
         <template v-for="(key, index) in shownReservedClassesKeys">
           <a-collapse-panel
-            v-if="index === reservedClassesDividers.unselectedCourse"
             :key="`${key}-divider-unselected`"
-            class="list-header"
             :show-arrow="false"
+            class="list-header"
             disabled
+            v-if="index === reservedClassesDividers.unselectedCourse"
           >
             <template slot="header">
               未选课程
@@ -25,30 +25,30 @@
             </template>
           </a-collapse-panel>
           <a-collapse-panel
-            v-if="index === reservedClassesDividers.selectedCourse"
             :key="`${key}-divider-selected`"
-            class="list-header"
             :show-arrow="false"
+            class="list-header"
             disabled
+            v-if="index === reservedClassesDividers.selectedCourse"
           >
             <template slot="header">
               已选课程
-              <a-checkbox class="hide-conflict" v-model="hideConflict"
-                          v-if="reservedClassesDividers.unselectedCourse < 0">
+              <a-checkbox class="hide-conflict" v-if="reservedClassesDividers.unselectedCourse < 0"
+                          v-model="hideConflict">
                 隐藏时间冲突选项
               </a-checkbox>
             </template>
           </a-collapse-panel>
-          <a-collapse-panel :ref="`course-${key}`" class="course" :key="key">
+          <a-collapse-panel :key="key" :ref="`course-${key}`" class="course">
             <template slot="header">
               <CourseColor :course-id="key" :course-name="reservedClasses[key].courseName" />
               <!--suppress JSUnresolvedVariable -->
-              <CourseMeta :course="reservedClasses[key]" :id="key" :expanded="openedCourseId === key"
-                          :all-conflicted="allConflicted[key]" />
+              <CourseMeta :all-conflicted="allConflicted[key]" :course="reservedClasses[key]" :expanded="openedCourseId === key"
+                          :id="key" />
             </template>
             <!--suppress JSUnresolvedVariable -->
-            <CourseClassesList :course="reservedClasses[key]" :id="key" :expanded="openedCourseId === key"
-                               :hide-conflict="hideConflict" @unselect="scrollTo" />
+            <CourseClassesList :course="reservedClasses[key]" :expanded="openedCourseId === key" :hide-conflict="hideConflict"
+                               :id="key" @unselect="scrollTo" />
           </a-collapse-panel>
         </template>
       </a-collapse>
@@ -89,9 +89,9 @@
 
   /*noinspection CssUnusedSymbol*/
   .list-header >>> .ant-collapse-header {
+    padding: 12px !important;
     cursor: default !important;
     user-select: none;
-    padding: 12px !important;
   }
 
   /*noinspection CssUnusedSymbol*/

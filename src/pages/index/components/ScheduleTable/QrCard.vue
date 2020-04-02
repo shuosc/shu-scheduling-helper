@@ -1,6 +1,6 @@
 <template>
   <div class="qr-card">
-    <img src="../../../../assets/qr.png" alt="qr" /><br />
+    <img alt="qr" src="../../../../assets/qr.png" /><br />
     排课助手
   </div>
 </template>
@@ -8,23 +8,23 @@
 <script>
   export default {
     name: 'QrCard',
-  }
+  };
 </script>
 
 <style scoped>
   .qr-card {
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    background: rgba(0, 0, 0, 0.1);
+    font-size: 12px;
+    position: absolute;
+    right: 7px;
+    bottom: 7px;
+    left: 7px;
+    overflow: hidden;
+    padding: 2px;
+    text-align: center;
     color: rgba(0, 0, 0, 0.45);
     border-radius: 2px;
-    text-align: center;
-    position: absolute;
-    overflow: hidden;
-    font-size: 12px;
-    padding: 2px;
-    bottom: 7px;
-    right: 7px;
-    left: 7px;
+    background: rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   }
 
   img {

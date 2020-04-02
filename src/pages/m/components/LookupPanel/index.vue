@@ -4,20 +4,20 @@
       <div>没有匹配的记录</div>
     </template>
     <div class="lookup-panel-wrapper">
-      <LookupConditions ref="conditions" @filter="countdown(300, true)" />
+      <LookupConditions @filter="countdown(300, true)" ref="conditions" />
       <a-divider />
       <a-list
+        :data-source="rows"
+        :locale="{emptyText: '没有匹配的记录'}"
+        :pagination="pagination"
         item-layout="vertical"
         ref="list"
-        :data-source="rows"
-        :pagination="pagination"
-        :locale="{emptyText: '没有匹配的记录'}"
       >
         <!--suppress JSUnresolvedVariable -->
         <a-list-item slot="renderItem" slot-scope="course">
           <h3>
             {{ course['course_name'] }} <small>({{ course['course_id'] }})</small>
-            <a-badge class="credit-badge" :count="`${course.credit}学分`" />
+            <a-badge :count="`${course.credit}学分`" class="credit-badge" />
           </h3>
           <h4>{{ course['teacher_name'] }} <small>({{ course['teacher_id'] }})</small></h4>
           <div class="course-info">
@@ -31,10 +31,10 @@
             {{ $store.getters.extra(`${course['course_id']}-${course['teacher_id']}`).venue }}
             <br v-if="$store.getters.extra(`${course['course_id']}-${course['teacher_id']}`).limitations.length > 0" />
             <a-tag
-              v-for="(limitation, index) in $store.getters.extra(`${course['course_id']}-${course['teacher_id']}`).limitations"
-              class="limitation-tag"
               :color="getLimitationColor(limitation)"
               :key="index"
+              class="limitation-tag"
+              v-for="(limitation, index) in $store.getters.extra(`${course['course_id']}-${course['teacher_id']}`).limitations"
             >
               {{ limitation }}
             </a-tag>
@@ -43,9 +43,9 @@
           <a-button-group slot="actions" v-if="!course['action'].isReserved">
             <!--suppress JSUnresolvedVariable -->
             <a-button
-              type="primary"
               :disabled="storageBusy"
               @click="reserveClass(course['action'].row, false)"
+              type="primary"
             >
               <a-icon type="plus-circle" />
               待选
@@ -62,37 +62,37 @@
           <a-button-group slot="actions" v-else>
             <!--suppress JSUnresolvedVariable -->
             <a-button
-              type="dashed"
               :disabled="storageBusy"
               @click="removeReservedClass(course['action'].row)"
+              type="dashed"
             >
               <a-icon type="minus-circle" />
               待选
             </a-button>
             <!--suppress JSUnresolvedVariable -->
             <a-button
-              v-if="course['action'].isSelected"
               :disabled="storageBusy"
               @click="unselectClass(course['action'].row)"
+              v-if="course['action'].isSelected"
             >
               回到待选状态
             </a-button>
             <!--suppress JSUnresolvedVariable -->
             <a-button
-              v-else
               :disabled="storageBusy"
               @click="selectClass(course['action'].row, course['action'].conflicts)"
+              v-else
             >
               选择此待选课
             </a-button>
           </a-button-group>
           <!--suppress JSUnresolvedVariable, ES6ModulesDependencies -->
-          <div slot="actions" class="conflict-info" v-if="Object.keys(course['class_time_info'].conflicts).length > 0">
+          <div class="conflict-info" slot="actions" v-if="Object.keys(course['class_time_info'].conflicts).length > 0">
             时间冲突
           </div>
           <!--suppress JSUnresolvedVariable, ES6ModulesDependencies -->
-          <div slot="actions" class="selected-info" v-else-if="course['class_time_info'].isSelected">
-            <a-icon type="check-circle" theme="twoTone" two-tone-color="#52c41a" />
+          <div class="selected-info" slot="actions" v-else-if="course['class_time_info'].isSelected">
+            <a-icon theme="twoTone" two-tone-color="#52c41a" type="check-circle" />
             已选
           </div>
         </a-list-item>
@@ -151,14 +151,14 @@
   }
 
   .conflict-info {
-    color: rgba(244, 67, 54, 0.8);
-    margin-top: 6px;
     font-size: 12px;
+    margin-top: 6px;
+    color: rgba(244, 67, 54, 0.8);
   }
 
   .selected-info {
-    margin-top: 6px;
     font-size: 12px;
+    margin-top: 6px;
     color: #52c41a;
   }
 
@@ -168,9 +168,9 @@
 
   /*noinspection CssUnusedSymbol*/
   .credit-badge >>> .ant-badge-count {
-    box-shadow: 0 0 0 1px #d9d9d9 inset;
     color: rgba(0, 0, 0, 0.65);
     background: white;
+    box-shadow: 0 0 0 1px #d9d9d9 inset;
   }
 
   /*noinspection CssUnusedSymbol*/
@@ -198,15 +198,15 @@
   }
 
   h4 {
-    color: rgba(0, 0, 0, 0.65);
-    margin-bottom: 8px;
     font-size: 15px;
+    margin-bottom: 8px;
+    color: rgba(0, 0, 0, 0.65);
   }
 
   .about-data {
-    margin-bottom: 32px;
-    text-align: center;
-    padding: 0 16px;
     line-height: 2;
+    margin-bottom: 32px;
+    padding: 0 16px;
+    text-align: center;
   }
 </style>

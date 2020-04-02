@@ -1,6 +1,6 @@
 <template>
   <div :class="{ 'course-meta': true, 'course-meta-all-conflicted': allConflicted }">
-    <a-badge class="credit-badge" :count="`${course.credit}学分`" />
+    <a-badge :count="`${course.credit}学分`" class="credit-badge" />
     <span class="course-name">{{ course.courseName }}</span>{{ ' ' }}
     <small>({{ id }})</small>
     <template v-if="selectedClassKey !== null && !expanded">
@@ -9,7 +9,7 @@
       <small>({{ selectedClassKey }})</small>
       <a-divider type="vertical" />
       <small>
-        <NumberCapacity slot="actions" :class-key="`${id}-${selectedClassKey}`" class="number-capacity" />
+        <NumberCapacity :class-key="`${id}-${selectedClassKey}`" class="number-capacity" slot="actions" />
       </small>
       <a-divider type="vertical" />
       <small class="selected-info">
@@ -25,9 +25,9 @@
       </small>
       <br v-if="$store.getters.extra(`${id}-${selectedClassKey}`).limitations.length > 0" />
       <a-tag
-        v-for="(limitation, index) in $store.getters.extra(`${id}-${selectedClassKey}`).limitations"
-        class="limitation-tag"
         :key="index"
+        class="limitation-tag"
+        v-for="(limitation, index) in $store.getters.extra(`${id}-${selectedClassKey}`).limitations"
       >
         {{ limitation }}
       </a-tag>
@@ -64,25 +64,25 @@
   /*noinspection CssUnusedSymbol*/
   .course-meta {
     padding-left: 16px;
-    white-space: normal;
     vertical-align: top;
+    white-space: normal;
   }
 
   /*noinspection CssUnusedSymbol*/
   .course-meta-all-conflicted {
-    color: #90A4AE;
+    color: #90a4ae;
   }
 
   /*noinspection CssUnusedSymbol*/
   .course-meta-all-conflicted .course-name {
+    font-weight: bold;
     font-style: italic;
     margin-right: 1px;
-    font-weight: bold;
   }
 
   .all-conflicted-icon {
     margin-left: 10px;
-    color: #FFC107;
+    color: #ffc107;
   }
 
   .credit-badge {
@@ -96,9 +96,9 @@
 
   /*noinspection CssUnusedSymbol*/
   .credit-badge >>> .ant-badge-count {
-    box-shadow: 0 0 0 1px #d9d9d9 inset;
     color: rgba(0, 0, 0, 0.65);
     background: white;
+    box-shadow: 0 0 0 1px #d9d9d9 inset;
   }
 
   .limitation-tag {

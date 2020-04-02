@@ -2,8 +2,8 @@
   <a-locale-provider :locale="zh_CN">
     <a-layout>
       <PageHeader />
-      <PageSider @collapse="handleCollapse" @click="handleClassCardClick" />
-      <PageContent ref="content" :show-schedule-table="collapsed" />
+      <PageSider @click="handleClassCardClick" @collapse="handleCollapse" />
+      <PageContent :show-schedule-table="collapsed" ref="content" />
     </a-layout>
   </a-locale-provider>
 </template>
@@ -141,8 +141,8 @@
 
   /*noinspection CssUnusedSymbol*/
   .conflict-solving-list-class-meta-wrapper {
-    margin: 8px 0 0 !important;
     font-size: 14px;
+    margin: 8px 0 0 !important;
   }
 
   /*noinspection CssUnusedSymbol*/

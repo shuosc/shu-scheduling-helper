@@ -1,5 +1,5 @@
 <template>
-  <div class="class-card" :style="style">
+  <div :style="style" class="class-card">
     <div class="course-name"><strong>{{ course.courseName }}</strong></div>
     <div class="teacher-name-venue" v-if="!venue">
       {{ course.teacherName }}
@@ -11,7 +11,7 @@
 </template>
 
 <script>
-  import {ClassCardMixin} from "../../../../mixins/ScheduleTable";
+  import {ClassCardMixin} from '../../../../mixins/ScheduleTable';
 
   export default {
     name: 'NoPeriodClassCard',
@@ -32,37 +32,37 @@
 
 <style scoped>
   .class-card {
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    border-left-style: solid;
-    border-left-width: 3px;
+    font-size: 13px;
+    line-height: 1.35;
     display: inline-block;
     margin: 0 4px 4px 0;
-    user-select: none;
-    line-height: 1.35;
     padding: 4px 6px;
-    font-size: 13px;
+    user-select: none;
+    border-left-width: 3px;
+    border-left-style: solid;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   }
 
   .course-name {
+    font-size: 13px;
     display: inline-block;
     margin-right: 5px;
-    font-size: 13px;
   }
 
   .teacher-name-venue {
+    font-size: 12px;
     display: inline-block;
     color: rgba(255, 255, 255, 0.85);
-    font-size: 12px;
   }
 
   .venue {
+    font-size: 12px;
     display: inline-block;
     color: rgba(255, 255, 255, 0.85);
-    font-size: 12px;
   }
 
   .venue-at {
-    color: white;
     font-weight: bold;
+    color: white;
   }
 </style>

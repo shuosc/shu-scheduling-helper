@@ -1,19 +1,19 @@
 <template>
   <a-locale-provider :locale="zh_CN">
     <div>
-      <a-tabs class="main-tabs" v-model="activeTab" @change="handleActiveTabChanged">
-        <a-tab-pane tab="课表" key="scheduleTable">
+      <a-tabs @change="handleActiveTabChanged" class="main-tabs" v-model="activeTab">
+        <a-tab-pane key="scheduleTable" tab="课表">
           <ScheduleTable @click="handleClassCardClick" />
         </a-tab-pane>
-        <a-tab-pane tab="待选" key="reserved">
+        <a-tab-pane key="reserved" tab="待选">
           <ReservedClassesList ref="reservedClassesList" />
         </a-tab-pane>
-        <a-tab-pane tab="检索" key="lookup">
+        <a-tab-pane key="lookup" tab="检索">
           <LookupPanel />
         </a-tab-pane>
       </a-tabs>
       <div class="content-actions">
-        <a-button type="link" icon="undo" :disabled="!canUndo" @click="undo" />
+        <a-button :disabled="!canUndo" @click="undo" icon="undo" type="link" />
         <a-dropdown placement="bottomCenter">
           <a-menu slot="overlay">
             <a-menu-item @click="exportDialogVisible = true">
@@ -36,14 +36,14 @@
             <a-icon type="down" />
           </a-button>
         </a-dropdown>
-        <a-button type="link" icon="redo" :disabled="!canRedo" @click="redo" />
-        <a-modal v-model="exportDialogVisible" :width="400" :footer="null" destroy-on-close>
+        <a-button :disabled="!canRedo" @click="redo" icon="redo" type="link" />
+        <a-modal :footer="null" :width="400" destroy-on-close v-model="exportDialogVisible">
           <ExportDialog />
         </a-modal>
-        <a-modal v-model="backupAndRestoreDialogVisible" :width="480" :footer="null" destroy-on-close>
+        <a-modal :footer="null" :width="480" destroy-on-close v-model="backupAndRestoreDialogVisible">
           <BackupAndRestoreDialog @ok="backupAndRestoreDialogVisible = false" />
         </a-modal>
-        <a-modal v-model="colorSeedDialogVisible" :width="520" :footer="null" destroy-on-close>
+        <a-modal :footer="null" :width="520" destroy-on-close v-model="colorSeedDialogVisible">
           <ColorSeedDialog @ok="colorSeedDialogVisible = false" />
         </a-modal>
       </div>
@@ -54,34 +54,34 @@
         </h3>
         <div class="about-wrapper">
           <a-dropdown placement="topCenter">
-            <a-menu slot="overlay" class="about-menu">
+            <a-menu class="about-menu" slot="overlay">
               <template slot="title">
                 <a-icon type="info-circle" />
                 关于
               </template>
               <a-menu-item>
-                <a href="https://github.com/ZKLlab/shu-scheduling-helper-frontend" target="_blank"
-                   rel="external nofollow">
+                <a href="https://github.com/ZKLlab/shu-scheduling-helper-frontend" rel="external nofollow"
+                   target="_blank">
                   <a-icon type="github" />
                   项目Github主页
                 </a>
               </a-menu-item>
               <a-menu-divider />
               <a-menu-item>
-                <a href="https://github.com/ZKLlab/shu-scheduling-helper-frontend/issues" target="_blank"
-                   rel="external nofollow">
+                <a href="https://github.com/ZKLlab/shu-scheduling-helper-frontend/issues" rel="external nofollow"
+                   target="_blank">
                   <a-icon type="exclamation-circle" />
                   去Github提Issue
                 </a>
               </a-menu-item>
               <a-menu-item>
-                <a href="https://support.qq.com/products/120502" target="_blank" rel="external nofollow">
+                <a href="https://support.qq.com/products/120502" rel="external nofollow" target="_blank">
                   <a-icon type="message" />
                   腾讯兔小巢(原吐个槽)平台
                 </a>
               </a-menu-item>
             </a-menu>
-            <a-button type="link" icon="info-circle">
+            <a-button icon="info-circle" type="link">
               关于
             </a-button>
           </a-dropdown>
@@ -99,7 +99,7 @@
           <a class="beian mps-beian" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44010302000519"
              target="_blank">粤公网安备 44010302000519号</a>
         </div>
-        <a-button class="alternate-to-desktop" href="/index.html" type="link" icon="laptop">
+        <a-button class="alternate-to-desktop" href="/index.html" icon="laptop" type="link">
           切换到电脑版
         </a-button>
       </div>
@@ -217,8 +217,8 @@
 
   /*noinspection CssUnusedSymbol*/
   .conflict-solving-list-class-meta-wrapper {
-    margin: 8px 0 0 !important;
     font-size: 14px;
+    margin: 8px 0 0 !important;
   }
 
   /*noinspection CssUnusedSymbol*/
@@ -233,15 +233,15 @@
   }
 
   .content-footer {
-    text-align: center;
-    line-height: 2;
     font-size: 12px;
+    line-height: 2;
     padding: 8px 8px 32px;
+    text-align: center;
   }
 
   .content-footer a {
-    color: rgba(0, 0, 0, 0.45);
     white-space: nowrap;
+    color: rgba(0, 0, 0, 0.45);
   }
 
   .content-footer a:hover {
@@ -249,14 +249,14 @@
   }
 
   .product-name:after {
-    background: url("../../assets/logo.png") no-repeat center center;
-    background-size: contain;
-    vertical-align: middle;
-    margin: 4px 0 12px;
-    user-select: none;
     display: block;
     height: 32px;
+    margin: 4px 0 12px;
     content: " ";
+    user-select: none;
+    vertical-align: middle;
+    background: url("../../assets/logo.png") no-repeat center center;
+    background-size: contain;
   }
 
   .beian {
@@ -264,16 +264,16 @@
   }
 
   .mps-beian:before {
-    background: url("../../assets/mps.png") no-repeat center center;
-    vertical-align: text-bottom;
-    background-size: contain;
-    transition: opacity 0.2s;
     display: inline-block;
+    width: 16px;
+    height: 16px;
     margin-right: 5px;
     content: " ";
+    transition: opacity 0.2s;
+    vertical-align: text-bottom;
     opacity: 0.8;
-    height: 16px;
-    width: 16px;
+    background: url("../../assets/mps.png") no-repeat center center;
+    background-size: contain;
   }
 
   .mps-beian:hover:before {
@@ -295,13 +295,13 @@
 
   /*noinspection CssUnusedSymbol*/
   .main-tabs .ant-tabs-bar {
-    margin-bottom: 0 !important;
-    background: white;
     position: fixed;
     z-index: 99;
+    top: 0;
     right: 0;
     left: 0;
-    top: 0;
+    margin-bottom: 0 !important;
+    background: white;
   }
 
   /*noinspection CssUnusedSymbol*/

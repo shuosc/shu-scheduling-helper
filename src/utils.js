@@ -227,7 +227,7 @@ export function processWithChangeList(changeList, selectedClasses, reservedClass
           delete reservedClasses[change['course_id']].classes[change['teacher_id']];
         }
         if (selectedClasses.hasOwnProperty(change['course_id']) && selectedClasses[change['course_id']].teacherId === change['teacher_id']) {
-          delete selectedClasses[change['course_id']]
+          delete selectedClasses[change['course_id']];
         }
       } else {
         delete reservedClasses[change['course_id']];

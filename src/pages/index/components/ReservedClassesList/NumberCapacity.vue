@@ -24,30 +24,30 @@
 
 <style scoped>
   div {
-    white-space: nowrap;
-    text-align: center;
     line-height: 32px;
     min-width: 30px;
     height: 32px;
+    text-align: center;
+    white-space: nowrap;
   }
 
   sup {
-    color: rgba(0, 0, 0, 0.65);
     top: -0.875em;
     right: -1px;
+    color: rgba(0, 0, 0, 0.65);
   }
 
   span {
-    background: rgba(0, 0, 0, 0.2);
-    transform: rotate(45deg);
     display: inline-block;
-    user-select: none;
-    height: 1em;
     width: 1px;
+    height: 1em;
+    user-select: none;
+    transform: rotate(45deg);
+    background: rgba(0, 0, 0, 0.2);
   }
 
   sub {
-    color: rgba(0, 0, 0, 0.45);
     bottom: -0.5em;
+    color: rgba(0, 0, 0, 0.45);
   }
 </style>

@@ -3,26 +3,26 @@
     <h3 class="title">
       备份与还原
     </h3>
-    <a-card class="data-area" title="当前数据：" size="small">
+    <a-card class="data-area" size="small" title="当前数据：">
       <template slot="extra">
-        <a-tooltip title="复制" placement="top">
+        <a-tooltip placement="top" title="复制">
           <a-button
-            type="link"
-            size="small"
-            icon="snippets"
             :disabled="submitting"
+            icon="snippets"
+            size="small"
+            type="link"
             v-clipboard:copy="text"
-            v-clipboard:success="handleCopied"
             v-clipboard:error="handleCopyError"
+            v-clipboard:success="handleCopied"
           />
         </a-tooltip>
-        <a-tooltip title="保存" placement="top">
+        <a-tooltip placement="top" title="保存">
           <a-button
-            type="link"
-            size="small"
-            icon="save"
             :disabled="submitting"
             @click="download"
+            icon="save"
+            size="small"
+            type="link"
           />
         </a-tooltip>
       </template>
@@ -30,14 +30,14 @@
       注：无法跨选课周期恢复
     </a-card>
     <a-divider />
-    <a-form ref="form" @submit="submit">
-      <a-input ref="restoreEncrypted" v-model.trim="restoreEncrypted" class="restore-input"
-               placeholder="在此处粘贴含#......#的数据以还原" allow-clear>
-        <a-upload slot="addonBefore" :before-upload="upload" :show-upload-list="false">
-          <a-button class="restore-input-addon-before" icon="upload" :disabled="submitting">上传...</a-button>
+    <a-form @submit="submit" ref="form">
+      <a-input allow-clear class="restore-input" placeholder="在此处粘贴含#......#的数据以还原"
+               ref="restoreEncrypted" v-model.trim="restoreEncrypted">
+        <a-upload :before-upload="upload" :show-upload-list="false" slot="addonBefore">
+          <a-button :disabled="submitting" class="restore-input-addon-before" icon="upload">上传...</a-button>
         </a-upload>
-        <a-button slot="addonAfter" class="restore-input-addon-after" type="primary" :loading="submitting"
-                  :disabled="submitting || errorMsg != null || decoded == null" html-type="submit">
+        <a-button :disabled="submitting || errorMsg != null || decoded == null" :loading="submitting" class="restore-input-addon-after" html-type="submit"
+                  slot="addonAfter" type="primary">
           还原
         </a-button>
       </a-input>
@@ -58,38 +58,38 @@
 
 <style scoped>
   .title {
-    margin-bottom: 10px;
     line-height: 32px;
+    margin-bottom: 10px;
   }
 
   .data-area {
-    line-height: 1.5;
     font-size: 12px;
-    color: #607D8B;
+    line-height: 1.5;
+    color: #607d8b;
   }
 
   .data-encrypted {
     word-break: break-all;
-    color: #673AB7;
+    color: #673ab7;
   }
 
   /*noinspection CssUnusedSymbol*/
   .restore-input >>> .ant-input-group-addon {
-    background: none;
-    border: none;
     padding: 0;
+    border: none;
+    background: none;
   }
 
   .restore-input-addon-before {
-    border-bottom-right-radius: 0;
-    border-top-right-radius: 0;
     margin-right: -2px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
   }
 
   .restore-input-addon-after {
-    border-bottom-left-radius: 0;
-    border-top-left-radius: 0;
     margin-left: -1px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
   }
 
   .restore-input-addon-before:hover, .restore-input-addon-after:hover, .restore-input >>> input:hover {
@@ -101,9 +101,9 @@
   }
 
   .error-msg {
-    text-align: center;
-    margin-top: 10px;
     font-size: 12px;
-    color: #F44336;
+    margin-top: 10px;
+    text-align: center;
+    color: #f44336;
   }
 </style>

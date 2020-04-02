@@ -139,7 +139,7 @@ export const ClassCardMixin = {
       return {
         'class-card': true,
         'class-card-hover': this.isHover,
-      }
+      };
     },
     isHover() {
       if (this.capturing) {
@@ -157,5 +157,5 @@ export const ClassCardMixin = {
         this.$store.commit('HOVER_COURSE_ID', null);
       }
     },
-  }
+  },
 };

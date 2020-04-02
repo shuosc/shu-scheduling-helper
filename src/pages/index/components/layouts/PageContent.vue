@@ -1,21 +1,21 @@
 <template>
   <a-layout-content class="page-content">
-    <a-spin size="large" tip="正在加载…" :spinning="!$store.state.loaded">
-      <a-tabs v-model="activeTab" class="content-tabs" type="card">
-        <a-tab-pane v-if="showScheduleTable" tab="课表" key="schedule_table">
+    <a-spin :spinning="!$store.state.loaded" size="large" tip="正在加载…">
+      <a-tabs class="content-tabs" type="card" v-model="activeTab">
+        <a-tab-pane key="schedule_table" tab="课表" v-if="showScheduleTable">
           <ScheduleTable @click="handleClassCardClick" />
         </a-tab-pane>
         <a-tab-pane :tab="`待选(${reservedClassesCount})`" key="reserved">
           <ReservedClassesList ref="reservedClassesList" />
         </a-tab-pane>
-        <a-tab-pane tab="课程检索" key="lookup">
+        <a-tab-pane key="lookup" tab="课程检索">
           <LookupPanel />
         </a-tab-pane>
         <div slot="tabBarExtraContent">
           <div class="credits-wrapper" title="已选学分">
             <strong class="credits">{{ $store.getters.credits }}</strong> 学分
           </div>
-          <a-dropdown-button class="tabs-actions" @click="quickInputting">
+          <a-dropdown-button @click="quickInputting" class="tabs-actions">
             <a-icon type="rocket" />
             快捷选课...
             <a-menu slot="overlay">
@@ -45,22 +45,22 @@
           <a class="beian mps-beian" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44010302000519"
              target="_blank">粤公网安备 44010302000519号</a>
         </div>
-        <a-button class="alternate-to-desktop" href="/m.html" type="link" icon="mobile">
+        <a-button class="alternate-to-desktop" href="/m.html" icon="mobile" type="link">
           切换到移动版
         </a-button>
       </div>
       <a-back-top class="back-top" />
     </a-spin>
-    <a-modal v-model="exportDialogVisible" :width="400" :footer="null" destroy-on-close>
+    <a-modal :footer="null" :width="400" destroy-on-close v-model="exportDialogVisible">
       <ExportDialog />
     </a-modal>
-    <a-modal v-model="backupAndRestoreDialogVisible" :width="480" :footer="null" destroy-on-close>
+    <a-modal :footer="null" :width="480" destroy-on-close v-model="backupAndRestoreDialogVisible">
       <BackupAndRestoreDialog @ok="backupAndRestoreDialogVisible = false" />
     </a-modal>
-    <a-modal v-model="colorSeedDialogVisible" :width="520" :footer="null" destroy-on-close>
+    <a-modal :footer="null" :width="520" destroy-on-close v-model="colorSeedDialogVisible">
       <ColorSeedDialog @ok="colorSeedDialogVisible = false" />
     </a-modal>
-    <a-modal v-model="saveImageDialogVisible" :footer="null" destroy-on-close>
+    <a-modal :footer="null" destroy-on-close v-model="saveImageDialogVisible">
       <SaveImageDialog :blob="imageBlob" @ok="saveImageDialogVisible = false" />
     </a-modal>
   </a-layout-content>
@@ -152,9 +152,9 @@
 <style scoped>
   .page-content {
     min-height: calc(100vh - 64px);
-    transition: all 0.2s ease;
     margin: 64px 0 0 480px;
     padding: 8px;
+    transition: all 0.2s ease;
   }
 
   /*noinspection CssUnusedSymbol*/
@@ -168,15 +168,15 @@
   }
 
   .content-footer {
-    text-align: center;
-    line-height: 2;
     font-size: 12px;
+    line-height: 2;
     padding: 32px 8px;
+    text-align: center;
   }
 
   .content-footer a {
-    color: rgba(0, 0, 0, 0.45);
     white-space: nowrap;
+    color: rgba(0, 0, 0, 0.45);
   }
 
   .content-footer a:hover {
@@ -188,16 +188,16 @@
   }
 
   .mps-beian:before {
-    background: url("../../../../assets/mps.png") no-repeat center center;
-    vertical-align: text-bottom;
-    background-size: contain;
-    transition: opacity 0.2s;
     display: inline-block;
+    width: 16px;
+    height: 16px;
     margin-right: 5px;
     content: " ";
+    transition: opacity 0.2s;
+    vertical-align: text-bottom;
     opacity: 0.8;
-    height: 16px;
-    width: 16px;
+    background: url("../../../../assets/mps.png") no-repeat center center;
+    background-size: contain;
   }
 
   .mps-beian:hover:before {
@@ -209,17 +209,17 @@
   }
 
   .back-top {
-    bottom: 20px;
     right: 20px;
+    bottom: 20px;
   }
 
   .credits-wrapper {
-    color: rgba(0, 0, 0, 0.45);
-    display: inline-block;
-    vertical-align: top;
-    margin-right: 12px;
     line-height: 32px;
+    display: inline-block;
     height: 32px;
+    margin-right: 12px;
+    vertical-align: top;
+    color: rgba(0, 0, 0, 0.45);
   }
 
   .credits {
@@ -233,8 +233,8 @@
 
   /*noinspection CssUnusedSymbol*/
   .content-tabs >>> .ant-tabs-content > .ant-tabs-tabpane {
-    background: white;
     padding: 0;
+    background: white;
   }
 
   /*noinspection CssUnusedSymbol*/
