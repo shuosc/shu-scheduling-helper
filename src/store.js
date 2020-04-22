@@ -87,7 +87,7 @@ export default new Vuex.Store({
     },
     currentAffairsAndStatePoliciesSelected(state) {
       // 形势与政策是否已选
-      return state.selectedClasses.hasOwnProperty('16583109');
+      return state.selectedClasses.hasOwnProperty('16583109') || !/[春秋冬]/i.test(state.trimester);
     },
     extra(state) {
       return (key) => {
