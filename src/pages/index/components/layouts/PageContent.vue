@@ -33,17 +33,16 @@
         </div>
       </a-tabs>
       <div class="content-footer">
-        <div>
-          Copyright &copy; {{ new Date().getFullYear() }} <a href="https://github.com/ZKLlab" target="_blank">ZKLlab</a>.
-          All Rights Reserved.
+        <div class="copyright">
+          Copyright &copy; {{ new Date().getFullYear() }} <a href="https://github.com/shuosc"
+                                                             target="_blank">上海大学开源社区</a>.
+          基于 GPL-3.0 License 开源
         </div>
         <div>
           数据来源: <a href="http://www.xk.shu.edu.cn/" target="_blank">上海大学网上选课系统</a> 版权归上海大学所有
         </div>
         <div>
-          <a class="beian" href="http://www.beian.miit.gov.cn" target="_blank">沪ICP备17002314号-1</a>
-          <a class="beian mps-beian" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44010302000519"
-             target="_blank">粤公网安备 44010302000519号</a>
+          <a href="http://www.beian.miit.gov.cn" target="_blank">沪ICP备19044115号-1</a>
         </div>
         <a-button class="alternate-to-desktop" href="/m.html" icon="mobile" type="link">
           切换到移动版
@@ -67,14 +66,15 @@
 </template>
 
 <script>
+  import Vue from 'vue';
   import LookupPanel from '../LookupPanel';
+  import BackupAndRestoreDialog from '../modals/BackupAndRestoreDialog';
+  import ColorSeedDialog from '../modals/ColorSeedDialog';
+  import ExportDialog from '../modals/ExportDialog';
+  import SaveImageDialog from '../modals/SaveImageDialog';
   import ReservedClassesList from '../ReservedClassesList';
   import ScheduleTable from '../ScheduleTable';
-  import ExportDialog from '../modals/ExportDialog';
-  import BackupAndRestoreDialog from '../modals/BackupAndRestoreDialog';
-  import SaveImageDialog from '../modals/SaveImageDialog';
-  import ColorSeedDialog from '../modals/ColorSeedDialog';
-  import Vue from 'vue';
+
 
   export default {
     name: 'PageContent',
@@ -183,25 +183,21 @@
     color: rgba(0, 0, 0, 0.35);
   }
 
-  .beian {
-    margin: 0 10px;
-  }
-
-  .mps-beian:before {
-    display: inline-block;
-    width: 16px;
-    height: 16px;
-    margin-right: 5px;
+  .copyright:before {
+    display: block;
+    height: 24px;
+    margin: 0 0 8px;
     content: " ";
-    transition: opacity 0.2s;
-    vertical-align: text-bottom;
-    opacity: 0.8;
-    background: url("../../../../assets/mps.png") no-repeat center center;
-    background-size: contain;
+    transition: opacity 0.2s, filter 0.2s;
+    opacity: 0.6;
+    background: url("../../../../assets/shuosc-logo-64px.png") center center no-repeat no-repeat;
+    background-size: 24px 24px;
+    filter: grayscale(0.4);
   }
 
-  .mps-beian:hover:before {
-    opacity: 0.7;
+  .copyright:hover:before {
+    opacity: 0.8;
+    filter: grayscale(0.2);
   }
 
   .alternate-to-desktop {

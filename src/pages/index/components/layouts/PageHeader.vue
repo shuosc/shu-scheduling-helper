@@ -4,7 +4,7 @@
       <a-menu :selectable="false" class="header-menu" mode="horizontal" theme="light">
         <a-menu-item class="header-title-wrapper">
           <div class="header-title-container">
-            <div class="header-title">SHU排课助手 <small>OL/Beta</small></div>
+            <div class="header-title ">SHU排课助手</div>
             <div class="header-trimester">{{ $store.state.trimester }}</div>
           </div>
         </a-menu-item>
@@ -42,7 +42,7 @@
             </a-menu-item>
             <a-menu-item>
               <a href="https://support.qq.com/products/120502" rel="external nofollow" target="_blank">
-                腾讯兔小巢(原吐个槽)平台
+                腾讯兔小巢平台
               </a>
             </a-menu-item>
           </a-sub-menu>
@@ -53,7 +53,8 @@
 </template>
 
 <script>
-  import {isMacLike} from '../../../../utils';
+  import { isMacLike } from '../../../../utils';
+
 
   export default {
     name: 'PageHeader',
@@ -124,10 +125,11 @@
   }
 
   .header-title {
-    font-size: 18px;
+    font-size: 17px;
     line-height: 28px;
     height: 28px;
     margin: 0;
+    letter-spacing: 1px;
   }
 
   .header-title small {

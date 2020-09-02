@@ -24,10 +24,11 @@
               {{ ' ' }}
               <a-button @click="saveImage" icon="camera" shape="circle" size="small" />
             </div>
-            <!--<div class="brand" v-show="capturing">-->
-            <!--  <img alt="Logo" src="../../../../assets/logo.png" />-->
-            <!--  {{ $store.getters.credits }} 学分-->
-            <!--</div>-->
+            <div class="brand" v-show="capturing">
+              <img alt="Logo" src="../../../../assets/shuosc-logo-128px.png" />
+              <img alt="Logo" src="../../../../assets/logo.png" />
+              <span>{{ $store.getters.credits }}学分</span>
+            </div>
           </td>
           <th class="header-period">&nbsp;</th>
           <th :key="week" class="header-week" v-for="week in ['一', '二', '三', '四', '五']">{{ week }}</th>
@@ -45,7 +46,6 @@
               <ClassCard :capturing="capturing" :course="course" :venue="venueMode"
                          @click.native="handleClassCardClick(course.courseId)"
                          v-if="course != null && !course.qr" />
-              <!--<QrCard v-if="course != null && course.qr" />-->
             </td>
           </template>
         </tr>
@@ -188,6 +188,11 @@
   .brand img {
     width: 18px;
     height: 18px;
+    margin: 0 0 0 4px;
+  }
+
+  .brand span {
+    margin: 0 0 0 6px;
   }
 
   .no-period-class-card-wrapper {

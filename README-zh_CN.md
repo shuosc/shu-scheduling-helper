@@ -109,7 +109,7 @@ $ yarn build
 
 ## 贡献
 
-如果你发现了任何关于SHU排课助手的问题，或有新功能建议，你可以[在Github上提issus](https://github.com/ZKLlab/shu-scheduling-helper-frontend/issues/new)，[使用“腾讯兔小巢(原吐个槽)”平台反馈问题](https://support.qq.com/products/120502)或[Pull Request (PR)](https://github.com/ZKLlab/shu-scheduling-helper-frontend/pulls)。
+如果你发现了任何关于SHU排课助手的问题，或有新功能建议，你可以[在Github上提issus](https://github.com/ZKLlab/shu-scheduling-helper-frontend/issues/new)，[使用“腾讯兔小巢”平台反馈问题](https://support.qq.com/products/120502)或[Pull Request (PR)](https://github.com/ZKLlab/shu-scheduling-helper-frontend/pulls)。
 
 **如果喜欢，请给项目点一颗小星星！** 🌟 **谢谢！**
 
@@ -119,4 +119,4 @@ $ yarn build
 
 ## 许可证
 
-[MIT](http://opensource.org/licenses/MIT) &copy; ZKLlab
+GPL-3.0 License &copy; SHUOSC

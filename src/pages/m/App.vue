@@ -49,7 +49,7 @@
       </div>
       <div class="content-footer">
         <h3 class="product-name">
-          SHU排课助手 <small>OL/M/Beta</small><br />
+          SHU排课助手<br />
           <small>{{ $store.state.trimester }}</small>
         </h3>
         <div class="about-wrapper">
@@ -77,7 +77,7 @@
               <a-menu-item>
                 <a href="https://support.qq.com/products/120502" rel="external nofollow" target="_blank">
                   <a-icon type="message" />
-                  腾讯兔小巢(原吐个槽)平台
+                  腾讯兔小巢平台
                 </a>
               </a-menu-item>
             </a-menu>
@@ -86,18 +86,17 @@
             </a-button>
           </a-dropdown>
         </div>
-        <div>
-          Copyright &copy; {{ new Date().getFullYear() }} <a href="https://github.com/ZKLlab" target="_blank">ZKLlab</a>.
-          All Rights Reserved.
+        <div class="copyright">
+          Copyright &copy; {{ new Date().getFullYear() }} <a href="https://github.com/shuosc"
+                                                             target="_blank">上海大学开源社区</a>.<br />
+          基于 GPL-3.0 License 开源.
         </div>
         <div>
           数据来源:
           <a href="http://www.xk.shu.edu.cn/" target="_blank">上海大学网上选课系统</a> 版权归上海大学所有
         </div>
         <div>
-          <a class="beian" href="http://www.beian.miit.gov.cn" target="_blank">沪ICP备17002314号-1</a>
-          <a class="beian mps-beian" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44010302000519"
-             target="_blank">粤公网安备 44010302000519号</a>
+          <a class="beian" href="http://www.beian.miit.gov.cn" target="_blank">沪ICP备19044115号-1</a>
         </div>
         <a-button class="alternate-to-desktop" href="/index.html" icon="laptop" type="link">
           切换到电脑版
@@ -110,13 +109,14 @@
 
 <script>
   import zh_CN from 'ant-design-vue/lib/locale-provider/zh_CN';
-  import ScheduleTable from './components/ScheduleTable';
-  import ReservedClassesList from './components/ReservedClassesList';
+  import { dataManagerMixin } from '../../mixins/common/dataManager';
   import LookupPanel from './components/LookupPanel';
   import BackupAndRestoreDialog from './components/modals/BackupAndRestoreDialog';
   import ColorSeedDialog from './components/modals/ColorSeedDialog';
   import ExportDialog from './components/modals/ExportDialog';
-  import {dataManagerMixin} from '../../mixins/common/dataManager';
+  import ReservedClassesList from './components/ReservedClassesList';
+  import ScheduleTable from './components/ScheduleTable';
+
 
   export default {
     name: 'app',
@@ -259,25 +259,15 @@
     background-size: contain;
   }
 
-  .beian {
-    margin: 0 10px;
-  }
-
-  .mps-beian:before {
-    display: inline-block;
-    width: 16px;
-    height: 16px;
-    margin-right: 5px;
+  .copyright:before {
+    display: block;
+    height: 24px;
+    margin: 0 0 8px;
     content: " ";
-    transition: opacity 0.2s;
-    vertical-align: text-bottom;
-    opacity: 0.8;
-    background: url("../../assets/mps.png") no-repeat center center;
-    background-size: contain;
-  }
-
-  .mps-beian:hover:before {
-    opacity: 0.7;
+    opacity: 0.6;
+    background: url("../../assets/shuosc-logo-64px.png") center center no-repeat no-repeat;
+    background-size: 24px 24px;
+    filter: grayscale(0.4);
   }
 
   .alternate-to-desktop {

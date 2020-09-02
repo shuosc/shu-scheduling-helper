@@ -120,4 +120,4 @@ As a former user of [cosformula/CourseSchedulingHelper](https://github.com/cosfo
 
 ## License
 
-[MIT](http://opensource.org/licenses/MIT) &copy; ZKLlab
+GPL-3.0 License &copy; SHUOSC
