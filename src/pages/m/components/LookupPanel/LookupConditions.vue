@@ -105,7 +105,7 @@
           <a-form-item help="限制页数可加快筛选速度，参考设备性能来选择。" label="筛选页数" ref="limitRows">
             <a-select v-model="conditions.limitRows">
               <a-select-option :value="0">不限</a-select-option>
-              <a-select-option :value="100">只显示前10页</a-select-option>
+              <a-select-option :value="100">只显示前20页</a-select-option>
             </a-select>
           </a-form-item>
         </a-config-provider>
