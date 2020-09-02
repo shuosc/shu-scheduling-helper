@@ -23,7 +23,7 @@
       <a-tab-pane force-render key="content">
         <a-icon slot="tab" type="file-text" />
         <a-textarea
-          :autosize="{ minRows: 8, maxRows: 11.5 }"
+          :autoSize="{ minRows: 8, maxRows: 11.5 }"
           :value="content"
           @focus="handleTextareaFocus"
           @mouseenter="handleTextareaMouseenter"

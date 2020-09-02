@@ -10,7 +10,7 @@
         v-if="reservedClassesKeys.length === 0"
       />
       <!--suppress JSUnresolvedVariable -->
-      <a-collapse :bordered="false" accordion v-model="openedCourseId">
+      <a-collapse :bordered="false" accordion class="reserved-classes-list" v-model="openedCourseId">
         <template v-for="(key, index) in shownReservedClassesKeys">
           <a-collapse-panel
             :key="`${key}-divider`"
@@ -42,7 +42,8 @@
             <template slot="header">
               <CourseColor :course-id="key" :course-name="reservedClasses[key].courseName" />
               <!--suppress JSUnresolvedVariable -->
-              <CourseMeta :all-conflicted="allConflicted[key]" :course="reservedClasses[key]" :expanded="openedCourseId === key"
+              <CourseMeta :all-conflicted="allConflicted[key]" :course="reservedClasses[key]"
+                          :expanded="openedCourseId === key"
                           :id="key" />
             </template>
             <!--suppress JSUnresolvedVariable -->
@@ -56,10 +57,11 @@
 </template>
 
 <script>
+  import { ReservedClassesListMixin } from '../../../../mixins/ReservedClassesList';
   import CourseClassesList from './CourseClassesList';
   import CourseColor from './CourseColor';
   import CourseMeta from './CourseMeta';
-  import {ReservedClassesListMixin} from '../../../../mixins/ReservedClassesList';
+
 
   export default {
     name: 'ReservedClassesList',
@@ -78,6 +80,10 @@
 </script>
 
 <style scoped>
+  .reserved-classes-list {
+    background: white;
+  }
+
   .credits-wrapper {
     color: rgba(0, 0, 0, 0.65);
   }

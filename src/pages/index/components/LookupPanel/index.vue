@@ -7,7 +7,6 @@
       :data-source="rows"
       :locale="{emptyText: '没有匹配的记录'}"
       :pagination="{position: 'both', showTotal: total => `${total} 条记录`}"
-      :scroll="{x: 480}"
       class="table"
       ref="table"
     >

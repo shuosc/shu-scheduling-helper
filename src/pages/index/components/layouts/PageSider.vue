@@ -15,6 +15,7 @@
 <script>
   import ScheduleTable from '../ScheduleTable';
 
+
   export default {
     name: 'PageSider',
     components: {
@@ -34,6 +35,10 @@
     top: 64px;
     bottom: 0;
     left: 0;
-    overflow: auto;
+    overflow: hidden;
+  }
+
+  .page-sider:hover {
+    overflow-y: auto;
   }
 </style>

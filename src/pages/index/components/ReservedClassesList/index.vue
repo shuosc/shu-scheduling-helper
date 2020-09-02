@@ -10,7 +10,7 @@
         v-if="reservedClassesKeys.length === 0"
       />
       <!--suppress JSUnresolvedVariable -->
-      <a-collapse :bordered="false" accordion force-render v-model="openedCourseId">
+      <a-collapse :bordered="false" accordion class="reserved-classes-list" force-render v-model="openedCourseId">
         <template v-for="(key, index) in shownReservedClassesKeys">
           <a-collapse-panel
             :key="`${key}-divider-unselected`"
@@ -43,11 +43,13 @@
             <template slot="header">
               <CourseColor :course-id="key" :course-name="reservedClasses[key].courseName" />
               <!--suppress JSUnresolvedVariable -->
-              <CourseMeta :all-conflicted="allConflicted[key]" :course="reservedClasses[key]" :expanded="openedCourseId === key"
+              <CourseMeta :all-conflicted="allConflicted[key]" :course="reservedClasses[key]"
+                          :expanded="openedCourseId === key"
                           :id="key" />
             </template>
             <!--suppress JSUnresolvedVariable -->
-            <CourseClassesList :course="reservedClasses[key]" :expanded="openedCourseId === key" :hide-conflict="hideConflict"
+            <CourseClassesList :course="reservedClasses[key]" :expanded="openedCourseId === key"
+                               :hide-conflict="hideConflict"
                                :id="key" @unselect="scrollTo" />
           </a-collapse-panel>
         </template>
@@ -57,10 +59,11 @@
 </template>
 
 <script>
+  import { ReservedClassesListMixin } from '../../../../mixins/ReservedClassesList';
   import CourseClassesList from './CourseClassesList';
   import CourseColor from './CourseColor';
   import CourseMeta from './CourseMeta';
-  import {ReservedClassesListMixin} from '../../../../mixins/ReservedClassesList';
+
 
   export default {
     name: 'ReservedClassesList',
@@ -81,6 +84,10 @@
 <style scoped>
   .reserved-classes-list-empty {
     padding: 50px 0;
+  }
+
+  .reserved-classes-list {
+    background: white;
   }
 
   .hide-conflict {

@@ -1,11 +1,11 @@
 <template>
-  <a-locale-provider :locale="zh_CN">
+  <a-config-provider :locale="zh_CN">
     <a-layout>
       <PageHeader />
       <PageSider @click="handleClassCardClick" @collapse="handleCollapse" />
       <PageContent :show-schedule-table="collapsed" ref="content" />
     </a-layout>
-  </a-locale-provider>
+  </a-config-provider>
 </template>
 
 <script>

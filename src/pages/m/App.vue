@@ -1,5 +1,5 @@
 <template>
-  <a-locale-provider :locale="zh_CN">
+  <a-config-provider :locale="zh_CN">
     <div>
       <a-tabs @change="handleActiveTabChanged" class="main-tabs" v-model="activeTab">
         <a-tab-pane key="scheduleTable" tab="课表">
@@ -105,7 +105,7 @@
       </div>
       <a-back-top ref="backTop" v-show="false" />
     </div>
-  </a-locale-provider>
+  </a-config-provider>
 </template>
 
 <script>

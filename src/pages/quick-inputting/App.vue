@@ -1,5 +1,5 @@
 <template>
-  <a-locale-provider :locale="zh_CN">
+  <a-config-provider :locale="zh_CN">
     <div class="quick-inputting-list">
       <a-config-provider>
         <template slot="renderEmpty">
@@ -71,16 +71,18 @@
               <a-button size="small" type="link">返回</a-button>
             </a-popconfirm>
             <a-alert class="casp-alert" close-text="忽略"
-                     message="未选形势与政策" show-icon type="info" v-if="!$store.getters.currentAffairsAndStatePoliciesSelected" />
+                     message="未选形势与政策" show-icon type="info"
+                     v-if="!$store.getters.currentAffairsAndStatePoliciesSelected" />
           </div>
         </a-list>
       </a-config-provider>
     </div>
-  </a-locale-provider>
+  </a-config-provider>
 </template>
 
 <script>
   import zh_CN from 'ant-design-vue/lib/locale-provider/zh_CN';
+
 
   let w = null;
   export default {
@@ -211,11 +213,12 @@
 
 <style scoped>
   .header {
-    padding: 0 32px 0 16px;
+    padding: 0 16px;
     text-align: center;
   }
 
   .quick-input-trimester {
+    font-size: 12px;
     color: rgba(0, 0, 0, 0.45);
   }
 
@@ -242,7 +245,7 @@
 
   /*noinspection CssUnusedSymbol*/
   .ant-list-item {
-    padding: 16px 32px 16px 16px;
+    padding: 16px;
   }
 
   .credit-badge {
