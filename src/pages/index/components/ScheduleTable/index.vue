@@ -6,9 +6,6 @@
         <tr>
           <td class="header-setting">
             <div :class="{ setting: true, 'setting-show': venueMode }" ref="setting">
-              <!--<a-button :type="venueMode ? 'primary' : null" size="small" shape="circle" icon="camera"-->
-              <!--@click="saveImage" />-->
-              <!--{{ ' ' }}-->
               <a-dropdown v-if="!venueMode">
                 <a-button icon="setting" shape="circle" size="small" />
                 <a-menu slot="overlay">
@@ -23,12 +20,14 @@
                   </a-menu-item>
                 </a-menu>
               </a-dropdown>
-              <a-button @click="venueMode = false" shape="round" size="small" type="danger" v-else>复原</a-button>
+              <a-button @click="venueMode = false" shape="round" size="small" type="primary" v-else>复原</a-button>
+              {{ ' ' }}
+              <a-button @click="saveImage" icon="camera" shape="circle" size="small" />
             </div>
-            <div class="brand" v-show="capturing">
-              <img alt="Logo" src="../../../../assets/logo.png" />
-              {{ $store.getters.credits }} 学分
-            </div>
+            <!--<div class="brand" v-show="capturing">-->
+            <!--  <img alt="Logo" src="../../../../assets/logo.png" />-->
+            <!--  {{ $store.getters.credits }} 学分-->
+            <!--</div>-->
           </td>
           <th class="header-period">&nbsp;</th>
           <th :key="week" class="header-week" v-for="week in ['一', '二', '三', '四', '五']">{{ week }}</th>
@@ -43,9 +42,10 @@
           </td>
           <template v-for="(course, index2) in row">
             <td :key="index2" :rowspan="course != null ? course.span : 1" v-if="course == null || course.first">
-              <ClassCard :capturing="capturing" :course="course" :venue="venueMode" @click.native="handleClassCardClick(course.courseId)"
+              <ClassCard :capturing="capturing" :course="course" :venue="venueMode"
+                         @click.native="handleClassCardClick(course.courseId)"
                          v-if="course != null && !course.qr" />
-              <QrCard v-if="course != null && course.qr" />
+              <!--<QrCard v-if="course != null && course.qr" />-->
             </td>
           </template>
         </tr>
@@ -60,16 +60,17 @@
 </template>
 
 <script>
+  import { ScheduleTableMixin } from '../../../../mixins/ScheduleTable';
   import ClassCard from './ClassCard';
   import NoPeriodClassCard from './NoPeriodClassCard';
-  import QrCard from './QrCard';
-  import {ScheduleTableMixin} from '../../../../mixins/ScheduleTable';
+  // import QrCard from './QrCard';
+
 
   export default {
     name: 'ScheduleTable',
     components: {
       NoPeriodClassCard,
-      QrCard,
+      // QrCard,
       ClassCard,
     },
     mixins: [ScheduleTableMixin],

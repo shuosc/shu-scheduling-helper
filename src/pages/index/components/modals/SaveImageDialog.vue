@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3>截图完成！</h3>
+    <h3>截图完成！<small class="subtitle">当前截图功能不稳定，如遇图片异常，请再试几次。</small></h3>
     <div v-viewer="viewerOption">
       <img :src="blobUrl" alt="课程表图片" />
     </div>
@@ -13,6 +13,7 @@
 
 <script>
   import saveAs from 'file-saver';
+
 
   export default {
     name: 'SaveImageDialog',
@@ -50,7 +51,7 @@
     },
     mounted() {
       this.blobUrl = URL.createObjectURL(this.blob);
-      this.defaultFileName = `Timetable-${Math.floor(Math.random() * Math.pow(36, 4) + Math.pow(36, 4)).toString(36).toUpperCase().slice(-4)}`;
+      this.defaultFileName = `课表截图 - ${new Date().toLocaleString()}`;
       this.fileName = this.defaultFileName;
     },
     beforeDestroy() {
@@ -72,6 +73,12 @@
 
   h3 {
     text-align: left;
+    margin-bottom: 12px;
+  }
+
+  .subtitle {
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.35);
   }
 
   img {
