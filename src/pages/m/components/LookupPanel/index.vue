@@ -31,6 +31,15 @@
             {{ $store.getters.extra(`${course['course_id']}-${course['teacher_id']}`).venue }}
             <br v-if="$store.getters.extra(`${course['course_id']}-${course['teacher_id']}`).limitations.length > 0" />
             <a-tag
+              class="limitation-tag"
+              key="date"
+              v-if="$store.getters.extra(`${course['course_id']}-${course['teacher_id']}`).date && $store.getters.extra(`${course['course_id']}-${course['teacher_id']}`).date !== '不开'"
+            >
+              <a-icon type="calendar" />
+              <a-divider type="vertical" />
+              <span>{{ $store.getters.extra(`${course['course_id']}-${course['teacher_id']}`).date }}</span>
+            </a-tag>
+            <a-tag
               :color="getLimitationColor(limitation)"
               :key="index"
               class="limitation-tag"

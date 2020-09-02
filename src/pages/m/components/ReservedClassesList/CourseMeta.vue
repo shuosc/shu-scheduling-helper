@@ -25,6 +25,15 @@
       </small>
       <br v-if="$store.getters.extra(`${id}-${selectedClassKey}`).limitations.length > 0" />
       <a-tag
+        class="limitation-tag"
+        key="date"
+        v-if="$store.getters.extra(`${id}-${selectedClassKey}`).date && $store.getters.extra(`${id}-${selectedClassKey}`).date !== '不开'"
+      >
+        <a-icon type="calendar" />
+        <a-divider type="vertical" />
+        <span>{{ $store.getters.extra(`${id}-${selectedClassKey}`).date }}</span>
+      </a-tag>
+      <a-tag
         :key="index"
         class="limitation-tag"
         v-for="(limitation, index) in $store.getters.extra(`${id}-${selectedClassKey}`).limitations"
@@ -36,12 +45,13 @@
 </template>
 
 <script>
-  import {CourseMetaMixin} from '../../../../mixins/ReservedClassesList';
+  import { CourseMetaMixin } from '../../../../mixins/ReservedClassesList';
   import NumberCapacity from './NumberCapacity';
+
 
   export default {
     name: 'CourseMeta',
-    components: {NumberCapacity},
+    components: { NumberCapacity },
     props: {
       course: {
         type: Object,

@@ -1,5 +1,6 @@
 import registerPromiseWorker from 'promise-worker/register';
-import {getPeriods} from '../utils';
+import { getPeriods } from '../utils';
+
 
 function concatRegExp(parts) {
   parts.forEach((part, index) => {
@@ -71,6 +72,13 @@ registerPromiseWorker(function (message) {
     }
     return false;
   };
+  const isDateFiltered = (data, condition) => {
+    if (condition == null || condition.trim().length === 0) {
+      return false;
+    }
+    const date = message.allClassesExtra[`${data['course_id']}-${data['teacher_id']}`].date;
+    return date.indexOf(condition) < 0;
+  };
   const getConflicts = (courseId, classTime) => {
     let courseConflicts = {};
     getPeriods(classTime).forEach((period) => {
@@ -102,7 +110,8 @@ registerPromiseWorker(function (message) {
     }
     if (isNumberExceeded(row, message.conditions.number)
       || isLimitationsFiltered(row, message.conditions.filterLimitations)
-      || isVenueFiltered(row, message.conditions.filterVenue)) {
+      || isVenueFiltered(row, message.conditions.filterVenue)
+      || isDateFiltered(row, message.conditions.date)) {
       return;
     }
     for (let condition in conditionsRegExp) {

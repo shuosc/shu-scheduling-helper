@@ -17,6 +17,15 @@
           {{ $store.getters.extra(`${id}-${selectedClassKey}`).venue }}
           <br v-if="$store.getters.extra(`${id}-${selectedClassKey}`).limitations.length > 0" />
           <a-tag
+            class="limitation-tag"
+            key="date"
+            v-if="$store.getters.extra(`${id}-${selectedClassKey}`).date && $store.getters.extra(`${id}-${selectedClassKey}`).date !== '不开'"
+          >
+            <a-icon type="calendar" />
+            <a-divider type="vertical" />
+            <span>{{ $store.getters.extra(`${id}-${selectedClassKey}`).date }}</span>
+          </a-tag>
+          <a-tag
             :key="index"
             class="limitation-tag"
             v-for="(limitation, index) in $store.getters.extra(`${id}-${selectedClassKey}`).limitations"
@@ -56,6 +65,15 @@
           <a-divider type="vertical" />
           {{ $store.getters.extra(`${id}-${key}`).venue }}
           <br v-if="$store.getters.extra(`${id}-${key}`).limitations.length > 0" />
+          <a-tag
+            class="limitation-tag"
+            key="date"
+            v-if="$store.getters.extra(`${id}-${key}`).date && $store.getters.extra(`${id}-${key}`).date !== '不开'"
+          >
+            <a-icon type="calendar" />
+            <a-divider type="vertical" />
+            <span>{{ $store.getters.extra(`${id}-${key}`).date }}</span>
+          </a-tag>
           <a-tag
             :key="index"
             class="limitation-tag"

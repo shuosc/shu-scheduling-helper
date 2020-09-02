@@ -1,5 +1,6 @@
 import PromiseWorker from 'promise-worker';
 
+
 export const LookupPanelMixin = {
   data() {
     return {
@@ -10,7 +11,7 @@ export const LookupPanelMixin = {
     };
   },
   mounted() {
-    this.promiseWorker = new PromiseWorker(new Worker('../workers/filter.js', {type: 'module'}));
+    this.promiseWorker = new PromiseWorker(new Worker('../workers/filter.js', { type: 'module' }));
     this.filter(this.$refs.conditions.conditions).then((rows) => {
       this.rows = rows;
     });
@@ -160,29 +161,30 @@ export const LookupConditionsMixin = {
         filterConflicts: false,
         displayOption: 0,
         number: '',
+        date: '',
         regexpMode: false,
         sortBy: ['+de'],
         limitRows: 0,
       },
-      labelCol: {span: 6},
-      wrapperCol: {span: 17, offset: 1},
+      labelCol: { span: 6 },
+      wrapperCol: { span: 17, offset: 1 },
       limitationOptions: [
-        {label: '默认', value: 'default'},
-        {label: '排除', value: 'exclude'},
-        {label: '仅保留', value: 'include'},
+        { label: '默认', value: 'default' },
+        { label: '排除', value: 'exclude' },
+        { label: '仅保留', value: 'include' },
       ],
       sortByOptionsList: [[
-        {label: '首要依据：默认', value: '0+de'},
-        {label: '学分数升序', value: '0+cr'},
-        {label: '学分数降序', value: '0-cr'},
-        {label: '容量人数差升序', value: '0+cn'},
-        {label: '容量人数差降序', value: '0-cn'},
-        {label: '人数容量比升序', value: '0+nc'},
-        {label: '人数容量比降序', value: '0-nc'},
-        {label: '选课人数升序', value: '0+nu'},
-        {label: '选课人数降序', value: '0-nu'},
-        {label: '总容量升序', value: '0+ca'},
-        {label: '总容量降序', value: '0-ca'},
+        { label: '首要依据：默认', value: '0+de' },
+        { label: '学分数升序', value: '0+cr' },
+        { label: '学分数降序', value: '0-cr' },
+        { label: '容量人数差升序', value: '0+cn' },
+        { label: '容量人数差降序', value: '0-cn' },
+        { label: '人数容量比升序', value: '0+nc' },
+        { label: '人数容量比降序', value: '0-nc' },
+        { label: '选课人数升序', value: '0+nu' },
+        { label: '选课人数降序', value: '0-nu' },
+        { label: '总容量升序', value: '0+ca' },
+        { label: '总容量降序', value: '0-ca' },
       ]],
       moreOptionsVisible: false,
       moreOptionActivated: false,
