@@ -49,7 +49,8 @@
               已选
             </small>
           </template>
-          <br v-if="$store.getters.extra(class_time_info.key).limitations.length > 0" />
+          <br
+            v-if="($store.getters.extra(class_time_info.key).date && $store.getters.extra(class_time_info.key).date !== '不开') || $store.getters.extra(class_time_info.key).limitations.length > 0" />
           <a-tag
             class="limitation-tag"
             key="date"

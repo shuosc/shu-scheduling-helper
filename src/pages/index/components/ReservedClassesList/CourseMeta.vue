@@ -24,7 +24,8 @@
       <small class="selected-info">
         {{ $store.getters.extra(`${id}-${selectedClassKey}`).venue }}
       </small>
-      <br v-if="$store.getters.extra(`${id}-${selectedClassKey}`).limitations.length > 0" />
+      <br
+        v-if="($store.getters.extra(`${id}-${selectedClassKey}`).date && $store.getters.extra(`${id}-${selectedClassKey}`).date !== '不开') || $store.getters.extra(`${id}-${selectedClassKey}`).limitations.length > 0" />
       <a-tag
         class="limitation-tag"
         key="date"
