@@ -32,8 +32,8 @@
         </a-input>
       </a-form-item>
       <a-form-item>
-        <a-auto-complete :data-source="$store.state.allClassesExtraDistinctDate" allow-clear>
-          <a-input allow-clear placeholder="(新)" v-model="conditions.date">
+        <a-auto-complete :data-source="$store.state.allClassesExtraDistinctDate" allow-clear v-model="conditions.date">
+          <a-input allow-clear placeholder="(新)">
             <span class="label" slot="prefix">上课日期：</span>
           </a-input>
         </a-auto-complete>
