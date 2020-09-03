@@ -23,6 +23,10 @@
         <a-input :placeholder="placeholder['class_time']" allow-clear class="w-140px"
                  v-model="conditions.search['class_time']" />
       </a-form-item>
+      <a-form-item label="上课日期">
+        <a-auto-complete :data-source="$store.state.allClassesExtraDistinctDate" allow-clear class="w-200px"
+                         placeholder="(新)" v-model="conditions.date" />
+      </a-form-item>
       <a-form-item label="校区">
         <a-select v-model="conditions.search['campus']">
           <a-select-option value="">全部</a-select-option>
@@ -45,7 +49,8 @@
         </a-radio-group>
       </a-form-item>
       <a-form-item>
-        <a-button :class="{'more-options': true, 'more-options-activated': moreOptionActivated}" @click="moreOptionsVisible = true"
+        <a-button :class="{'more-options': true, 'more-options-activated': moreOptionActivated}"
+                  @click="moreOptionsVisible = true"
                   size="small" type="link">
           更多选项...
         </a-button>
@@ -102,7 +107,8 @@
 </template>
 
 <script>
-  import {LookupConditionsMixin} from '../../../../mixins/LookupPanel';
+  import { LookupConditionsMixin } from '../../../../mixins/LookupPanel';
+
 
   export default {
     name: 'LookupConditions',
@@ -117,6 +123,10 @@
 
   .w-200px {
     width: 200px;
+  }
+
+  .w-180px {
+    width: 180px;
   }
 
   .w-140px {

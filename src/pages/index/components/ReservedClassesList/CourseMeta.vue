@@ -5,7 +5,8 @@
                     v-if="selectedClassKey !== null && !expanded" />
     <span class="course-name">{{ course.courseName }}</span>{{ ' ' }}
     <small class="course-id">({{ id }})</small>
-    <a :href="getLinkHref(id)" :title="getLinkTitle(course, id)" @click.stop="showCourseIntroduction($event, getLinkHref(id))" class="course-intro-link"
+    <a :href="getLinkHref(id)" :title="getLinkTitle(course, id)"
+       @click.stop="showCourseIntroduction($event, getLinkHref(id))" class="course-intro-link"
        rel="external nofollow" target="_blank">简介</a>
     <template v-if="selectedClassKey !== null && !expanded">
       <br />
@@ -23,7 +24,17 @@
       <small class="selected-info">
         {{ $store.getters.extra(`${id}-${selectedClassKey}`).venue }}
       </small>
-      <br v-if="$store.getters.extra(`${id}-${selectedClassKey}`).limitations.length > 0" />
+      <br
+        v-if="($store.getters.extra(`${id}-${selectedClassKey}`).date && $store.getters.extra(`${id}-${selectedClassKey}`).date !== '不开') || $store.getters.extra(`${id}-${selectedClassKey}`).limitations.length > 0" />
+      <a-tag
+        class="limitation-tag"
+        key="date"
+        v-if="$store.getters.extra(`${id}-${selectedClassKey}`).date && $store.getters.extra(`${id}-${selectedClassKey}`).date !== '不开'"
+      >
+        <a-icon type="calendar" />
+        <a-divider type="vertical" />
+        <span>{{ $store.getters.extra(`${id}-${selectedClassKey}`).date }}</span>
+      </a-tag>
       <a-tag
         :key="index"
         class="limitation-tag"
@@ -36,13 +47,14 @@
 </template>
 
 <script>
-  import {CourseMetaMixin} from '../../../../mixins/ReservedClassesList';
-  import {introductionOpenerMixin} from '../../../../mixins/common/introductionOpener';
+  import { introductionOpenerMixin } from '../../../../mixins/common/introductionOpener';
+  import { CourseMetaMixin } from '../../../../mixins/ReservedClassesList';
   import NumberCapacity from './NumberCapacity';
+
 
   export default {
     name: 'CourseMeta',
-    components: {NumberCapacity},
+    components: { NumberCapacity },
     props: {
       course: {
         type: Object,

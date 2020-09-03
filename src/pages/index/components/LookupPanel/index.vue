@@ -17,7 +17,8 @@
       </a-table-column>
       <a-table-column data-index="course" title="课程">
         <template v-slot="course">
-          <a :href="getLinkHref(course.id)" :title="getLinkTitle(course)" @click="showCourseIntroduction($event, getLinkHref(course.id))" class="course-intro-link"
+          <a :href="getLinkHref(course.id)" :title="getLinkTitle(course)"
+             @click="showCourseIntroduction($event, getLinkHref(course.id))" class="course-intro-link"
              rel="external nofollow" target="_blank">
             <strong>{{ course.name }}</strong>
           </a>
@@ -48,7 +49,17 @@
               已选
             </small>
           </template>
-          <br v-if="$store.getters.extra(class_time_info.key).limitations.length > 0" />
+          <br
+            v-if="($store.getters.extra(class_time_info.key).date && $store.getters.extra(class_time_info.key).date !== '不开') || $store.getters.extra(class_time_info.key).limitations.length > 0" />
+          <a-tag
+            class="limitation-tag"
+            key="date"
+            v-if="$store.getters.extra(class_time_info.key).date && $store.getters.extra(class_time_info.key).date !== '不开'"
+          >
+            <a-icon type="calendar" />
+            <a-divider type="vertical" />
+            <span>{{ $store.getters.extra(class_time_info.key).date }}</span>
+          </a-tag>
           <a-tag
             :color="getLimitationColor(limitation)"
             :key="index"
@@ -133,11 +144,12 @@
 </template>
 
 <script>
+  import { conflictSolvingMixin } from '../../../../mixins/common/conflictsSolver';
+  import { introductionOpenerMixin } from '../../../../mixins/common/introductionOpener';
+  import { LookupPanelMixin } from '../../../../mixins/LookupPanel';
   import LookupConditions from './LookupConditions';
   import NumberCapacity from './NumberCapacity';
-  import {conflictSolvingMixin} from '../../../../mixins/common/conflictsSolver';
-  import {LookupPanelMixin} from '../../../../mixins/LookupPanel';
-  import {introductionOpenerMixin} from '../../../../mixins/common/introductionOpener';
+
 
   export default {
     name: 'LookupPanel',

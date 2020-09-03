@@ -1,10 +1,11 @@
+import axios from 'axios';
 import Vue from 'vue';
 import Vuex from 'vuex';
-import axios from 'axios';
+import apiConfig from './apiConfig';
 
 import Storage from './storage';
-import {getClassesChangeList, processSelectedClasses, processWithChangeList, setColorSeed} from './utils';
-import apiConfig from './apiConfig';
+import { getClassesChangeList, processSelectedClasses, processWithChangeList, setColorSeed } from './utils';
+
 
 Vue.use(Vuex);
 
@@ -16,6 +17,7 @@ export default new Vuex.Store({
     allClassesMap: {},
     allClassesHash: null, // 持久化
     allClassesExtra: {}, // 持久化
+    allClassesExtraDistinctDate: [], // 2020-2021学年秋季学期特殊情况
     allClassesExtraUpdateTime: null, // 持久化
     reservedClasses: {}, // 持久化
     selectedClasses: {}, // 持久化
@@ -97,6 +99,7 @@ export default new Vuex.Store({
             limitations: state.allClassesExtra[key]['limitations'] || [],
             number: state.allClassesExtra[key]['number'] || '-',
             venue: state.allClassesExtra[key]['venue'] || '/',
+            date: state.allClassesExtra[key]['date'] || null,
           };
         } else {
           return {
@@ -104,6 +107,7 @@ export default new Vuex.Store({
             limitations: [],
             number: '-',
             venue: '/',
+            date: null,
           };
         }
       };
@@ -127,7 +131,33 @@ export default new Vuex.Store({
       state.allClassesHash = value;
     },
     ALL_CLASSES_EXTRA(state, value) {
+      const dateSet = new Set();
+      Object.keys(value).forEach((key) => {
+        if (value[key].date && value[key].date !== '不开') {
+          dateSet.add(value[key].date);
+        }
+      });
+      const distinctDates = [...dateSet];
+      distinctDates.sort((a, b) => {
+        let resultA, resultB;
+        const patternA = /\d+/ig, patternB = /\d+/ig;
+        // eslint-disable-next-line no-constant-condition
+        while (true) {
+          resultA = patternA.exec(a);
+          resultB = patternB.exec(b);
+          if (resultA == null && resultB != null) {
+            return 1;
+          } else if (resultA != null && resultB == null) {
+            return -1;
+          } else if (resultA == null && resultB == null) {
+            return a.localeCompare(b);
+          } else if (parseInt(resultA[0]) !== parseInt(resultB[0])) {
+            return parseInt(resultA[0]) - parseInt(resultB[0]);
+          }
+        }
+      });
       state.allClassesExtra = value;
+      state.allClassesExtraDistinctDate = distinctDates;
     },
     ALL_CLASSES_EXTRA_UPDATE_TIME(state, value) {
       state.allClassesExtraUpdateTime = value;

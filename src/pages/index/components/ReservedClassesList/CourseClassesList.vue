@@ -15,7 +15,17 @@
           {{ course.classes[selectedClassKey].campus }}
           <a-divider type="vertical" />
           {{ $store.getters.extra(`${id}-${selectedClassKey}`).venue }}
-          <br v-if="$store.getters.extra(`${id}-${selectedClassKey}`).limitations.length > 0" />
+          <br
+            v-if="($store.getters.extra(`${id}-${selectedClassKey}`).date && $store.getters.extra(`${id}-${selectedClassKey}`).date !== '不开') || $store.getters.extra(`${id}-${selectedClassKey}`).limitations.length > 0" />
+          <a-tag
+            class="limitation-tag"
+            key="date"
+            v-if="$store.getters.extra(`${id}-${selectedClassKey}`).date && $store.getters.extra(`${id}-${selectedClassKey}`).date !== '不开'"
+          >
+            <a-icon type="calendar" />
+            <a-divider type="vertical" />
+            <span>{{ $store.getters.extra(`${id}-${selectedClassKey}`).date }}</span>
+          </a-tag>
           <a-tag
             :key="index"
             class="limitation-tag"
@@ -55,7 +65,17 @@
           {{ course.classes[key].campus }}
           <a-divider type="vertical" />
           {{ $store.getters.extra(`${id}-${key}`).venue }}
-          <br v-if="$store.getters.extra(`${id}-${key}`).limitations.length > 0" />
+          <br
+            v-if="($store.getters.extra(`${id}-${key}`).date && $store.getters.extra(`${id}-${key}`).date !== '不开') || $store.getters.extra(`${id}-${key}`).limitations.length > 0" />
+          <a-tag
+            class="limitation-tag"
+            key="date"
+            v-if="$store.getters.extra(`${id}-${key}`).date && $store.getters.extra(`${id}-${key}`).date !== '不开'"
+          >
+            <a-icon type="calendar" />
+            <a-divider type="vertical" />
+            <span>{{ $store.getters.extra(`${id}-${key}`).date }}</span>
+          </a-tag>
           <a-tag
             :key="index"
             class="limitation-tag"
@@ -70,13 +90,14 @@
 </template>
 
 <script>
-  import {conflictSolvingMixin} from '../../../../mixins/common/conflictsSolver';
-  import {CourseClassesListMixin} from '../../../../mixins/ReservedClassesList';
+  import { conflictSolvingMixin } from '../../../../mixins/common/conflictsSolver';
+  import { CourseClassesListMixin } from '../../../../mixins/ReservedClassesList';
   import NumberCapacity from './NumberCapacity';
+
 
   export default {
     name: 'CourseClassesList',
-    components: {NumberCapacity},
+    components: { NumberCapacity },
     props: {
       course: {
         type: Object,

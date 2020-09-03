@@ -1,9 +1,9 @@
-import Vue from 'vue';
 import {
   Alert,
+  AutoComplete,
   Avatar,
-  Badge,
   BackTop,
+  Badge,
   Button,
   Card,
   Checkbox,
@@ -21,7 +21,9 @@ import {
   Layout,
   List,
   Menu,
+  message,
   Modal,
+  notification,
   Pagination,
   Popconfirm,
   Popover,
@@ -35,11 +37,12 @@ import {
   Tag,
   Tooltip,
   Upload,
-  message,
-  notification,
 } from 'ant-design-vue';
+import Vue from 'vue';
+
 
 Vue.use(Alert);
+Vue.use(AutoComplete);
 Vue.use(Avatar);
 Vue.use(Badge);
 Vue.use(BackTop);
