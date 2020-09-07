@@ -11,7 +11,7 @@ export const ExportDialogMixin = {
   },
   computed: {
     content() {
-      let result = `~ SHU排课助手\n~ https://xk2.zkllab.com/\n~ ${this.exportDateTime}`;
+      let result = `~ SHU排课助手\n~ https://xk.shuosc.com/\n~ ${this.exportDateTime}`;
       if (this.selectedCourseIds.length > 0) {
         this.selectedCourseIds.forEach((courseInfosId, index) => {
           result += `\n\n${index + 1}.\n${this.courseInfos[courseInfosId]}`;

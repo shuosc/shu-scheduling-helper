@@ -24,7 +24,7 @@
                  v-model="conditions.search['class_time']" />
       </a-form-item>
       <a-form-item label="上课日期">
-        <a-auto-complete :data-source="$store.state.allClassesExtraDistinctDate" allow-clear class="w-200px"
+        <a-auto-complete :data-source="$store.state.allClassesExtraDistinctDate" allow-clear backfill class="w-200px"
                          placeholder="(新)" v-model="conditions.date" />
       </a-form-item>
       <a-form-item label="校区">
@@ -74,7 +74,7 @@
                            v-model="conditions.filterLimitations['jin_zhi_xuan_ke']" />
           </div>
           <div>
-            <a-tag color="blue">禁止退课</a-tag>
+            <a-tag color="purple">禁止退课</a-tag>
             <a-radio-group :options="limitationOptions" class="options"
                            v-model="conditions.filterLimitations['jin_zhi_tui_ke']" />
           </div>

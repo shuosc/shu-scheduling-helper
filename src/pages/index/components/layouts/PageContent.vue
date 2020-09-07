@@ -36,7 +36,8 @@
         <div class="copyright">
           Copyright &copy; {{ new Date().getFullYear() }} <a href="https://github.com/shuosc"
                                                              target="_blank">上海大学开源社区</a>.
-          基于 GPL-3.0 License 开源
+          基于 <a href="https://github.com/shuosc/shu-scheduling-helper/blob/master/LICENSE"
+                target="_blank">GPL-3.0-or-later</a> 开源
         </div>
         <div>
           数据来源: <a href="http://www.xk.shu.edu.cn/" target="_blank">上海大学网上选课系统</a> 版权归上海大学所有

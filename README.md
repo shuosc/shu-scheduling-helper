@@ -1,22 +1,16 @@
 English | [简体中文](./README-zh_CN.md)
 
 <p align="center">
-  <a href="https://xk2.zkllab.com/">
+  <a href="https://xk.shuosc.com/">
     <img width="300px" src="https://xk2.zkllab.com/img/readme-logo.svg" alt="SHU排课助手 Logo" />
   </a>
 </p>
 
 <p align="center">
-  <a href="https://xk2.zkllab.com/">https://xk2.zkllab.com/</a>
+  <a href="https://xk.shuosc.com/">https://xk.shuosc.com/</a>
 </p>
 
 ------
-
-<p align="center">
-  <a href="https://travis-ci.org/ZKLlab/shu-scheduling-helper-frontend">
-    <img alt="Build Status" src="https://img.shields.io/travis/ZKLlab/shu-scheduling-helper-frontend?style=flat-square">
-  </a>
-</p>
 
 - [Introduction](#introduction)
 - [Development](#development)
@@ -120,4 +114,4 @@ As a former user of [cosformula/CourseSchedulingHelper](https://github.com/cosfo
 
 ## License
 
-GPL-3.0 License &copy; SHUOSC
+GPL-3.0-or-later &copy; SHUOSC

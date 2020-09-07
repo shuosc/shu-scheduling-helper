@@ -4,7 +4,7 @@
       <a-menu :selectable="false" class="header-menu" mode="horizontal" theme="light">
         <a-menu-item class="header-title-wrapper">
           <div class="header-title-container">
-            <div class="header-title ">SHU排课助手</div>
+            <div class="header-title">SHU排课助手</div>
             <div class="header-trimester">{{ $store.state.trimester }}</div>
           </div>
         </a-menu-item>
@@ -24,7 +24,7 @@
             关于
           </template>
           <a-menu-item>
-            <a href="https://github.com/ZKLlab/shu-scheduling-helper-frontend" rel="external nofollow" target="_blank">
+            <a href="https://github.com/shuosc/shu-scheduling-helper" rel="external nofollow" target="_blank">
               <a-icon type="github" />
               项目Github主页
             </a>
@@ -35,7 +35,7 @@
               意见反馈
             </template>
             <a-menu-item>
-              <a href="https://github.com/ZKLlab/shu-scheduling-helper-frontend/issues" rel="external nofollow"
+              <a href="https://github.com/shuosc/shu-scheduling-helper/issues" rel="external nofollow"
                  target="_blank">
                 去Github提Issue
               </a>

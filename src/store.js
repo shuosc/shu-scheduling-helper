@@ -131,33 +131,51 @@ export default new Vuex.Store({
       state.allClassesHash = value;
     },
     ALL_CLASSES_EXTRA(state, value) {
-      const dateSet = new Set();
+      const dateCounter = new Map();
       Object.keys(value).forEach((key) => {
-        if (value[key].date && value[key].date !== '不开') {
-          dateSet.add(value[key].date);
-        }
-      });
-      const distinctDates = [...dateSet];
-      distinctDates.sort((a, b) => {
-        let resultA, resultB;
-        const patternA = /\d+/ig, patternB = /\d+/ig;
-        // eslint-disable-next-line no-constant-condition
-        while (true) {
-          resultA = patternA.exec(a);
-          resultB = patternB.exec(b);
-          if (resultA == null && resultB != null) {
-            return 1;
-          } else if (resultA != null && resultB == null) {
-            return -1;
-          } else if (resultA == null && resultB == null) {
-            return a.localeCompare(b);
-          } else if (parseInt(resultA[0]) !== parseInt(resultB[0])) {
-            return parseInt(resultA[0]) - parseInt(resultB[0]);
+        const dateList = value[key].date.split(',');
+        for (let i = dateList.length - 1; i >= /\d+/ig.test(dateList[0]) ? 1 : 0; i--) {
+          if (dateList[i] && dateList[i] !== '不开') {
+            value[key].limitations.unshift(dateList[i]);
           }
         }
+        if (dateList[0] && /\d+/ig.test(dateList[0])) {
+          dateCounter.set(dateList[0], (dateCounter.get(dateList[0]) || 0) + 1);
+          value[key].date = dateList[0];
+        } else {
+          value[key].date = '';
+        }
       });
+      const distinctDates = [...dateCounter.entries()];
+      distinctDates.sort((a, b) => {
+          if (b[1] - a[1] !== 0) {
+            return b[1] - a[1];
+          }
+          let resultA, resultB;
+          const patternA = /\d+/ig, patternB = /\d+/ig;
+          // eslint-disable-next-line no-constant-condition
+          while (true) {
+            resultA = patternA.exec(a);
+            resultB = patternB.exec(b);
+            if (resultA == null && resultB != null) {
+              return 1;
+            } else if (resultA != null && resultB == null) {
+              return -1;
+            } else if (resultA == null && resultB == null) {
+              return a.localeCompare(b);
+            } else if (parseInt(resultA[0]) !== parseInt(resultB[0])) {
+              return parseInt(resultA[0]) - parseInt(resultB[0]);
+            }
+          }
+        },
+      );
       state.allClassesExtra = value;
-      state.allClassesExtraDistinctDate = distinctDates;
+      state.allClassesExtraDistinctDate = distinctDates.map((x) => (
+        {
+          value: x[0],
+          text: `(${x[1]}) ${x[0]}`,
+        }
+      ));
     },
     ALL_CLASSES_EXTRA_UPDATE_TIME(state, value) {
       state.allClassesExtraUpdateTime = value;

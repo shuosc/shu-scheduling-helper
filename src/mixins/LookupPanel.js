@@ -113,7 +113,7 @@ export const LookupPanelMixin = {
         case '禁止选课':
           return 'red';
         case '禁止退课':
-          return 'blue';
+          return 'purple';
         case '限制人数':
           return 'orange';
         default:

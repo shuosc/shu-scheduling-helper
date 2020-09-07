@@ -32,7 +32,8 @@
         </a-input>
       </a-form-item>
       <a-form-item>
-        <a-auto-complete :data-source="$store.state.allClassesExtraDistinctDate" allow-clear v-model="conditions.date">
+        <a-auto-complete :data-source="$store.state.allClassesExtraDistinctDate" allow-clear backfill
+                         v-model="conditions.date">
           <a-input allow-clear placeholder="(新)">
             <span class="label" slot="prefix">上课日期：</span>
           </a-input>
@@ -89,7 +90,7 @@
                            v-model="conditions.filterLimitations['jin_zhi_xuan_ke']" />
           </div>
           <div>
-            <a-tag color="blue">禁止退课</a-tag>
+            <a-tag color="purple">禁止退课</a-tag>
             <a-radio-group :options="limitationOptions" class="options"
                            v-model="conditions.filterLimitations['jin_zhi_tui_ke']" />
           </div>

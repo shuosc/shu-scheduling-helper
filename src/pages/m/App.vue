@@ -60,7 +60,7 @@
                 关于
               </template>
               <a-menu-item>
-                <a href="https://github.com/ZKLlab/shu-scheduling-helper-frontend" rel="external nofollow"
+                <a href="https://github.com/shuosc/shu-scheduling-helper" rel="external nofollow"
                    target="_blank">
                   <a-icon type="github" />
                   项目Github主页
@@ -68,7 +68,7 @@
               </a-menu-item>
               <a-menu-divider />
               <a-menu-item>
-                <a href="https://github.com/ZKLlab/shu-scheduling-helper-frontend/issues" rel="external nofollow"
+                <a href="https://github.com/shuosc/shu-scheduling-helper/issues" rel="external nofollow"
                    target="_blank">
                   <a-icon type="exclamation-circle" />
                   去Github提Issue
@@ -89,7 +89,8 @@
         <div class="copyright">
           Copyright &copy; {{ new Date().getFullYear() }} <a href="https://github.com/shuosc"
                                                              target="_blank">上海大学开源社区</a>.<br />
-          基于 GPL-3.0 License 开源.
+          基于 <a href="https://github.com/shuosc/shu-scheduling-helper/blob/master/LICENSE"
+                target="_blank">GPL-3.0-or-later</a> 开源.
         </div>
         <div>
           数据来源:

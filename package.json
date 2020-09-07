@@ -2,16 +2,16 @@
   "name": "shu-scheduling-helper-frontend",
   "version": "1.0.0",
   "description": "A web based timetabler helping SHUers filter and preselect courses easily.",
-  "author": "ZKLlab",
-  "license": "MIT",
+  "author": "SHUOSC",
+  "license": "GPL-3.0-or-later",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ZKLlab/shu-scheduling-helper-frontend.git"
+    "url": "git+https://github.com/shuosc/shu-scheduling-helper.git"
   },
   "bugs": {
-    "url": "https://github.com/ZKLlab/shu-scheduling-helper-frontend/issues"
+    "url": "https://github.com/shuosc/shu-scheduling-helper/issues"
   },
-  "homepage": "https://github.com/ZKLlab/shu-scheduling-helper-frontend#readme",
+  "homepage": "https://github.com/shuosc/shu-scheduling-helper#readme",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",

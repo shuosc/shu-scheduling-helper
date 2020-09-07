@@ -77,7 +77,7 @@ registerPromiseWorker(function (message) {
       return false;
     }
     const date = message.allClassesExtra[`${data['course_id']}-${data['teacher_id']}`].date;
-    return date.indexOf(condition) < 0;
+    return date.indexOf(condition.trim()) < 0;
   };
   const getConflicts = (courseId, classTime) => {
     let courseConflicts = {};
