@@ -1,0 +1,8 @@
+User-agent: *
+Disallow: /quick-inputting.html
+Disallow: /index.html
+Disallow: /m.html
+Disallow: /api/
+Disallow: /css/
+Disallow: /img/
+Disallow: /js/
