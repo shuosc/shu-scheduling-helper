@@ -4,7 +4,7 @@ module.exports = {
   devServer: {
     proxy: {
       '/api': {
-        target: 'https://xk2.zkllab.com',
+        target: 'https://xk.shuosc.com',
         changeOrigin: true,
       },
     },

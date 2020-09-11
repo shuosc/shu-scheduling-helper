@@ -2,7 +2,7 @@ English | [简体中文](./README-zh_CN.md)
 
 <p align="center">
   <a href="https://xk.shuosc.com/">
-    <img width="300px" src="https://xk2.zkllab.com/img/readme-logo.svg" alt="SHU排课助手 Logo" />
+    <img width="300px" src="https://xk.shuosc.com/img/readme-logo.svg" alt="SHU排课助手 Logo" />
   </a>
 </p>
 
@@ -47,8 +47,8 @@ The shu-scheduling-helper project has a frontend part and a backend part. For sa
 ### Frontend quick start
 
 ```shell
-$ git clone https://github.com/ZKLlab/shu-scheduling-helper-frontend.git
-$ cd shu-scheduling-helper-frontend
+$ git clone https://github.com/shuosc/shu-scheduling-helper.git
+$ cd shu-scheduling-helper
 $ yarn # install
 $ yarn serve # serve at localhost:8080
 ```
@@ -104,13 +104,13 @@ As a former user of [cosformula/CourseSchedulingHelper](https://github.com/cosfo
 
 ## Contributing
 
-[Open an issue](https://github.com/ZKLlab/shu-scheduling-helper-frontend/issues/new), [feedback](https://support.qq.com/products/120502) or send me [PRs](https://github.com/ZKLlab/shu-scheduling-helper-frontend/pulls) when you find any problems or want to request new features.
+[Open an issue](https://github.com/shuosc/shu-scheduling-helper/issues/new), [feedback](https://support.qq.com/products/120502) or send me [PRs](https://github.com/shuosc/shu-scheduling-helper/pulls) when you find any problems or want to request new features.
 
-**Please leave me a star if you like.** 🌟 **Thank you!**
+**Please leave us a star if you like.** 🌟 **Thank you!**
 
 ### Author
 
-[@ZKLlab](https://github.com/ZKLlab) - SHUer majoring in Computer Science; [SHUOSC](https://github.com/shuosc)er.
+[@ZKLlab](https://github.com/ZKLlab)
 
 ## License
 

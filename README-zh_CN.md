@@ -2,7 +2,7 @@
 
 <p align="center">
   <a href="https://xk.shuosc.com/">
-    <img width="300px" src="https://xk2.zkllab.com/img/readme-logo.svg" alt="SHU排课助手 Logo" />
+    <img width="300px" src="https://xk.shuosc.com/img/readme-logo.svg" alt="SHU排课助手 Logo" />
   </a>
 </p>
 
@@ -36,8 +36,8 @@
 ### 前端快速上手
 
 ```shell
-$ git clone https://github.com/ZKLlab/shu-scheduling-helper-frontend.git
-$ cd shu-scheduling-helper-frontend
+$ git clone https://github.com/shuosc/shu-scheduling-helper.git
+$ cd shu-scheduling-helper
 $ yarn # 安装依赖
 $ yarn serve # 侦听localhost:8080
 ```
@@ -93,13 +93,13 @@ $ yarn build
 
 ## 贡献
 
-如果你发现了任何关于SHU排课助手的问题，或有新功能建议，你可以[在Github上提issus](https://github.com/shuosc/shu-scheduling-helper/issues/new)，[使用“腾讯兔小巢”平台反馈问题](https://support.qq.com/products/120502)或[Pull Request (PR)](https://github.com/ZKLlab/shu-scheduling-helper-frontend/pulls)。
+如果你发现了任何关于SHU排课助手的问题，或有新功能建议，你可以[在Github上提issus](https://github.com/shuosc/shu-scheduling-helper/issues/new)，[使用“腾讯兔小巢”平台反馈问题](https://support.qq.com/products/120502)或[Pull Request (PR)](https://github.com/shuosc/shu-scheduling-helper/pulls)。
 
 **如果喜欢，请给项目点一颗小星星！** 🌟 **谢谢！**
 
 ### 作者
 
-[@ZKLlab](https://github.com/ZKLlab) - 上海大学计算机科学与技术技术专业大二在读，[SHUOSC](https://github.com/shuosc)成员。
+[@ZKLlab](https://github.com/ZKLlab)
 
 ## 许可证
 

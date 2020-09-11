@@ -11,7 +11,7 @@
 #### URL
 
 ```
-GET https://xk2.zkllab.com/api/courses/info
+GET https://xk.shuosc.com/api/courses/info
 ```
 
 #### 返回结果示例：
@@ -21,7 +21,7 @@ GET https://xk2.zkllab.com/api/courses/info
   "backend": "http://xk.autoisp.shu.edu.cn:8084/", 
   "hash": "ec17f6e2", 
   "trimester": "2019-2020\u5b66\u5e74\u6625\u5b63\u5b66\u671f", 
-  "url": "https://xk2.zkllab.com/api/courses/ec17f6e2.json"
+  "url": "https://xk.shuosc.com/api/courses/ec17f6e2.json"
 }
 ```
 
@@ -39,7 +39,7 @@ GET https://xk2.zkllab.com/api/courses/info
 #### URL
 
 ```
-GET https://xk2.zkllab.com/api/courses/{hash}.json
+GET https://xk.shuosc.com/api/courses/{hash}.json
 ```
 
 #### <span id="api-2-example">返回结果示例</span>
@@ -76,7 +76,7 @@ GET https://xk2.zkllab.com/api/courses/{hash}.json
 #### URL
 
 ```
-GET https://xk2.zkllab.com/api/courses/extra
+GET https://xk.shuosc.com/api/courses/extra
 ```
 
 #### 返回结果示例
@@ -372,10 +372,9 @@ this.$store.dispatch('checkUpdateAllClasses');
 
 ```javascript
 {
-  backend: "http://xk.autoisp.shu.edu.cn:8084/", 
-  hash: "ec17f6e2", 
-  trimester: "2019-2020\u5b66\u5e74\u6625\u5b63\u5b66\u671f", 
-  url: "https://app.zkllab.com/xk/courses/ec17f6e2.json",
+  backend: "http://xk.autoisp.shu.edu.cn:8084/",
+  hash: "ec17f6e2",
+  trimester: "2019-2020\u5b66\u5e74\u6625\u5b63\u5b66\u671f",
 }
 ```
 
@@ -391,10 +390,9 @@ this.$store.dispatch('checkUpdateAllClasses');
 
 ```javascript
 this.$store.dispatch('updateAllClasses', {
-  backend: "http://xk.autoisp.shu.edu.cn:8084/", 
-  hash: "ec17f6e2", 
-  trimester: "2019-2020\u5b66\u5e74\u6625\u5b63\u5b66\u671f", 
-  url: "https://app.zkllab.com/xk/courses/ec17f6e2.json",
+  backend: "http://xk.autoisp.shu.edu.cn:8084/",
+  hash: "ec17f6e2",
+  trimester: "2019-2020\u5b66\u5e74\u6625\u5b63\u5b66\u671f",
 });
 ```
 
