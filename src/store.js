@@ -133,7 +133,7 @@ export default new Vuex.Store({
     ALL_CLASSES_EXTRA(state, value) {
       const dateCounter = new Map();
       Object.keys(value).forEach((key) => {
-        const dateList = value[key].date.split(',');
+        const dateList = value[key].date != null ? value[key].date.split(',') : [];
         for (let i = dateList.length - 1; i >= /\d+/ig.test(dateList[0]) ? 1 : 0; i--) {
           if (dateList[i] && dateList[i] !== '不开') {
             value[key].limitations.unshift(dateList[i]);
