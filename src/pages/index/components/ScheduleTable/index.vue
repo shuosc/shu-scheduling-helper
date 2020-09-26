@@ -16,7 +16,7 @@
                   <a-menu-divider />
                   <a-menu-item @click="$showColorSeedDialog">
                     <a-icon type="experiment" />
-                    色彩随机种子 {{ colorSeedShortcut }}
+                    色彩随机种子... {{ colorSeedShortcut }}
                   </a-menu-item>
                 </a-menu>
               </a-dropdown>
