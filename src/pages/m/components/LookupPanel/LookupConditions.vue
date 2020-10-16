@@ -31,7 +31,7 @@
           <span class="label" slot="prefix">上课时间：</span>
         </a-input>
       </a-form-item>
-      <a-form-item>
+      <a-form-item v-if="$store.state.allClassesExtraDistinctDate.length > 0">
         <a-auto-complete :data-source="$store.state.allClassesExtraDistinctDate" allow-clear backfill
                          v-model="conditions.date">
           <a-input allow-clear placeholder="(新)">

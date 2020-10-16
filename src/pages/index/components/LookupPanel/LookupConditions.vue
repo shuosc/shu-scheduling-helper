@@ -23,7 +23,7 @@
         <a-input :placeholder="placeholder['class_time']" allow-clear class="w-140px"
                  v-model="conditions.search['class_time']" />
       </a-form-item>
-      <a-form-item label="上课日期">
+      <a-form-item label="上课日期" v-if="$store.state.allClassesExtraDistinctDate.length > 0">
         <a-auto-complete :data-source="$store.state.allClassesExtraDistinctDate" allow-clear backfill class="w-200px"
                          placeholder="(新)" v-model="conditions.date" />
       </a-form-item>
@@ -123,10 +123,6 @@
 
   .w-200px {
     width: 200px;
-  }
-
-  .w-180px {
-    width: 180px;
   }
 
   .w-140px {
