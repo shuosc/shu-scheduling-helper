@@ -46,7 +46,7 @@ registerPromiseWorker(function (message) {
           continue;
         }
         const name = {
-          'xian_zhi_ren_shu': '限制人数',
+          'xian_zhi_ren_shu': '人数已满',
           'jin_zhi_xuan_ke': '禁止选课',
           'jin_zhi_tui_ke': '禁止退课',
         }[condition] || '';

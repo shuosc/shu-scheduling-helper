@@ -64,7 +64,7 @@
         </a-form-item>
         <a-form-item label="选课限制(AND)">
           <div>
-            <a-tag color="orange">限制人数</a-tag>
+            <a-tag color="orange">人数已满</a-tag>
             <a-radio-group :options="limitationOptions" class="options"
                            v-model="conditions.filterLimitations['xian_zhi_ren_shu']" />
           </div>
