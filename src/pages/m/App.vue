@@ -97,7 +97,7 @@
           <a href="http://www.xk.shu.edu.cn/" target="_blank">上海大学网上选课系统</a> 版权归上海大学所有
         </div>
         <div>
-          <a class="beian" href="http://www.beian.miit.gov.cn" target="_blank">沪ICP备19044115号-1</a>
+          <a class="beian" href="https://beian.miit.gov.cn" target="_blank">沪ICP备19044115号-1</a>
         </div>
         <a-button class="alternate-to-desktop" href="/index.html" icon="laptop" type="link">
           切换到电脑版

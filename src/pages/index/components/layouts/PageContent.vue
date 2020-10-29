@@ -43,7 +43,7 @@
           数据来源: <a href="http://www.xk.shu.edu.cn/" target="_blank">上海大学网上选课系统</a> 版权归上海大学所有
         </div>
         <div>
-          <a href="http://www.beian.miit.gov.cn" target="_blank">沪ICP备19044115号-1</a>
+          <a href="https://beian.miit.gov.cn" target="_blank">沪ICP备19044115号-1</a>
         </div>
         <a-button class="alternate-to-desktop" href="/m.html" icon="mobile" type="link">
           切换到移动版
