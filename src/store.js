@@ -418,6 +418,38 @@ export default new Vuex.Store({
         });
       });
     },
+    reserveClasses(context, dataList) {
+      // 批量添加待选课程
+      return new Promise((resolve) => {
+        let count = 0;
+        let copy = JSON.parse(JSON.stringify(context.state.reservedClasses));
+        dataList.forEach((data) => {
+          if (!copy.hasOwnProperty(data['course_id'])) {
+            copy[data['course_id']] = {
+              courseName: data['course_name'],
+              credit: data['credit'],
+              classes: {},
+            };
+          }
+          if (copy[data['course_id']].classes[data['teacher_id']] == null) {
+            count++;
+          }
+          copy[data['course_id']].classes[data['teacher_id']] = {
+            campus: data['campus'],
+            classTime: data['class_time'],
+            teacherName: data['teacher_name'],
+          };
+        });
+        context.commit('RESERVED_CLASSES', copy);
+        context.commit('HISTORY_PUSH', {
+          data: context.getters.currentData,
+          msg: '批量添加待选',
+        });
+        Storage.set('reservedClasses', copy).then(() => {
+          resolve(count);
+        });
+      });
+    },
     reserveClassThenSelect(context, data) {
       // 添加待选课程并选择之
       return new Promise((resolve) => {

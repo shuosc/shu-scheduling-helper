@@ -73,6 +73,12 @@ export const LookupPanelMixin = {
         this.$store.dispatch(select ? 'reserveClassThenSelect' : 'reserveClass', data);
       }
     },
+    reserveClasses(data) {
+      this.storageBusy = true;
+      this.$store.dispatch('reserveClasses', data).then((count) => {
+        this.$message.success(`成功添加了 ${count} 个待选课程，你可以撤销此操作。`)
+      });
+    },
     removeReservedClass(data) {
       this.storageBusy = true;
       this.$store.dispatch('removeReservedClass', data);

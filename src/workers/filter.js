@@ -89,7 +89,12 @@ registerPromiseWorker(function (message) {
     });
     return courseConflicts;
   };
+  const getClassesRelatedRows = (data, coursesMap) => {
+    return coursesMap[data['course_id']].filter((row) => !row['action'].isReserved && data['campus'] === row['campus']);
+  };
   let rows = [];
+  let coursesMap = {};
+  let courseNamesMap = {};
   let conditionsRegExp = {};
   for (let condition in message.conditions.search) {
     if (message.conditions.search.hasOwnProperty(condition)) {
@@ -156,7 +161,20 @@ registerPromiseWorker(function (message) {
       && (message.conditions.displayOption !== 1 || !newRow['action'].isReserved)
       && (message.conditions.displayOption !== 2 || newRow['action'].isReserved)) {
       rows.push(newRow);
+      if (coursesMap[row['course_id']] == null) {
+        coursesMap[row['course_id']] = [];
+      }
+      coursesMap[row['course_id']].push(newRow);
+      if (courseNamesMap[row['course_name']] == null) {
+        courseNamesMap[row['course_name']] = new Set();
+      }
+      courseNamesMap[row['course_name']].add(row['course_id']);
     }
+  });
+  rows.forEach((row) => {
+    row['action'].relatedClassesRows = getClassesRelatedRows(row, coursesMap);
+    row['action'].courseIdRequired = [...courseNamesMap[row['course_name']].keys()].length > 1;
+    row['action'].campusRequired = coursesMap[row['course_id']].some((relatedRow) => relatedRow['campus'] !== row['campus']);
   });
   if (message.conditions.sortBy.length > 1) {
     rows.forEach((row) => {

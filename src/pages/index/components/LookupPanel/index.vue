@@ -109,11 +109,26 @@
           >
             <a-icon type="plus-circle" />
             待选
-            <a-menu slot="overlay">
+            <a-menu class="reservation-menu" slot="overlay">
               <!--suppress JSUnresolvedVariable, ES6ModulesDependencies -->
               <a-menu-item @click="reserveClass(action.row, true, action.conflicts)">
                 <template v-if="Object.keys(action.conflicts).length > 0">加入待选并选择，让我来解决冲突...</template>
                 <template v-else>加入待选并选择</template>
+              </a-menu-item>
+              <a-menu-divider />
+              <a-menu-item @click="reserveClasses(action.relatedClassesRows)" class="menu-course">
+                将当前检索条件下的
+                <strong class="menu-course-name">{{ action.row['course_name'] }}</strong>
+                <small class="menu-course-info" v-if="action.courseIdRequired">
+                  {{ ' ' }}({{ action.row['course_id'] }})
+                </small>
+                <small class="menu-course-info" v-if="action.campusRequired">
+                  {{ ' ' }}@{{ action.row['campus'] }}
+                </small>
+                <small class="menu-course-info">
+                  {{ ' ' }}&times;{{ action.relatedClassesRows.length }}
+                </small>
+                {{ action.relatedClassesRows.length > 1 ? '全部加入待选' : '加入待选' }}
               </a-menu-item>
             </a-menu>
           </a-dropdown-button>
@@ -126,7 +141,7 @@
           >
             <a-icon type="minus-circle" />
             待选
-            <a-menu slot="overlay">
+            <a-menu class="reservation-menu" slot="overlay">
               <!--suppress JSUnresolvedVariable, ES6ModulesDependencies -->
               <a-menu-item @click="unselectClass(action.row)" v-if="action.isSelected">
                 回到待选状态
@@ -135,6 +150,25 @@
               <a-menu-item @click="selectClass(action.row, action.conflicts)" v-else>
                 <template v-if="Object.keys(action.conflicts).length > 0">选择此待选课，让我来解决冲突...</template>
                 <template v-else>选择此待选课</template>
+              </a-menu-item>
+              <a-menu-divider />
+              <a-menu-item
+                :disabled="action.relatedClassesRows.length === 0"
+                @click="reserveClasses(action.relatedClassesRows)"
+                class="menu-course"
+              >
+                将当前检索条件下其他的
+                <strong class="menu-course-name">{{ action.row['course_name'] }}</strong>
+                <small class="menu-course-info" v-if="action.courseIdRequired">
+                  {{ ' ' }}({{ action.row['course_id'] }})
+                </small>
+                <small class="menu-course-info" v-if="action.campusRequired">
+                  {{ ' ' }}@{{ action.row['campus'] }}
+                </small>
+                <small class="menu-course-info">
+                  {{ ' ' }}&times;{{ action.relatedClassesRows.length }}
+                </small>
+                {{ action.relatedClassesRows.length > 1 ? '全部加入待选' : '加入待选' }}
               </a-menu-item>
             </a-menu>
           </a-dropdown-button>
@@ -292,5 +326,14 @@
 
   .table >>> .ant-table-row:hover .previewing {
     display: inline;
+  }
+
+  .reservation-menu >>> .menu-course:not(.ant-dropdown-menu-item-disabled) .menu-course-name {
+    color: #1890ff;
+  }
+
+  .reservation-menu >>> .menu-course:not(.ant-dropdown-menu-item-disabled) .menu-course-info {
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.35);
   }
 </style>
