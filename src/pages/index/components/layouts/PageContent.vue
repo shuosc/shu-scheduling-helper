@@ -36,7 +36,7 @@
         <div class="copyright">
           Copyright &copy; {{ new Date().getFullYear() }} <a href="https://github.com/shuosc"
                                                              target="_blank">上海大学开源社区</a>.
-          基于 <a href="https://github.com/shuosc/shu-scheduling-helper/blob/master/LICENSE"
+          基于 <a href="https://github.com/shuosc/shu-scheduling-helper/blob/main/LICENSE"
                 target="_blank">GPL-3.0-or-later</a> 开源
         </div>
         <div>
