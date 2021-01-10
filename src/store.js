@@ -48,11 +48,34 @@ export default new Vuex.Store({
               courseName: state.reservedClasses[courseId].courseName,
               teacherId,
               teacherName: state.reservedClasses[courseId].classes[teacherId].teacherName,
+              campus: state.reservedClasses[courseId].classes[teacherId].campus,
               first: period[2],
               span: period[3],
               color: state.selectedClasses[courseId].themeColor,
               isPreview: false,
             };
+          });
+        }
+      }
+      return rows;
+    },
+    campusTableRows(state) {
+      // 课程校区表格
+      let rows = [];
+      for (let i = 0; i < 13; i++) {
+        rows.push([null, null, null, null, null]);
+      }
+      for (let courseId in state.selectedClasses) {
+        if (state.selectedClasses.hasOwnProperty(courseId)) {
+          let teacherId = state.selectedClasses[courseId].teacherId;
+          state.selectedClasses[courseId].periods.forEach((period) => {
+            rows[period[0]][period[1]] = state.reservedClasses[courseId].classes[teacherId].campus;
+            if (period[0] - 1 >= 0 && rows[period[0] - 1][period[1]] == null) {
+              rows[period[0] - 1][period[1]] = state.reservedClasses[courseId].classes[teacherId].campus;
+            }
+            if (period[0] + 1 < 13 && rows[period[0] + 1][period[1]] == null) {
+              rows[period[0] + 1][period[1]] = state.reservedClasses[courseId].classes[teacherId].campus;
+            }
           });
         }
       }
@@ -90,6 +113,44 @@ export default new Vuex.Store({
     currentAffairsAndStatePoliciesSelected(state) {
       // 形势与政策是否已选
       return state.selectedClasses.hasOwnProperty('16583109') || !/[春秋冬]/i.test(state.trimester);
+    },
+    crossCampusSelection(state) {
+      // 是否跨校区选课
+      return [...new Set(Object.keys(state.selectedClasses).map((courseId) =>
+        state.reservedClasses[courseId].classes[state.selectedClasses[courseId].teacherId].campus)).keys()].length > 1;
+    },
+    crossCampusSelectionNotValidated(state) {
+      // 跨校区选课是否不满足规则
+      let result = false;
+      let rows = [];
+      for (let i = 0; i < 13; i++) {
+        rows.push([null, null, null, null, null]);
+      }
+      for (let courseId in state.selectedClasses) {
+        if (state.selectedClasses.hasOwnProperty(courseId)) {
+          let teacherId = state.selectedClasses[courseId].teacherId;
+          state.selectedClasses[courseId].periods.forEach((period) => {
+            if (!result) {
+              rows[period[0]][period[1]] = state.reservedClasses[courseId].classes[teacherId].campus;
+              if (period[0] - 1 >= 0) {
+                if (rows[period[0] - 1][period[1]] == null) {
+                  rows[period[0] - 1][period[1]] = state.reservedClasses[courseId].classes[teacherId].campus;
+                } else if (rows[period[0] - 1][period[1]] !== rows[period[0]][period[1]]) {
+                  result = true;
+                }
+              }
+              if (period[0] + 1 < 13) {
+                if (rows[period[0] + 1][period[1]] == null) {
+                  rows[period[0] + 1][period[1]] = state.reservedClasses[courseId].classes[teacherId].campus;
+                } else if (rows[period[0] + 1][period[1]] !== rows[period[0]][period[1]]) {
+                  result = true;
+                }
+              }
+            }
+          });
+        }
+      }
+      return result;
     },
     extra(state) {
       return (key) => {

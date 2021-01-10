@@ -100,6 +100,7 @@
           <!--suppress JSUnresolvedVariable, ES6ModulesDependencies -->
           <div class="conflict-info" slot="actions" v-if="Object.keys(course['class_time_info'].conflicts).length > 0">
             时间冲突
+            <template v-if="Math.min(...Object.values(course['class_time_info'].conflicts)) === 2">(跨校区)</template>
           </div>
           <!--suppress JSUnresolvedVariable, ES6ModulesDependencies -->
           <div class="selected-info" slot="actions" v-else-if="course['class_time_info'].isSelected">

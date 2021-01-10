@@ -10,11 +10,12 @@
 
 <script>
   import zh_CN from 'ant-design-vue/lib/locale-provider/zh_CN';
+  import { dataManagerMixin } from '../../mixins/common/dataManager';
+  import { isMacLike } from '../../utils';
+  import PageContent from './components/layouts/PageContent';
   import PageHeader from './components/layouts/PageHeader';
   import PageSider from './components/layouts/PageSider';
-  import PageContent from './components/layouts/PageContent';
-  import {dataManagerMixin} from '../../mixins/common/dataManager';
-  import {isMacLike} from '../../utils';
+
 
   export default {
     name: 'app',
@@ -149,5 +150,12 @@
   .conflict-list-class-meta-time {
     font-size: 12px;
     color: rgba(0, 0, 0, .45);
+  }
+
+  /*noinspection CssUnusedSymbol*/
+  .conflict-list-class-meta-campus {
+    font-size: 12px;
+    font-weight: bold;
+    color: #1890ff;
   }
 </style>

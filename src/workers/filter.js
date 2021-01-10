@@ -79,12 +79,26 @@ registerPromiseWorker(function (message) {
     const date = message.allClassesExtra[`${data['course_id']}-${data['teacher_id']}`].date;
     return date.indexOf(condition.trim()) < 0;
   };
-  const getConflicts = (courseId, classTime) => {
-    let courseConflicts = {};
+  const getConflicts = (courseId, classTime, campus) => {
+    const courseConflicts = {};
     getPeriods(classTime).forEach((period) => {
-      let targetCell = message.scheduleTableRows[period[0]][period[1]];
-      if (targetCell !== null && targetCell.courseId !== courseId) {
-        courseConflicts[targetCell.courseId] = true;
+      const targetCell = message.scheduleTableRows[period[0]][period[1]];
+      if (targetCell != null && targetCell.courseId !== courseId) {
+        courseConflicts[targetCell.courseId] = 1;
+      } else {
+        let campusCell = message.campusTableRows[period[0]][period[1]];
+        if (campusCell != null && campusCell !== campus) {
+          const cellBefore = period[0] - 1 >= 0 ? message.scheduleTableRows[period[0] - 1][period[1]] : null;
+          const cellAfter = period[0] + 1 < 13 ? message.scheduleTableRows[period[0] + 1][period[1]] : null;
+          if (cellBefore != null && cellBefore.campus !== campus
+            && cellBefore.courseId !== courseId && courseConflicts[cellBefore.courseId] == null) {
+            courseConflicts[cellBefore.courseId] = 2;
+          }
+          if (cellAfter != null && cellAfter.campus !== campus
+            && cellAfter.courseId !== courseId && courseConflicts[cellAfter.courseId] == null) {
+            courseConflicts[cellAfter.courseId] = 2;
+          }
+        }
       }
     });
     return courseConflicts;
@@ -148,7 +162,7 @@ registerPromiseWorker(function (message) {
       key: `${newRow['course_id']}-${newRow['teacher_id']}`,
       isSelected: isSelected(row),
       canPreview: getPeriods(newRow['class_time']).length > 0,
-      conflicts: getConflicts(newRow['course_id'], newRow['class_time']),
+      conflicts: getConflicts(newRow['course_id'], newRow['class_time'], newRow['campus']),
     };
     newRow['action'] = {
       row: row,

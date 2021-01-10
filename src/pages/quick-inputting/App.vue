@@ -70,9 +70,12 @@
             <a-popconfirm @confirm="back" placement="bottom" title="关闭选课窗口并退出快捷选课？">
               <a-button size="small" type="link">返回</a-button>
             </a-popconfirm>
-            <a-alert class="casp-alert" close-text="忽略"
-                     message="未选形势与政策" show-icon type="info"
-                     v-if="!$store.getters.currentAffairsAndStatePoliciesSelected" />
+            <a-alert class="selection-export-alert" close-text="忽略" message="未选形势与政策"
+                     show-icon type="info" v-if="!$store.getters.currentAffairsAndStatePoliciesSelected" />
+            <a-alert class="selection-export-alert" close-text="忽略" message="跨校区选课"
+                     show-icon type="info" v-if="$store.getters.crossCampusSelection" />
+            <a-alert class="selection-export-alert" close-text="忽略" message="跨校区课程之间需要空出一个时间段，当前已选课程不满足此要求，可能无法成功选课"
+                     show-icon type="warning" v-if="$store.getters.crossCampusSelectionNotValidated" />
           </div>
         </a-list>
       </a-config-provider>
@@ -260,8 +263,9 @@
     box-shadow: 0 0 0 1px #d9d9d9 inset;
   }
 
-  .casp-alert {
-    margin-top: 10px;
+  .selection-export-alert {
+    margin-top: 8px;
     text-align: left;
+    padding-right: 44px !important;
   }
 </style>

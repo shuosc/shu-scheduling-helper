@@ -39,7 +39,11 @@
           <a-icon class="previewing" type="eye" v-if="!class_time_info.isSelected && class_time_info.canPreview" />
           <!--suppress JSUnresolvedVariable, ES6ModulesDependencies -->
           <template v-if="Object.keys(class_time_info.conflicts).length > 0">
-            <br /><small class="conflict-info">时间冲突</small>
+            <br />
+            <small class="conflict-info">
+              时间冲突
+              <template v-if="Math.min(...Object.values(class_time_info.conflicts)) === 2">(跨校区)</template>
+            </small>
           </template>
           <!--suppress JSUnresolvedVariable, ES6ModulesDependencies -->
           <template v-else-if="class_time_info.isSelected">

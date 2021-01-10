@@ -228,6 +228,13 @@
     color: rgba(0, 0, 0, .45);
   }
 
+  /*noinspection CssUnusedSymbol*/
+  .conflict-list-class-meta-campus {
+    font-size: 12px;
+    font-weight: bold;
+    color: #1890ff;
+  }
+
   .content-actions {
     padding: 8px;
     text-align: center;

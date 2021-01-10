@@ -17,8 +17,12 @@
         设置
       </template>
     </h3>
-    <a-alert class="casp-alert" close-text="忽略" message="未选形势与政策"
+    <a-alert class="selection-export-alert" close-text="忽略" message="未选形势与政策"
              show-icon type="info" v-if="!$store.getters.currentAffairsAndStatePoliciesSelected" />
+    <a-alert class="selection-export-alert" close-text="忽略" message="跨校区选课"
+             show-icon type="info" v-if="$store.getters.crossCampusSelection" />
+    <a-alert class="selection-export-alert" close-text="忽略" message="跨校区课程之间需要空出一个时间段，当前已选课程不满足此要求，可能无法成功选课"
+             show-icon type="warning" v-if="$store.getters.crossCampusSelectionNotValidated" />
     <a-tabs class="tabs" v-model="activeTab">
       <a-tab-pane force-render key="content">
         <a-icon slot="tab" type="file-text" />
@@ -57,7 +61,8 @@
 </template>
 
 <script>
-  import {ExportDialogMixin} from '../../../../mixins/ExportDialog';
+  import { ExportDialogMixin } from '../../../../mixins/ExportDialog';
+
 
   export default {
     name: 'ExportDialog',
@@ -85,7 +90,8 @@
     margin: 0;
   }
 
-  .casp-alert {
+  .selection-export-alert {
     margin-bottom: 3px;
+    padding-right: 44px !important;
   }
 </style>
