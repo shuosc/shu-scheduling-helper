@@ -1,5 +1,6 @@
 import html2canvas from 'html2canvas';
-import {getColor, getPeriods, isMacLike} from '../utils';
+import { getColor, getPeriods, isMacLike } from '../utils';
+
 
 export const ScheduleTableMixin = {
   data() {
@@ -126,6 +127,12 @@ export const ScheduleTableMixin = {
 };
 
 export const ClassCardMixin = {
+  data() {
+    return {
+      courseNameParts: this.getCourseNameParts(),
+      timer: null,
+    };
+  },
   computed: {
     style() {
       return {
@@ -147,8 +154,98 @@ export const ClassCardMixin = {
       }
       return this.$store.state.hoverCourseId === this.course.courseId;
     },
+    courseName() {
+      return this.courseNameParts.join('');
+    },
+  },
+  watch: {
+    course: {
+      handler() {
+        this.doShortenCourseName();
+      },
+      deep: true,
+    },
+  },
+  mounted() {
+    this.doShortenCourseName();
+    window.addEventListener('resize', this.handleResize);
+  },
+  beforeDestroy() {
+    if (this.timer !== null) {
+      clearTimeout(this.timer);
+    }
+    window.removeEventListener('resize', this.handleResize);
   },
   methods: {
+    getCourseNameParts() {
+      const parts = [];
+      let courseName = this.course.courseName;
+      while (courseName.length > 0) {
+        const regexp = /(?:\w|\([^()]+\))$/i;
+        const result = regexp.exec(courseName);
+        if (result != null) {
+          parts.unshift(result[0]);
+          courseName = courseName.slice(0, -result[0].length);
+        } else {
+          parts.unshift(courseName);
+          courseName = '';
+        }
+      }
+      return parts;
+    },
+    handleResize() {
+      if (this.timer !== null) {
+        clearTimeout(this.timer);
+      }
+      this.timer = setTimeout(async () => {
+        await this.doShortenCourseName();
+        clearTimeout(this.timer);
+        this.timer = setTimeout(async () => {
+          await this.doShortenCourseName();
+        }, 500);
+      }, 0);
+    },
+    async doShortenCourseName() {
+      this.courseNameParts = this.getCourseNameParts();
+      await this.$nextTick();
+      const lastLength = [0, 0];
+      while (Math.max(21, this.$refs.courseName.clientHeight) !== Math.max(21, this.$refs.courseName.scrollHeight)) {
+        this.shortenCourseNameParts();
+        lastLength.push(this.courseName.length);
+        lastLength.shift();
+        if (lastLength[0] === lastLength[1]) {
+          break;
+        }
+        await this.$nextTick();
+      }
+    },
+    shortenCourseNameParts() {
+      const parts = this.courseNameParts.slice();
+      if (parts.length === 0) {
+        return;
+      }
+      let index = parts.length - 1;
+      let maxLength = 1;
+      for (let i = parts.length - 1; i >= 0; i--) {
+        if (!/\w|\((?:\w{1,2}|\W)\)/.test(parts[i])) {
+          const lengthCanBeShorten = parts[i]
+            .replace(/^\(/, '')
+            .replace(/\)$/, '')
+            .replace(/…$/, '')
+            .length;
+          if (lengthCanBeShorten > maxLength) {
+            maxLength = lengthCanBeShorten;
+            index = i;
+          }
+        }
+      }
+      if (maxLength > 1) {
+        parts[index] = parts[index]
+          .replace(/[^()]+/, (value) =>
+            `${value.slice(0, 1)}${value.slice(1, value.endsWith('…') ? -2 : -1)}…`);
+      }
+      this.courseNameParts = parts;
+    },
     handleMouseEnter() {
       this.$store.commit('HOVER_COURSE_ID', this.course.courseId);
     },

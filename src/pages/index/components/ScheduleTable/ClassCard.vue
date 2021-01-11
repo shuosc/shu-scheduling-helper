@@ -1,7 +1,6 @@
 <template>
-  <div :class="_class" :style="style"
-       @mouseenter="handleMouseEnter" @mouseleave="handleMouseLeave">
-    <div class="course-name"><strong>{{ course.courseName }}</strong></div>
+  <div :class="_class" :style="style" @mouseenter="handleMouseEnter" @mouseleave="handleMouseLeave">
+    <div class="course-name" ref="courseName"><strong>{{ courseName }}</strong></div>
     <div class="teacher-name-venue" v-if="!venue">
       {{ course.teacherName }}
     </div>
@@ -12,7 +11,8 @@
 </template>
 
 <script>
-  import {ClassCardMixin} from '../../../../mixins/ScheduleTable';
+  import { ClassCardMixin } from '../../../../mixins/ScheduleTable';
+
 
   export default {
     name: 'ClassCard',
@@ -40,7 +40,11 @@
     right: 1px;
     bottom: 1px;
     left: 1px;
+    display: flex;
     overflow: hidden;
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: flex-start;
     padding: 4px 5px 5px;
     cursor: pointer;
     user-select: none;
@@ -66,13 +70,17 @@
 
   .course-name {
     font-size: 13px;
-    line-height: 1.25;
+    line-height: 17px;
+    overflow: hidden;
+    min-height: 17px;
     margin-bottom: 1px;
   }
 
   .teacher-name-venue {
     font-size: 12px;
-    line-height: 1.25;
+    line-height: 16px;
+    overflow: hidden;
+    min-height: 16px;
     color: rgba(255, 255, 255, 0.85);
   }
 
