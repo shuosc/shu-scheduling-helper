@@ -60,7 +60,7 @@ export const ReservedClassesListMixin = {
                     let campusCell = this.$store.getters.campusTableRows[period[0]][period[1]];
                     if (campusCell != null && campusCell !== this.$store.state.reservedClasses[key].classes[teacherId].campus) {
                       const cellBefore = period[0] - 1 >= 0 ? this.$store.getters.scheduleTableRows[period[0] - 1][period[1]] : null;
-                      const cellAfter = period[0] + 1 < 13 ? this.$store.getters.scheduleTableRows[period[0] + 1][period[1]] : null;
+                      const cellAfter = period[0] + 1 < 12 ? this.$store.getters.scheduleTableRows[period[0] + 1][period[1]] : null;
                       if (cellBefore != null && cellBefore.campus !== this.$store.state.reservedClasses[key].classes[teacherId].campus
                         && cellBefore.courseId !== this.id) {
                         isConflicted = true;
@@ -156,7 +156,7 @@ export const CourseClassesListMixin = {
             let campusCell = this.$store.getters.campusTableRows[period[0]][period[1]];
             if (campusCell != null && campusCell !== this.$store.state.reservedClasses[this.id].classes[key].campus) {
               const cellBefore = period[0] - 1 >= 0 ? this.$store.getters.scheduleTableRows[period[0] - 1][period[1]] : null;
-              const cellAfter = period[0] + 1 < 13 ? this.$store.getters.scheduleTableRows[period[0] + 1][period[1]] : null;
+              const cellAfter = period[0] + 1 < 12 ? this.$store.getters.scheduleTableRows[period[0] + 1][period[1]] : null;
               if (cellBefore != null && cellBefore.campus !== this.$store.state.reservedClasses[this.id].classes[key].campus
                 && cellBefore.courseId !== this.id && courseConflicts[cellBefore.courseId] == null) {
                 courseConflicts[cellBefore.courseId] = 2;

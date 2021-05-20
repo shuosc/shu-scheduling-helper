@@ -50,7 +50,7 @@ export function getPeriods(str) {
     let execResult = pattern.exec(str);
     while (execResult !== null) {
       let from = parseInt(execResult[2]), to = execResult[3] != null ? parseInt(execResult[3]) : from;
-      if (from >= 1 && from <= 13 && to >= 1 && to <= 13 && from <= to) {
+      if (from >= 1 && from <= 12 && to >= 1 && to <= 12 && from <= to) {
         for (let i = from; i <= to; i++) {
           result.push([i - 1, ['一', '二', '三', '四', '五'].indexOf(execResult[1]), i === from, to - from + 1]);
         }
@@ -107,12 +107,12 @@ export function getClassesChangeList(before, after, reserved, selected, timeTabl
 
 export function processSelectedClasses(selectedClasses, reservedClasses) {
   let rows = [];
-  for (let i = 0; i < 13; i++) {
+  for (let i = 0; i < 12; i++) {
     rows.push([null, null, null, null, null]);
   }
   let edges = []; // 相邻课程色彩相同则构成一条"边"
   const addNeighborToEdges = (row, col, courseId, color, usedVectors) => {
-    if (row < 0 || row >= 13 || col < 0 || col >= 5) {
+    if (row < 0 || row >= 12 || col < 0 || col >= 5) {
       return true;
     }
     let neighbor = rows[row][col];

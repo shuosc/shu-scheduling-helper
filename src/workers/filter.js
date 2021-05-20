@@ -89,7 +89,7 @@ registerPromiseWorker(function (message) {
         let campusCell = message.campusTableRows[period[0]][period[1]];
         if (campusCell != null && campusCell !== campus) {
           const cellBefore = period[0] - 1 >= 0 ? message.scheduleTableRows[period[0] - 1][period[1]] : null;
-          const cellAfter = period[0] + 1 < 13 ? message.scheduleTableRows[period[0] + 1][period[1]] : null;
+          const cellAfter = period[0] + 1 < 12 ? message.scheduleTableRows[period[0] + 1][period[1]] : null;
           if (cellBefore != null && cellBefore.campus !== campus
             && cellBefore.courseId !== courseId && courseConflicts[cellBefore.courseId] == null) {
             courseConflicts[cellBefore.courseId] = 2;
