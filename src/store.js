@@ -70,10 +70,10 @@ export default new Vuex.Store({
           let teacherId = state.selectedClasses[courseId].teacherId;
           state.selectedClasses[courseId].periods.forEach((period) => {
             rows[period[0]][period[1]] = state.reservedClasses[courseId].classes[teacherId].campus;
-            if (period[0] - 1 >= 0 && rows[period[0] - 1][period[1]] == null) {
+            if (period[0] - 1 >= 0 && period[0] !== 4 && period[0] !== 8 && rows[period[0] - 1][period[1]] == null) {
               rows[period[0] - 1][period[1]] = state.reservedClasses[courseId].classes[teacherId].campus;
             }
-            if (period[0] + 1 < 12 && rows[period[0] + 1][period[1]] == null) {
+            if (period[0] + 1 < 12 && period[0] !== 3 && period[0] !== 7 && rows[period[0] + 1][period[1]] == null) {
               rows[period[0] + 1][period[1]] = state.reservedClasses[courseId].classes[teacherId].campus;
             }
           });
@@ -132,14 +132,14 @@ export default new Vuex.Store({
           state.selectedClasses[courseId].periods.forEach((period) => {
             if (!result) {
               rows[period[0]][period[1]] = state.reservedClasses[courseId].classes[teacherId].campus;
-              if (period[0] - 1 >= 0) {
+              if (period[0] - 1 >= 0 && period[0] !== 4 && period[0] !== 8) {
                 if (rows[period[0] - 1][period[1]] == null) {
                   rows[period[0] - 1][period[1]] = state.reservedClasses[courseId].classes[teacherId].campus;
                 } else if (rows[period[0] - 1][period[1]] !== rows[period[0]][period[1]]) {
                   result = true;
                 }
               }
-              if (period[0] + 1 < 12) {
+              if (period[0] + 1 < 12 && period[0] !== 3 && period[0] !== 7) {
                 if (rows[period[0] + 1][period[1]] == null) {
                   rows[period[0] + 1][period[1]] = state.reservedClasses[courseId].classes[teacherId].campus;
                 } else if (rows[period[0] + 1][period[1]] !== rows[period[0]][period[1]]) {
