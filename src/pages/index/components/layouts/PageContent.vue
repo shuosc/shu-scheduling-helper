@@ -1,5 +1,7 @@
 <template>
   <a-layout-content class="page-content">
+    <a-alert class="content-alert" show-icon type="warning"
+             message="当前暂未完全适配新学期的选课规则，课程时间是否冲突请以学校选课系统为准，谢谢！" />
     <a-spin :spinning="!$store.state.loaded" size="large" tip="正在加载…">
       <a-tabs class="content-tabs" type="card" v-model="activeTab">
         <a-tab-pane key="schedule_table" tab="课表" v-if="showScheduleTable">
@@ -67,192 +69,196 @@
 </template>
 
 <script>
-  import Vue from 'vue';
-  import LookupPanel from '../LookupPanel';
-  import BackupAndRestoreDialog from '../modals/BackupAndRestoreDialog';
-  import ColorSeedDialog from '../modals/ColorSeedDialog';
-  import ExportDialog from '../modals/ExportDialog';
-  import SaveImageDialog from '../modals/SaveImageDialog';
-  import ReservedClassesList from '../ReservedClassesList';
-  import ScheduleTable from '../ScheduleTable';
+import Vue from 'vue';
+import LookupPanel from '../LookupPanel';
+import BackupAndRestoreDialog from '../modals/BackupAndRestoreDialog';
+import ColorSeedDialog from '../modals/ColorSeedDialog';
+import ExportDialog from '../modals/ExportDialog';
+import SaveImageDialog from '../modals/SaveImageDialog';
+import ReservedClassesList from '../ReservedClassesList';
+import ScheduleTable from '../ScheduleTable';
 
 
-  export default {
-    name: 'PageContent',
-    components: {
-      BackupAndRestoreDialog,
-      ColorSeedDialog,
-      ExportDialog,
-      LookupPanel,
-      ReservedClassesList,
-      ScheduleTable,
-      SaveImageDialog,
+export default {
+  name: 'PageContent',
+  components: {
+    BackupAndRestoreDialog,
+    ColorSeedDialog,
+    ExportDialog,
+    LookupPanel,
+    ReservedClassesList,
+    ScheduleTable,
+    SaveImageDialog,
+  },
+  props: {
+    showScheduleTable: {
+      type: Boolean,
     },
-    props: {
-      showScheduleTable: {
-        type: Boolean,
-      },
+  },
+  data() {
+    return {
+      activeTab: 'reserved',
+      quickInputtingWindow: null,
+      exportDialogVisible: false,
+      backupAndRestoreDialogVisible: false,
+      colorSeedDialogVisible: false,
+      saveImageDialogVisible: false,
+      imageBlob: null,
+    };
+  },
+  computed: {
+    reservedClassesCount() {
+      return Object.keys(this.$store.state.reservedClasses).length;
     },
-    data() {
-      return {
-        activeTab: 'reserved',
-        quickInputtingWindow: null,
-        exportDialogVisible: false,
-        backupAndRestoreDialogVisible: false,
-        colorSeedDialogVisible: false,
-        saveImageDialogVisible: false,
-        imageBlob: null,
-      };
+    trimester() {
+      return this.$store.state.trimester;
     },
-    computed: {
-      reservedClassesCount() {
-        return Object.keys(this.$store.state.reservedClasses).length;
-      },
-      trimester() {
-        return this.$store.state.trimester;
-      },
+  },
+  watch: {
+    showScheduleTable() {
+      if (!this.showScheduleTable && this.activeTab === 'schedule_table') {
+        this.activeTab = this.reservedClassesCount > 0 ? 'reserved' : 'lookup';
+      }
     },
-    watch: {
-      showScheduleTable() {
-        if (!this.showScheduleTable && this.activeTab === 'schedule_table') {
-          this.activeTab = this.reservedClassesCount > 0 ? 'reserved' : 'lookup';
-        }
-      },
+  },
+  created() {
+    addEventListener('unload', this.closeQuickInputting);
+    Vue.prototype.$showColorSeedDialog = () => {
+      this.colorSeedDialogVisible = true;
+    };
+    Vue.prototype.$showSaveImageDialog = (blob) => {
+      this.imageBlob = blob;
+      this.saveImageDialogVisible = true;
+    };
+  },
+  beforeDestroy() {
+    removeEventListener('unload', this.closeQuickInputting);
+  },
+  methods: {
+    handleClassCardClick() {
+      this.activeTab = 'reserved';
+      this.$refs.reservedClassesList.scrollTo(this.$store.state.openedCourseId);
     },
-    created() {
-      addEventListener('unload', this.closeQuickInputting);
-      Vue.prototype.$showColorSeedDialog = () => {
-        this.colorSeedDialogVisible = true;
-      };
-      Vue.prototype.$showSaveImageDialog = (blob) => {
-        this.imageBlob = blob;
-        this.saveImageDialogVisible = true;
-      };
+    quickInputting() {
+      this.quickInputtingWindow = open('/quick-inputting.html', 'quick-inputting', `left=0,top=0,width=300,height=${window.screen.availHeight}`);
     },
-    beforeDestroy() {
-      removeEventListener('unload', this.closeQuickInputting);
+    closeQuickInputting() {
+      if (this.quickInputtingWindow !== null && !this.quickInputtingWindow.closed) {
+        this.quickInputtingWindow.dispatchEvent(new Event('unload'));
+        this.quickInputtingWindow.close();
+      }
     },
-    methods: {
-      handleClassCardClick() {
-        this.activeTab = 'reserved';
-        this.$refs.reservedClassesList.scrollTo(this.$store.state.openedCourseId);
-      },
-      quickInputting() {
-        this.quickInputtingWindow = open('/quick-inputting.html', 'quick-inputting', `left=0,top=0,width=300,height=${window.screen.availHeight}`);
-      },
-      closeQuickInputting() {
-        if (this.quickInputtingWindow !== null && !this.quickInputtingWindow.closed) {
-          this.quickInputtingWindow.dispatchEvent(new Event('unload'));
-          this.quickInputtingWindow.close();
-        }
-      },
-    },
-  };
+  },
+};
 </script>
 
 <style scoped>
-  .page-content {
-    min-height: calc(100vh - 64px);
-    margin: 64px 0 0 480px;
-    padding: 8px;
-    transition: all 0.2s ease;
-  }
+.page-content {
+  min-height: calc(100vh - 64px);
+  margin: 64px 0 0 480px;
+  padding: 8px;
+  transition: all 0.2s ease;
+}
 
-  /*noinspection CssUnusedSymbol*/
-  .page-content >>> .ant-spin-container::after {
-    background-color: #f0f2f5;
-  }
+/*noinspection CssUnusedSymbol*/
+.page-content >>> .ant-spin-container::after {
+  background-color: #f0f2f5;
+}
 
-  .tabs-actions {
-    position: relative;
-    top: -4px;
-  }
+.tabs-actions {
+  position: relative;
+  top: -4px;
+}
 
-  .content-footer {
-    font-size: 12px;
-    line-height: 2;
-    padding: 32px 8px;
-    text-align: center;
-  }
+.content-footer {
+  font-size: 12px;
+  line-height: 2;
+  padding: 32px 8px;
+  text-align: center;
+}
 
-  .content-footer a {
-    white-space: nowrap;
-    color: rgba(0, 0, 0, 0.45);
-  }
+.content-footer a {
+  white-space: nowrap;
+  color: rgba(0, 0, 0, 0.45);
+}
 
-  .content-footer a:hover {
-    color: rgba(0, 0, 0, 0.35);
-  }
+.content-footer a:hover {
+  color: rgba(0, 0, 0, 0.35);
+}
 
-  .copyright:before {
-    display: block;
-    height: 24px;
-    margin: 0 0 8px;
-    content: " ";
-    transition: opacity 0.2s, filter 0.2s;
-    opacity: 0.6;
-    background: url("../../../../assets/shuosc-logo-64px.png") center center no-repeat no-repeat;
-    background-size: 24px 24px;
-    filter: grayscale(0.4);
-  }
+.copyright:before {
+  display: block;
+  height: 24px;
+  margin: 0 0 8px;
+  content: " ";
+  transition: opacity 0.2s, filter 0.2s;
+  opacity: 0.6;
+  background: url("../../../../assets/shuosc-logo-64px.png") center center no-repeat no-repeat;
+  background-size: 24px 24px;
+  filter: grayscale(0.4);
+}
 
-  .copyright:hover:before {
-    opacity: 0.8;
-    filter: grayscale(0.2);
-  }
+.copyright:hover:before {
+  opacity: 0.8;
+  filter: grayscale(0.2);
+}
 
-  .alternate-to-desktop {
-    margin-top: 16px;
-  }
+.alternate-to-desktop {
+  margin-top: 16px;
+}
 
-  .back-top {
-    right: 20px;
-    bottom: 20px;
-  }
+.back-top {
+  right: 20px;
+  bottom: 20px;
+}
 
-  .credits-wrapper {
-    line-height: 32px;
-    display: inline-block;
-    height: 32px;
-    margin-right: 12px;
-    vertical-align: top;
-    color: rgba(0, 0, 0, 0.45);
-  }
+.credits-wrapper {
+  line-height: 32px;
+  display: inline-block;
+  height: 32px;
+  margin-right: 12px;
+  vertical-align: top;
+  color: rgba(0, 0, 0, 0.45);
+}
 
-  .credits {
-    color: rgba(0, 0, 0, 0.65);
-  }
+.credits {
+  color: rgba(0, 0, 0, 0.65);
+}
 
-  /*noinspection CssUnusedSymbol*/
-  .content-tabs >>> .ant-tabs-content {
-    margin-top: -16px;
-  }
+/*noinspection CssUnusedSymbol*/
+.content-tabs >>> .ant-tabs-content {
+  margin-top: -16px;
+}
 
-  /*noinspection CssUnusedSymbol*/
-  .content-tabs >>> .ant-tabs-content > .ant-tabs-tabpane {
-    padding: 0;
-    background: white;
-  }
+/*noinspection CssUnusedSymbol*/
+.content-tabs >>> .ant-tabs-content > .ant-tabs-tabpane {
+  padding: 0;
+  background: white;
+}
 
-  /*noinspection CssUnusedSymbol*/
-  .content-tabs >>> .ant-tabs-bar {
-    border-color: white !important;
-  }
+/*noinspection CssUnusedSymbol*/
+.content-tabs >>> .ant-tabs-bar {
+  border-color: white !important;
+}
 
-  /*noinspection CssUnusedSymbol*/
-  .content-tabs >>> .ant-tabs-bar .ant-tabs-tab {
-    border-color: transparent !important;
-    background: transparent !important;
-  }
+/*noinspection CssUnusedSymbol*/
+.content-tabs >>> .ant-tabs-bar .ant-tabs-tab {
+  border-color: transparent !important;
+  background: transparent !important;
+}
 
-  /*noinspection CssUnusedSymbol*/
-  .content-tabs >>> .ant-tabs-bar .ant-tabs-tab-active {
-    border-color: white !important;
-    background: white !important;
-  }
+/*noinspection CssUnusedSymbol*/
+.content-tabs >>> .ant-tabs-bar .ant-tabs-tab-active {
+  border-color: white !important;
+  background: white !important;
+}
 
-  /*noinspection CssUnusedSymbol*/
-  .content-tabs >>> .ant-tabs-nav {
-    user-select: none;
-  }
+/*noinspection CssUnusedSymbol*/
+.content-tabs >>> .ant-tabs-nav {
+  user-select: none;
+}
+
+.content-alert {
+  margin-bottom: 8px;
+}
 </style>
