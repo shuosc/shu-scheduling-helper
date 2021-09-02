@@ -53,6 +53,8 @@ export default new Vuex.Store({
               span: period[3],
               color: state.selectedClasses[courseId].themeColor,
               isPreview: false,
+              fortnight: period[4] ? period[4] + "周" : null,
+              lab: period[5]
             };
           });
         }
