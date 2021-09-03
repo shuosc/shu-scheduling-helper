@@ -45,14 +45,14 @@ export function getPeriods(str) {
   if (periodsCache.hasOwnProperty(str)) {
     return periodsCache[str];
   } else {
-    let pattern = /([一二三四五])(\d+)(?:-(\d+))?/g;
+    let pattern = /([一二三四五])(\d+)(?:-(\d+))?([单双])?(?:\D*?(上机|实验))?/g;
     let result = [];
     let execResult = pattern.exec(str);
     while (execResult !== null) {
       let from = parseInt(execResult[2]), to = execResult[3] != null ? parseInt(execResult[3]) : from;
       if (from >= 1 && from <= 12 && to >= 1 && to <= 12 && from <= to) {
         for (let i = from; i <= to; i++) {
-          result.push([i - 1, ['一', '二', '三', '四', '五'].indexOf(execResult[1]), i === from, to - from + 1]);
+          result.push([i - 1, ['一', '二', '三', '四', '五'].indexOf(execResult[1]), i === from, to - from + 1, execResult[4], execResult[5]]);
         }
       }
       execResult = pattern.exec(str);

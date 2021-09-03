@@ -7,6 +7,9 @@
     <div class="venue" v-else>
       <span class="venue-at">@</span>{{ $store.getters.extra(`${course.courseId}-${course.teacherId}`).venue }}
     </div>
+    <div class="extra" v-if="course.fortnight || course.lab">
+      {{ course.fortnight }} {{ course.lab }}
+    </div>
   </div>
 </template>
 
@@ -93,5 +96,11 @@
   .venue-at {
     font-weight: bold;
     color: white;
+  }
+
+  .extra {
+      font-size: 12px;
+      line-height: 1.25;
+      color: rgba(255, 255, 255, 0.8);
   }
 </style>
