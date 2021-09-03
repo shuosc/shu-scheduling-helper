@@ -8,7 +8,7 @@
       <span class="venue-at">@</span>{{ $store.getters.extra(`${course.courseId}-${course.teacherId}`).venue }}
     </div>
     <div class="extra" v-if="course.fortnight || course.lab">
-      {{ course.fortnight }} {{course.lab}}
+      {{ course.fortnight }} {{ course.lab }}
     </div>
   </div>
 </template>

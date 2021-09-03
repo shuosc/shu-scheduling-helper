@@ -70,8 +70,8 @@ export const ScheduleTableMixin = {
             span: period[3],
             color: getColor(this.$store.state.previewClass.courseName, 0),
             isPreview: true,
-            fortnight: period[4] ? period[4] + "周" : null,
-            lab: period[5]
+            fortnight: period[4] ? period[4] + '周' : null,
+            lab: period[5],
           };
         });
         return rows;
