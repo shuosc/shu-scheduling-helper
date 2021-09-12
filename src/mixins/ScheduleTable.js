@@ -26,29 +26,8 @@ export const ScheduleTableMixin = {
   },
   computed: {
     rows() {
-      if (this.$store.state.previewClass == null && !this.capturing) {
+      if (this.$store.state.previewClass == null) {
         return this.$store.getters.scheduleTableRows;
-      } else if (this.capturing) {
-        let rows = JSON.parse(JSON.stringify(this.$store.getters.scheduleTableRows));
-        let flag = false;
-        [4, 3, 2, 1, 0].forEach((j) => {
-          [11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0].forEach((i) => {
-            if (!flag && rows[i][j] == null && rows[i + 1][j] == null) {
-              rows[i][j] = {
-                qr: true,
-                span: 2,
-                first: true,
-              };
-              rows[i + 1][j] = {
-                qr: true,
-                span: 2,
-                first: false,
-              };
-              flag = true;
-            }
-          });
-        });
-        return rows;
       } else {
         let rows = JSON.parse(JSON.stringify(this.$store.getters.scheduleTableRows));
         rows.forEach((row, i) => {
