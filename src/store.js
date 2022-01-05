@@ -158,6 +158,7 @@ export default new Vuex.Store({
       return (key) => {
         if (state.allClassesExtra.hasOwnProperty(key)) {
           return {
+            teacher_title: state.allClassesExtra[key]['teacher_title'] || '',
             capacity: state.allClassesExtra[key]['capacity'] || '-',
             limitations: state.allClassesExtra[key]['limitations'] || [],
             number: state.allClassesExtra[key]['number'] || '-',
@@ -166,6 +167,7 @@ export default new Vuex.Store({
           };
         } else {
           return {
+            teacher_title: '',
             capacity: '-',
             limitations: [],
             number: '-',

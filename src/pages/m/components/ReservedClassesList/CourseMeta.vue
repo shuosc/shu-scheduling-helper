@@ -6,7 +6,11 @@
     <template v-if="selectedClassKey !== null && !expanded">
       <br />
       {{ course.classes[selectedClassKey].teacherName }}
-      <small>({{ selectedClassKey }})</small>
+      <small>({{
+          $store.getters.extra(`${id}-${selectedClassKey}`).teacher_title
+            ? $store.getters.extra(`${id}-${selectedClassKey}`).teacher_title + ', '
+            : ''
+        }}{{ selectedClassKey }})</small>
       <a-divider type="vertical" />
       <small>
         <NumberCapacity :class-key="`${id}-${selectedClassKey}`" class="number-capacity" slot="actions" />

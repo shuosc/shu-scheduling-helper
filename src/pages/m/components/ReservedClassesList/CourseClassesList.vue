@@ -7,7 +7,11 @@
     >
       <a-list-item-meta>
         <template slot="title">{{ course.classes[selectedClassKey].teacherName }}
-          <small>({{ selectedClassKey }})</small>
+          <small>({{
+              $store.getters.extra(`${id}-${selectedClassKey}`).teacher_title
+                ? $store.getters.extra(`${id}-${selectedClassKey}`).teacher_title + ', '
+                : ''
+            }}{{ selectedClassKey }})</small>
         </template>
         <template slot="description">
           <NumberCapacity :class-key="`${id}-${selectedClassKey}`" class="number-capacity" slot="actions" />
@@ -56,7 +60,11 @@
       </a-button>
       <a-list-item-meta>
         <template slot="title">{{ course.classes[key].teacherName }}
-          <small>({{ key }})</small>
+          <small class="teacher-id">({{
+              $store.getters.extra(`${id}-${key}`).teacher_title
+                ? $store.getters.extra(`${id}-${key}`).teacher_title + ', '
+                : ''
+            }}{{ key }})</small>
         </template>
         <template slot="description">
           <NumberCapacity :class-key="`${id}-${key}`" class="number-capacity" slot="actions" />

@@ -19,7 +19,13 @@
             {{ course['course_name'] }} <small>({{ course['course_id'] }})</small>
             <a-badge :count="`${course.credit}学分`" class="credit-badge" />
           </h3>
-          <h4>{{ course['teacher_name'] }} <small>({{ course['teacher_id'] }})</small></h4>
+          <h4>{{ course['teacher_name'] }}
+            <small>{{
+                $store.getters.extra(`${course['course_id']}-${course['teacher_id']}`).teacher_title
+                  ? $store.getters.extra(`${course['course_id']}-${course['teacher_id']}`) + ', '
+                  : ''
+              }}{{ course['teacher_id'] }})</small>
+          </h4>
           <div class="course-info">
             {{ course['class_time'] }}
             <a-divider type="vertical" />
@@ -132,12 +138,12 @@
 </template>
 
 <script>
-  import { conflictSolvingMixin } from '../../../../mixins/common/conflictsSolver';
-  import { LookupPanelMixin } from '../../../../mixins/LookupPanel';
-  import LookupConditions from './LookupConditions';
+import {conflictSolvingMixin} from '../../../../mixins/common/conflictsSolver';
+import {LookupPanelMixin} from '../../../../mixins/LookupPanel';
+import LookupConditions from './LookupConditions';
 
 
-  export default {
+export default {
     name: 'LookupPanel',
     components: {
       LookupConditions,

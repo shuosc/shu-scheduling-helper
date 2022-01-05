@@ -7,7 +7,11 @@
     >
       <a-list-item-meta>
         <template slot="title">{{ course.classes[selectedClassKey].teacherName }}
-          <small>({{ selectedClassKey }})</small>
+          <small>({{
+              $store.getters.extra(`${id}-${selectedClassKey}`).teacher_title
+                ? $store.getters.extra(`${id}-${selectedClassKey}`).teacher_title + ', '
+                : ''
+            }}{{ selectedClassKey }})</small>
         </template>
         <template slot="description">
           {{ course.classes[selectedClassKey].classTime }}
@@ -56,7 +60,11 @@
       <a-button :disabled="storageBusy" @click="doRemoveReservedClass(key)" slot="actions" type="dashed">- 待选</a-button>
       <a-list-item-meta>
         <template slot="title">{{ course.classes[key].teacherName }}
-          <small>({{ key }})</small>
+          <small>({{
+              $store.getters.extra(`${id}-${key}`).teacher_title
+                ? $store.getters.extra(`${id}-${key}`).teacher_title + ', '
+                : ''
+            }}{{ key }})</small>
           <a-icon class="previewing" type="eye" />
         </template>
         <template slot="description">

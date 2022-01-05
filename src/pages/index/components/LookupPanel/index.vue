@@ -29,7 +29,11 @@
       </a-table-column>
       <a-table-column data-index="teacher" title="教师">
         <template v-slot="teacher">
-          {{ teacher.name }}<br /><small class="id-info teacher-id-info">{{ teacher.id }}</small>
+          {{ teacher.name }}
+          <small v-if="$store.getters.extra(teacher.key).teacher_title" class="teacher-title">
+            ({{ $store.getters.extra(teacher.key).teacher_title }})
+          </small>
+          <br /><small class="id-info teacher-id-info">{{ teacher.id }}</small>
         </template>
       </a-table-column>
       <a-table-column data-index="class_time_info" title="上课时间">
@@ -245,6 +249,10 @@
   .id-info {
     font-size: 12px;
     color: rgba(0, 0, 0, 0.35);
+  }
+
+  .teacher-title {
+    font-size: 12px;
   }
 
   .teacher-id-info {

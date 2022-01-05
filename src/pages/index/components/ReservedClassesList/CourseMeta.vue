@@ -10,8 +10,12 @@
        rel="external nofollow" target="_blank">简介</a>
     <template v-if="selectedClassKey !== null && !expanded">
       <br />
-      <span class="teacher-name">{{ course.classes[selectedClassKey].teacherName }}</span>
-      <small class="teacher-id">({{ selectedClassKey }})</small>
+      <span class="teacher-name">{{ course.classes[selectedClassKey].teacherName }}</span>{{ ' ' }}
+      <small class="teacher-id">({{
+          $store.getters.extra(`${id}-${selectedClassKey}`).teacher_title
+            ? $store.getters.extra(`${id}-${selectedClassKey}`).teacher_title + ', '
+            : ''
+        }}{{ selectedClassKey }})</small>
       <a-divider type="vertical" />
       <small class="selected-info">
         {{ course.classes[selectedClassKey].classTime }}

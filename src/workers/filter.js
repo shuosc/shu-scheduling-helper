@@ -147,6 +147,7 @@ registerPromiseWorker(function (message) {
       credit: newRow['credit'],
     };
     newRow['teacher'] = {
+      key: `${newRow['course_id']}-${newRow['teacher_id']}`,
       id: newRow['teacher_id'],
       name: newRow['teacher_name'],
     };
