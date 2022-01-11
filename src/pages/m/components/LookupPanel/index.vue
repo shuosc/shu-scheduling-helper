@@ -20,9 +20,9 @@
             <a-badge :count="`${course.credit}学分`" class="credit-badge" />
           </h3>
           <h4>{{ course['teacher_name'] }}
-            <small>{{
+            <small>({{
                 $store.getters.extra(`${course['course_id']}-${course['teacher_id']}`).teacher_title
-                  ? $store.getters.extra(`${course['course_id']}-${course['teacher_id']}`) + ', '
+                  ? $store.getters.extra(`${course['course_id']}-${course['teacher_id']}`).teacher_title + ', '
                   : ''
               }}{{ course['teacher_id'] }})</small>
           </h4>
