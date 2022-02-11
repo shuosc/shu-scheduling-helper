@@ -1,0 +1,76 @@
+{
+  "name": "shu-scheduling-helper",
+  "version": "3.0.0-alpha",
+  "description": "A web based timetabler helping SHUers filter and preselect courses easily.",
+  "author": "SHUOSC",
+  "license": "GPL-3.0-or-later",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shuosc/shu-scheduling-helper.git"
+  },
+  "bugs": {
+    "url": "https://github.com/shuosc/shu-scheduling-helper/issues"
+  },
+  "dependencies": {
+    "@fluentui/react": "^8.60.3",
+    "@reduxjs/toolkit": "^1.8.0",
+    "@testing-library/jest-dom": "^5.14.1",
+    "axios": "^0.26.1",
+    "date-fns": "^2.28.0",
+    "dexie": "^3.2.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-redux": "^7.2.6",
+    "redux-persist": "^6.0.0",
+    "redux-saga": "^1.1.3",
+    "web-vitals": "^2.1.0"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^16.2.1",
+    "@commitlint/config-conventional": "^16.2.1",
+    "@testing-library/react": "^12.1.4",
+    "@testing-library/user-event": "^13.2.1",
+    "@types/jest": "^27.4.1",
+    "@types/node": "^16.11.26",
+    "@types/react": "^17.0.20",
+    "@types/react-dom": "^17.0.9",
+    "@types/redux-persist": "^4.3.1",
+    "babel-eslint": "^10.1.0",
+    "eslint": "8.2.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-typescript": "^16.1.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-config-react-app": "^7.0.0",
+    "eslint-import-resolver-typescript": "^2.5.0",
+    "eslint-loader": "^4.0.2",
+    "eslint-plugin-flowtype": "^8.0.3",
+    "eslint-plugin-prettier": "^4.0.0",
+    "husky": "^7.0.4",
+    "prettier": "^2.5.1",
+    "prettier-eslint": "^13.0.0",
+    "prettier-eslint-cli": "^5.0.1",
+    "react-scripts": "5.0.0",
+    "typescript": "~4.5.5"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "prepare": "husky install",
+    "format": "prettier --write src/**/*.ts{,x}",
+    "lint": "tsc --noEmit && eslint src/**/*.ts{,x}"
+  },
+  "proxy": "https://api.xk.shuosc.com",
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

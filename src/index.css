@@ -1,0 +1,18 @@
+@import "../node_modules/sanitize.css";
+
+html {
+  min-width: 320px;
+}
+
+html, body, #root {
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+@media (min-width: 1000px) {
+  html, body, #root {
+    overflow: hidden;
+    height: 100%;
+  }
+}
