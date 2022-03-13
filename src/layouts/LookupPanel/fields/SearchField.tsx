@@ -113,11 +113,10 @@ const SearchField: React.FC<SearchFieldBaseProps> = ({ fieldName, label, width }
     onChange(value.trim());
   }, [onChange, value]);
 
-  const onRenderSuffix = useCallback(() => {
-    return value ? (
-      <IconButton iconProps={clearIconProps} styles={clearButtonStyles} ariaLabel="清除文本" onClick={onClear} />
-    ) : null;
-  }, [onClear, value]);
+  const onRenderSuffix = useCallback(
+    () => <IconButton iconProps={clearIconProps} styles={clearButtonStyles} ariaLabel="清除文本" onClick={onClear} />,
+    [onClear]
+  );
 
   return (
     <div className={wrapperClassName}>
@@ -126,7 +125,7 @@ const SearchField: React.FC<SearchFieldBaseProps> = ({ fieldName, label, width }
         label={label}
         prefix={label}
         styles={styles}
-        onRenderSuffix={onRenderSuffix}
+        onRenderSuffix={value ? onRenderSuffix : undefined}
         onChange={onChangeImpl}
         onBlur={onBlur}
       />

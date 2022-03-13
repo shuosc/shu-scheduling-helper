@@ -99,7 +99,6 @@ const rootSlice = createSlice({
     },
     resetFilterConditions: (state) => {
       state.filterConditions = filterConditions();
-      console.log(state.filterConditions);
     },
   },
 });
