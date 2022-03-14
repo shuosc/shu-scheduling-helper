@@ -1,4 +1,4 @@
-@import "../node_modules/sanitize.css";
+@import "~sanitize.css";
 
 html {
   min-width: 320px;

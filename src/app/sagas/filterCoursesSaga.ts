@@ -6,6 +6,7 @@ import {
   selectFilterConditions,
   setCourseKeys,
   setCourseSelection,
+  setCourseTimeSpent,
 } from '../store';
 import { Course, ExtendedCourseKey, FilterConditions, Term, WhereFn } from '../types';
 import { compileSearchRegExp } from '../../utils';
@@ -21,6 +22,8 @@ const searchKeys: (keyof FilterConditions & keyof Course)[] = [
 ];
 
 function* filterCoursesSaga() {
+  const startTime = new Date().getTime();
+
   let result: ExtendedCourseKey[] = [];
   const db = getDb();
   const term: Term | null = yield select(selectActiveTerm);
@@ -49,9 +52,13 @@ function* filterCoursesSaga() {
     }
     result = yield call(db.listFilteredCourses, term.termId, term.hash, where, []);
   }
+
+  const endTime = new Date().getTime();
+
   if (!((yield cancelled()) as boolean)) {
     yield put(setCourseSelection(null));
     yield put(setCourseKeys(result));
+    yield put(setCourseTimeSpent(endTime - startTime));
     yield call(loadCourseDetailsSaga, loadCourseDetails({ offset: 0, limit: 10 }));
   }
 }

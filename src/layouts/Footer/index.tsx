@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { IStackStyles, IStackTokens, ITextStyles, Link, mergeStyles, Stack, Text, useTheme } from '@fluentui/react';
 import shuoscLogo from '../../assets/shuosc.png';
 
-const stackTokens: IStackTokens = { childrenGap: '6px', padding: '20px 20px 48px' };
+const stackTokens: IStackTokens = { childrenGap: '6px', padding: '20px 20px 32px' };
 const stackStyles: Partial<IStackStyles> = { root: { textAlign: 'center' } };
 const logoClassName = mergeStyles({
   height: '24px',

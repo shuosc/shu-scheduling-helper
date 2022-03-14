@@ -5,6 +5,8 @@ import { loadCourseDetails, selectCourseMaxPage, selectCoursePage } from '../../
 
 const commandBarStyles: Partial<ICommandBarStyles> = { root: { padding: '0' } };
 
+const onReduceData = () => void 0;
+
 export interface ToolbarBaseProps {
   items: ICommandBarItemProps[];
 }
@@ -78,11 +80,7 @@ const ToolbarBase: React.FC<ToolbarBaseProps> = ({ items }) => {
     [courseMaxPage, coursePage, dispatch]
   );
 
-  return (
-    <>
-      <CommandBar items={items} farItems={farItems} styles={commandBarStyles} onReduceData={() => undefined} />
-    </>
-  );
+  return <CommandBar items={items} farItems={farItems} styles={commandBarStyles} onReduceData={onReduceData} />;
 };
 
 export default ToolbarBase;

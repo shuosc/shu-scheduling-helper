@@ -110,6 +110,7 @@ export interface State {
   courseItems: CourseListItem[];
   courseOffset: number;
   courseLimit: number;
+  courseTimeSpent: number | null;
   courseSelection: Record<string, true> | null;
   filterConditions: FilterConditions;
 }

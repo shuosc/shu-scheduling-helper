@@ -4,9 +4,11 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { selectCourseSelection, setCourseSelection } from '../../app/store';
 import MultipleSelectActions from './MultipleSelectActions';
 import ToolbarBase from './Toolbar.base';
+import { useWrapperClassNames } from './Toolbar.common';
 
 const ToolbarDesktop: React.FC = () => {
   const courseSelection = useAppSelector(selectCourseSelection);
+  const wrapperClassNames = useWrapperClassNames(true);
   const dispatch = useAppDispatch();
 
   const items = useMemo<ICommandBarItemProps[]>(
@@ -28,7 +30,15 @@ const ToolbarDesktop: React.FC = () => {
     [courseSelection, dispatch]
   );
 
-  return <ToolbarBase items={items} />;
+  return (
+    <>
+      <div className={wrapperClassNames.content}>
+        <ToolbarBase items={items} />
+      </div>
+      <div className={wrapperClassNames.border} />
+      <div className={wrapperClassNames.mask} />
+    </>
+  );
 };
 
 export default ToolbarDesktop;

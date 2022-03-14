@@ -3,7 +3,7 @@ import { ContextualMenuItemType, DefaultButton, IStackTokens, Link, Stack, Text 
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { selectCourseSelectionCount, setCourseSelection } from '../../app/store';
 
-const stackTokens: IStackTokens = { childrenGap: '0 16px', padding: '6px 0' };
+const stackTokens: IStackTokens = { childrenGap: '0 16px' };
 
 const MultipleSelectActions: React.FC = () => {
   const selectionCount = useAppSelector(selectCourseSelectionCount);
@@ -36,14 +36,18 @@ const MultipleSelectActions: React.FC = () => {
       />
       <Stack.Item>
         <Stack horizontal verticalAlign="center" tokens={stackTokens} wrap>
-          <Text>已选中 {selectionCount} 行</Text>
-          <Link
-            onClick={() => {
-              dispatch(setCourseSelection(null));
-            }}
-          >
-            取消选择
-          </Link>
+          <Stack.Item>
+            <Text>已选中 {selectionCount} 行</Text>
+          </Stack.Item>
+          <Stack.Item>
+            <Link
+              onClick={() => {
+                dispatch(setCourseSelection(null));
+              }}
+            >
+              取消选择
+            </Link>
+          </Stack.Item>
         </Stack>
       </Stack.Item>
     </Stack>

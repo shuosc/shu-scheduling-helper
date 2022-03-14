@@ -1,5 +1,5 @@
 import React from 'react';
-import NavWrapper from './NavWrapper';
+import NavWrapper from './Nav.wrapper';
 import Nav from './Nav';
 import NavDesktop from './Nav.desktop';
 

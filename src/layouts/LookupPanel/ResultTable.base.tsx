@@ -7,14 +7,7 @@ import { getCourseKeyStr } from '../../utils';
 import PageCheckbox from './PageCheckbox';
 import RowCheckbox from './RowCheckbox';
 
-const listStyles: Partial<IDetailsListStyles> = {
-  root: {
-    marginBottom: '8px',
-  },
-  headerWrapper: {
-    marginTop: '-8px',
-  },
-};
+const listStyles: Partial<IDetailsListStyles> = { root: { marginBottom: '8px' }, headerWrapper: { marginTop: '-8px' } };
 const selectionColumn: IColumn = {
   key: 'SELECTION',
   name: '',

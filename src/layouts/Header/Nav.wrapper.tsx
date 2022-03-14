@@ -31,7 +31,7 @@ const NavWrapper: React.FC<NavWrapperProps> = ({ desktop, children }) => {
           })
         : mergeStyles({
             position: 'sticky',
-            zIndex: '1',
+            zIndex: '10',
             top: '0',
             right: '0',
             left: '0',

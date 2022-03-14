@@ -30,6 +30,7 @@ const initialState: State = {
   courseItems: [],
   courseOffset: 0,
   courseLimit: 10,
+  courseTimeSpent: null,
   courseSelection: null,
   filterConditions: filterConditions(),
 };
@@ -66,6 +67,9 @@ const rootSlice = createSlice({
     },
     setCourseKeys: (state, action: PayloadAction<ExtendedCourseKey[]>) => {
       state.courseKeys = action.payload;
+    },
+    setCourseTimeSpent: (state, action: PayloadAction<number | null>) => {
+      state.courseTimeSpent = action.payload;
     },
     setCourseItems: (state, action: PayloadAction<CourseListItem[]>) => {
       state.courseItems = action.payload;
@@ -141,6 +145,7 @@ export const {
   setAvailableTerms,
   setActiveTermId,
   setCourseKeys,
+  setCourseTimeSpent,
   setCourseItems,
   setCourseOffset,
   setCourseLimit,
@@ -166,6 +171,7 @@ export const selectCourseTotal = (state: RootState) => state.courseKeys.length;
 export const selectCoursePage = (state: RootState) => Math.floor(state.courseOffset / state.courseLimit) + 1;
 export const selectCourseMaxPage = (state: RootState) =>
   Math.max(1, Math.ceil(state.courseKeys.length / state.courseLimit));
+export const selectCourseTimeSpent = (state: RootState) => state.courseTimeSpent;
 export const selectCourseSelection = (state: RootState) => state.courseSelection;
 export const selectCourseSelectionCount = (state: RootState) => Object.keys(state.courseSelection || {}).length;
 export const selectFilterConditions = (state: RootState) => state.filterConditions;

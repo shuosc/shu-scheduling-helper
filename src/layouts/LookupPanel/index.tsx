@@ -1,8 +1,17 @@
 import React, { useMemo } from 'react';
-import { IStackItemStyles, IStackItemTokens, IStackTokens, mergeStyles, Stack, useTheme } from '@fluentui/react';
+import {
+  IStackItemStyles,
+  IStackItemTokens,
+  IStackTokens,
+  ITextStyles,
+  mergeStyles,
+  Stack,
+  Text,
+  useTheme,
+} from '@fluentui/react';
 import constants from '../../app/constants';
 import { useAppSelector } from '../../app/hooks';
-import { selectCourseTotal } from '../../app/store';
+import { selectCourseTimeSpent, selectCourseTotal } from '../../app/store';
 import ResultTable from './ResultTable';
 import ResultTableDesktop from './ResultTable.desktop';
 import Toolbar from './Toolbar';
@@ -12,6 +21,7 @@ import DataDescription from './DataDescription';
 
 const stackTokens: IStackTokens = { childrenGap: '8px' };
 const stackItemTokens: IStackItemTokens = { padding: '12px' };
+const tableFooterTokens: IStackTokens = { padding: '12px' };
 const noResultStackItemTokens: IStackItemTokens = { padding: '60px 12px' };
 const resultTableWrapperClassName = mergeStyles({
   display: 'block',
@@ -46,8 +56,17 @@ const LookupPanel: React.FC = () => {
     }),
     [theme]
   );
+  const timeSpentTextStyles = useMemo<Partial<ITextStyles>>(
+    () => ({
+      root: {
+        color: theme.palette.neutralTertiary,
+      },
+    }),
+    [theme]
+  );
 
   const courseTotal = useAppSelector(selectCourseTotal);
+  const courseTimeSpent = useAppSelector(selectCourseTimeSpent);
 
   return (
     <Stack tokens={stackTokens}>
@@ -59,13 +78,19 @@ const LookupPanel: React.FC = () => {
           <div className={resultTableWrapperClassName}>
             <Toolbar />
             <ResultTable />
-            <Toolbar />
           </div>
           <div className={desktopResultTableWrapperClassName}>
             <ToolbarDesktop />
             <ResultTableDesktop />
-            <ToolbarDesktop />
           </div>
+          <Stack horizontal verticalAlign="center" tokens={tableFooterTokens}>
+            <Text>共 {courseTotal} 条记录</Text>
+            {courseTimeSpent != null && (
+              <Text variant="small" styles={timeSpentTextStyles}>
+                （检索耗时 {courseTimeSpent} ms）
+              </Text>
+            )}
+          </Stack>
         </Stack.Item>
       ) : (
         <Stack.Item tokens={noResultStackItemTokens} styles={noResultStackItemStyles}>
