@@ -25,3 +25,8 @@ export const filterAssign = <T extends object>(target: object, ...sources: objec
         }, {} as any)
     )
   );
+
+export const getNum = (numStr?: string) => {
+  const num = numStr ? parseInt(numStr) : NaN;
+  return Number.isSafeInteger(num) ? num : NaN;
+};

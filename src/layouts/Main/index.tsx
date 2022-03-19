@@ -4,7 +4,7 @@ import constants from '../../app/constants';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { selectTabKey, setTabKey } from '../../app/store';
 import { TabKey } from '../../app/enums';
-import LookupPanel from '../LookupPanel';
+import LookupList from '../LookupList';
 import TimeTable from '../TimeTable';
 import Footer from '../Footer';
 import MyCourses from '../MyCourses';
@@ -84,15 +84,15 @@ const Main: React.FC = () => {
       mergeStyles({
         display: tabKey === TabKey.MY_COURSES ? 'block' : 'none',
         [constants.MEDIA_DESKTOP_SCREEN]: {
-          display: tabKey !== TabKey.LOOKUP_PANEL ? 'block' : 'none',
+          display: tabKey !== TabKey.LOOKUP_LIST ? 'block' : 'none',
         },
       }),
     [tabKey]
   );
-  const lookupPanelClassName = useMemo(
+  const lookupListClassName = useMemo(
     () =>
       mergeStyles({
-        display: tabKey === TabKey.LOOKUP_PANEL ? 'block' : 'none',
+        display: tabKey === TabKey.LOOKUP_LIST ? 'block' : 'none',
       }),
     [tabKey]
   );
@@ -120,13 +120,13 @@ const Main: React.FC = () => {
           onLinkClick={onLinkClick}
         >
           <PivotItem itemKey={TabKey.MY_COURSES} headerText="我的课程" />
-          <PivotItem itemKey={TabKey.LOOKUP_PANEL} headerText="检索" />
+          <PivotItem itemKey={TabKey.LOOKUP_LIST} headerText="检索" />
         </Pivot>
         <div className={myCoursesClassName}>
           <MyCourses />
         </div>
-        <div className={lookupPanelClassName}>
-          <LookupPanel />
+        <div className={lookupListClassName}>
+          <LookupList />
         </div>
         <Footer />
       </section>

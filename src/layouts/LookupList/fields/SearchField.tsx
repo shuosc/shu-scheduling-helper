@@ -1,12 +1,14 @@
 import React, { useCallback, useMemo } from 'react';
 import {
-  getRTL,
   IButtonStyles,
   IconButton,
   IIconProps,
   ILabelStyles,
   ITextFieldStyles,
+  ITextStyles,
   mergeStyles,
+  Stack,
+  Text,
   TextField,
   useTheme,
 } from '@fluentui/react';
@@ -32,8 +34,7 @@ const SearchField: React.FC<SearchFieldBaseProps> = ({ fieldName, label, width }
         color: theme.palette.black,
         display: 'flex',
         minWidth: 'calc(5em + 20px)',
-        textAlign: 'right',
-        [constants.MEDIA_DESKTOP_SCREEN]: {
+        [constants.MEDIA_WIDE_DESKTOP_SCREEN]: {
           display: 'none',
         },
       },
@@ -41,20 +42,16 @@ const SearchField: React.FC<SearchFieldBaseProps> = ({ fieldName, label, width }
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'stretch',
-        cursor: 'pointer',
-        flexBasis: '32px',
         flexShrink: '0',
         padding: '1px 0',
         margin: '-1px 0px',
         background: 'transparent',
-        '&:hover .ms-Button': {
-          backgroundColor: theme.palette.neutralLighter,
-        },
-        '&:hover .ms-Button-icon': {
-          color: theme.palette.neutralPrimary,
+        userSelect: 'none',
+        '.ms-Stack': {
+          marginRight: '4px',
         },
         '.ms-Button': {
-          borderRadius: getRTL(theme) ? '1px 0 0 1px' : '0 1px 1px 0',
+          borderRadius: '0 1px 1px 0',
         },
         '.ms-Button-icon': {
           color: theme.palette.neutralPrimary,
@@ -64,7 +61,7 @@ const SearchField: React.FC<SearchFieldBaseProps> = ({ fieldName, label, width }
         label: {
           root: {
             display: 'none',
-            [constants.MEDIA_DESKTOP_SCREEN]: {
+            [constants.MEDIA_WIDE_DESKTOP_SCREEN]: {
               display: 'block',
             },
           },
@@ -73,11 +70,17 @@ const SearchField: React.FC<SearchFieldBaseProps> = ({ fieldName, label, width }
     }),
     [theme]
   );
+  const regExpModeTextStyles = useMemo<Partial<ITextStyles>>(
+    () => ({
+      root: { color: theme.palette.neutralTertiary },
+    }),
+    [theme]
+  );
   const wrapperClassName = useMemo(
     () =>
       mergeStyles({
         width: '100%',
-        [constants.MEDIA_DESKTOP_SCREEN]: {
+        [constants.MEDIA_WIDE_DESKTOP_SCREEN]: {
           maxWidth: width,
         },
       }),
@@ -88,6 +91,16 @@ const SearchField: React.FC<SearchFieldBaseProps> = ({ fieldName, label, width }
   const dispatch = useAppDispatch();
   const value = conditions[fieldName];
 
+  const errorMessage = useMemo(() => {
+    if (conditions.regExpMode) {
+      try {
+        new RegExp(value);
+      } catch (e: any) {
+        return e.message;
+      }
+    }
+    return undefined;
+  }, [conditions.regExpMode, value]);
   const onChange = useCallback(
     (newValue: string) => {
       dispatch(
@@ -104,18 +117,36 @@ const SearchField: React.FC<SearchFieldBaseProps> = ({ fieldName, label, width }
     },
     [onChange]
   );
-
   const onClear = useCallback(() => {
     onChange('');
   }, [onChange]);
-
   const onBlur = useCallback(() => {
     onChange(value.trim());
   }, [onChange, value]);
-
-  const onRenderSuffix = useCallback(
-    () => <IconButton iconProps={clearIconProps} styles={clearButtonStyles} ariaLabel="清除文本" onClick={onClear} />,
-    [onClear]
+  const onRenderSuffix = useMemo(
+    () =>
+      conditions.regExpMode || value
+        ? () => (
+            <>
+              {conditions.regExpMode && (
+                <Stack horizontal verticalAlign="center">
+                  <Text variant="smallPlus" styles={regExpModeTextStyles}>
+                    正则
+                  </Text>
+                </Stack>
+              )}
+              {value && (
+                <IconButton
+                  iconProps={clearIconProps}
+                  styles={clearButtonStyles}
+                  ariaLabel="清除文本"
+                  onClick={onClear}
+                />
+              )}
+            </>
+          )
+        : undefined,
+    [conditions.regExpMode, onClear, regExpModeTextStyles, value]
   );
 
   return (
@@ -125,7 +156,9 @@ const SearchField: React.FC<SearchFieldBaseProps> = ({ fieldName, label, width }
         label={label}
         prefix={label}
         styles={styles}
-        onRenderSuffix={value ? onRenderSuffix : undefined}
+        maxLength={50}
+        errorMessage={errorMessage}
+        onRenderSuffix={onRenderSuffix}
         onChange={onChangeImpl}
         onBlur={onBlur}
       />

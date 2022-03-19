@@ -3,11 +3,17 @@ import { FLUSH, PAUSE, PERSIST, persistReducer, persistStore, PURGE, REGISTER, R
 import storage from 'redux-persist/lib/storage';
 import createSagaMiddleware from 'redux-saga';
 import constants from './constants';
-import { CourseListItem, ExtendedCourseKey, FilterConditions, State, Term } from './types';
-import { DarkMode, InitStatus, TabKey, UpdateStatus } from './enums';
+import { CourseListItem, ExtendedCourseKey, FilterConditions, ModalVisibility, State, Term } from './types';
+import { DarkMode, InitStatus, LimitationFilterState, SpecialLimitationType, TabKey, UpdateStatus } from './enums';
 import rootSaga from './sagas';
 
-const filterConditions = () => ({
+const modalVisibility = (): ModalVisibility => ({
+  optionsPanel: false,
+  sortDialog: false,
+  jumpToDialog: false,
+  additionalFilterDialog: false,
+});
+const filterConditions = (): FilterConditions => ({
   courseId: '',
   courseName: '',
   credit: '',
@@ -17,23 +23,31 @@ const filterConditions = () => ({
   campus: null,
   excludeSelected: false,
   remainingCapacity: 0,
+  limitations: {
+    [SpecialLimitationType.LIMITED_IN_NUMBER]: LimitationFilterState.DEFAULT,
+    [SpecialLimitationType.NOT_SELECTABLE]: LimitationFilterState.DEFAULT,
+    [SpecialLimitationType.NOT_UNSELECTABLE]: LimitationFilterState.DEFAULT,
+  },
+  sortBy: [],
+  regExpMode: false,
 });
-const initialState: State = {
+const initialState = (): State => ({
   darkMode: DarkMode.AUTO,
-  tabKey: TabKey.LOOKUP_PANEL,
+  tabKey: TabKey.LOOKUP_LIST,
   initStatus: InitStatus.LOADING,
   updateStatus: UpdateStatus.SUCCEEDED,
-  showOptionsPanel: false,
+  modalVisibility: modalVisibility(),
   activeTermId: null,
   availableTerms: [],
   courseKeys: [],
   courseItems: [],
   courseOffset: 0,
   courseLimit: 10,
+  courseObsoleted: false,
   courseTimeSpent: null,
   courseSelection: null,
   filterConditions: filterConditions(),
-};
+});
 
 const rootSlice = createSlice({
   name: 'root',
@@ -45,8 +59,11 @@ const rootSlice = createSlice({
     setTabKey: (state, action: PayloadAction<TabKey>) => {
       state.tabKey = action.payload;
     },
-    setShowOptionsPanel: (state, action: PayloadAction<boolean>) => {
-      state.showOptionsPanel = action.payload;
+    showModel: (state, action: PayloadAction<keyof ModalVisibility>) => {
+      state.modalVisibility[action.payload] = true;
+    },
+    hideModel: (state, action: PayloadAction<keyof ModalVisibility>) => {
+      state.modalVisibility[action.payload] = false;
     },
     setInitStatus: (state, action: PayloadAction<InitStatus>) => {
       state.initStatus = action.payload;
@@ -79,6 +96,9 @@ const rootSlice = createSlice({
     },
     setCourseLimit: (state, action: PayloadAction<number>) => {
       state.courseLimit = action.payload;
+    },
+    setCourseObsoleted: (state, action: PayloadAction<boolean>) => {
+      state.courseObsoleted = action.payload;
     },
     setCourseSelection: (state, action: PayloadAction<Record<string, true> | null>) => {
       state.courseSelection = action.payload;
@@ -139,7 +159,8 @@ export * from './sagaActions';
 export const {
   setDarkMode,
   setTabKey,
-  setShowOptionsPanel,
+  showModel,
+  hideModel,
   setInitStatus,
   setUpdateStatus,
   setAvailableTerms,
@@ -149,6 +170,7 @@ export const {
   setCourseItems,
   setCourseOffset,
   setCourseLimit,
+  setCourseObsoleted,
   setCourseSelection,
   addCourseSelection,
   removeCourseSelection,
@@ -157,7 +179,7 @@ export const {
 } = rootSlice.actions;
 export const selectDarkMode = (state: RootState) => state.darkMode;
 export const selectTabKey = (state: RootState) => state.tabKey;
-export const selectShowOptionsPanel = (state: RootState) => state.showOptionsPanel;
+export const selectModalVisibility = (state: RootState) => state.modalVisibility;
 export const selectInitStatus = (state: RootState) => state.initStatus;
 export const selectUpdateStatus = (state: RootState) => state.updateStatus;
 export const selectAvailableTerms = (state: RootState) => state.availableTerms;
@@ -171,6 +193,7 @@ export const selectCourseTotal = (state: RootState) => state.courseKeys.length;
 export const selectCoursePage = (state: RootState) => Math.floor(state.courseOffset / state.courseLimit) + 1;
 export const selectCourseMaxPage = (state: RootState) =>
   Math.max(1, Math.ceil(state.courseKeys.length / state.courseLimit));
+export const selectCourseObsoleted = (state: RootState) => state.courseObsoleted;
 export const selectCourseTimeSpent = (state: RootState) => state.courseTimeSpent;
 export const selectCourseSelection = (state: RootState) => state.courseSelection;
 export const selectCourseSelectionCount = (state: RootState) => Object.keys(state.courseSelection || {}).length;

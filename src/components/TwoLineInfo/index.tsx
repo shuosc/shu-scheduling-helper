@@ -1,9 +1,10 @@
 import React, { useMemo } from 'react';
-import { IStackStyles, IStackTokens, ITextStyles, Shimmer, Stack, Text, useTheme } from '@fluentui/react';
+import { IStackTokens, ITextStyles, Shimmer, Stack, Text, useTheme } from '@fluentui/react';
+import Tag from '../Tag';
 
-const stackStyles: Partial<IStackStyles> = { root: { display: 'inline-flex' } };
 const outerTokens: IStackTokens = { childrenGap: '2px' };
 const secondLineTokens: IStackTokens = { childrenGap: '0 8px' };
+const secondLineTagsTokens: IStackTokens = { childrenGap: '4px' };
 
 export interface TwoLineInfoProps {
   first?: string;
@@ -13,6 +14,7 @@ export interface TwoLineInfoProps {
   secondAriaLabel?: string;
   secondWidth?: number | string;
   loading?: boolean;
+  tag?: boolean;
 }
 
 const TwoLineInfo: React.FC<TwoLineInfoProps> = ({
@@ -21,6 +23,7 @@ const TwoLineInfo: React.FC<TwoLineInfoProps> = ({
   loading = false,
   firstWidth,
   secondWidth,
+  tag = false,
 }) => {
   const theme = useTheme();
   const secondStyles = useMemo<Partial<ITextStyles>>(
@@ -32,19 +35,23 @@ const TwoLineInfo: React.FC<TwoLineInfoProps> = ({
     [theme]
   );
   return (
-    <Stack tokens={outerTokens} styles={stackStyles}>
+    <Stack tokens={outerTokens}>
       <Text block>{loading ? <Shimmer width={firstWidth} /> : first || '-'}</Text>
       {loading ? (
         <Shimmer width={secondWidth} />
       ) : (
-        <Stack horizontal wrap tokens={secondLineTokens}>
+        <Stack horizontal wrap tokens={tag ? secondLineTagsTokens : secondLineTokens}>
           {secondItems
             .filter((second) => second)
-            .map((second, index) => (
-              <Text variant="smallPlus" styles={secondStyles} key={index}>
-                {second}
-              </Text>
-            ))}
+            .map((second, index) =>
+              tag ? (
+                <Tag key={index} text={second as string} />
+              ) : (
+                <Text variant="smallPlus" styles={secondStyles} key={index}>
+                  {second}
+                </Text>
+              )
+            )}
         </Stack>
       )}
     </Stack>

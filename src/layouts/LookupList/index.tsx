@@ -11,7 +11,7 @@ import {
 } from '@fluentui/react';
 import constants from '../../app/constants';
 import { useAppSelector } from '../../app/hooks';
-import { selectCourseTimeSpent, selectCourseTotal } from '../../app/store';
+import { selectCourseObsoleted, selectCourseTimeSpent, selectCourseTotal } from '../../app/store';
 import ResultTable from './ResultTable';
 import ResultTableDesktop from './ResultTable.desktop';
 import Toolbar from './Toolbar';
@@ -21,7 +21,7 @@ import DataDescription from './DataDescription';
 
 const stackTokens: IStackTokens = { childrenGap: '8px' };
 const stackItemTokens: IStackItemTokens = { padding: '12px' };
-const tableFooterTokens: IStackTokens = { padding: '12px' };
+const tableFooterTokens: IStackTokens = { childrenGap: '0 4px', padding: '12px' };
 const noResultStackItemTokens: IStackItemTokens = { padding: '60px 12px' };
 const resultTableWrapperClassName = mergeStyles({
   display: 'block',
@@ -36,8 +36,12 @@ const desktopResultTableWrapperClassName = mergeStyles({
   },
 });
 
-const LookupPanel: React.FC = () => {
+const LookupList: React.FC = () => {
   const theme = useTheme();
+  const courseTotal = useAppSelector(selectCourseTotal);
+  const courseTimeSpent = useAppSelector(selectCourseTimeSpent);
+  const courseObsoleted = useAppSelector(selectCourseObsoleted);
+
   const stackItemStyles = useMemo<Partial<IStackItemStyles>>(
     () => ({
       root: {
@@ -45,6 +49,23 @@ const LookupPanel: React.FC = () => {
       },
     }),
     [theme]
+  );
+  const resultStackItemStyles = useMemo<Partial<IStackItemStyles>>(
+    () => ({
+      root: {
+        background: theme.palette.white,
+        '> *': {
+          transition: 'opacity 0.15s',
+          ...(courseObsoleted
+            ? {
+                opacity: '0.4',
+                pointerEvent: 'none',
+              }
+            : undefined),
+        },
+      },
+    }),
+    [theme, courseObsoleted]
   );
   const noResultStackItemStyles = useMemo<Partial<IStackItemStyles>>(
     () => ({
@@ -65,16 +86,13 @@ const LookupPanel: React.FC = () => {
     [theme]
   );
 
-  const courseTotal = useAppSelector(selectCourseTotal);
-  const courseTimeSpent = useAppSelector(selectCourseTimeSpent);
-
   return (
     <Stack tokens={stackTokens}>
       <Stack.Item tokens={stackItemTokens} styles={stackItemStyles}>
         <SearchAndFilters />
       </Stack.Item>
       {courseTotal > 0 ? (
-        <Stack.Item tokens={stackItemTokens} styles={stackItemStyles}>
+        <Stack.Item tokens={stackItemTokens} styles={resultStackItemStyles}>
           <div className={resultTableWrapperClassName}>
             <Toolbar />
             <ResultTable />
@@ -84,11 +102,15 @@ const LookupPanel: React.FC = () => {
             <ResultTableDesktop />
           </div>
           <Stack horizontal verticalAlign="center" tokens={tableFooterTokens}>
-            <Text>共 {courseTotal} 条记录</Text>
+            <Stack.Item>
+              <Text>共 {courseTotal} 条记录</Text>
+            </Stack.Item>
             {courseTimeSpent != null && (
-              <Text variant="small" styles={timeSpentTextStyles}>
-                （检索耗时 {courseTimeSpent} ms）
-              </Text>
+              <Stack.Item>
+                <Text variant="small" styles={timeSpentTextStyles}>
+                  （检索耗时 {courseTimeSpent} ms）
+                </Text>
+              </Stack.Item>
             )}
           </Stack>
         </Stack.Item>
@@ -104,4 +126,4 @@ const LookupPanel: React.FC = () => {
   );
 };
 
-export default LookupPanel;
+export default LookupList;

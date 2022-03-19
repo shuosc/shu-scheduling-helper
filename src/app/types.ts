@@ -1,4 +1,12 @@
-import { DarkMode, InitStatus, TabKey, UpdateStatus } from './enums';
+import type {
+  DarkMode,
+  InitStatus,
+  LimitationFilterState,
+  SortByKey,
+  SpecialLimitationType,
+  TabKey,
+  UpdateStatus,
+} from './enums';
 
 // 实体类型
 
@@ -86,6 +94,18 @@ export interface CourseListItem extends ExtendedCourseKey {
 
 // Redux state 类型
 
+export interface ModalVisibility {
+  optionsPanel: boolean;
+  sortDialog: boolean;
+  jumpToDialog: boolean;
+  additionalFilterDialog: boolean;
+}
+
+export interface SortBy {
+  key: SortByKey;
+  descending: boolean;
+}
+
 export interface FilterConditions {
   courseId: string;
   courseName: string;
@@ -96,6 +116,9 @@ export interface FilterConditions {
   campus: string | null;
   excludeSelected: boolean;
   remainingCapacity: number;
+  limitations: Record<SpecialLimitationType, LimitationFilterState>;
+  sortBy: SortBy[];
+  regExpMode: boolean;
 }
 
 export interface State {
@@ -103,13 +126,14 @@ export interface State {
   tabKey: TabKey;
   initStatus: InitStatus;
   updateStatus: UpdateStatus;
-  showOptionsPanel: boolean;
+  modalVisibility: ModalVisibility;
   activeTermId: string | null;
   availableTerms: Term[];
   courseKeys: ExtendedCourseKey[];
   courseItems: CourseListItem[];
   courseOffset: number;
   courseLimit: number;
+  courseObsoleted: boolean;
   courseTimeSpent: number | null;
   courseSelection: Record<string, true> | null;
   filterConditions: FilterConditions;

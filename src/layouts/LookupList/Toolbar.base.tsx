@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { CommandBar, ContextualMenuItemType, ICommandBarItemProps, ICommandBarStyles } from '@fluentui/react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { loadCourseDetails, selectCourseMaxPage, selectCoursePage } from '../../app/store';
+import { loadCourseDetails, selectCourseMaxPage, selectCoursePage, showModel } from '../../app/store';
 
 const commandBarStyles: Partial<ICommandBarStyles> = { root: { padding: '0' } };
 
@@ -28,7 +28,7 @@ const ToolbarBase: React.FC<ToolbarBaseProps> = ({ items }) => {
                   {
                     key: 'FIRST_PAGE',
                     text: '第 1 页',
-                    iconProps: { iconName: 'Previous' },
+                    iconProps: { iconName: 'PageLeft' },
                     disabled: coursePage <= 1,
                     onClick: () => {
                       dispatch(loadCourseDetails({ offset: 0, limit: 10 }));
@@ -37,7 +37,7 @@ const ToolbarBase: React.FC<ToolbarBaseProps> = ({ items }) => {
                   {
                     key: 'LAST_PAGE',
                     text: `第 ${courseMaxPage} 页`,
-                    iconProps: { iconName: 'Next' },
+                    iconProps: { iconName: 'PageRight' },
                     disabled: coursePage >= courseMaxPage,
                     onClick: () => {
                       dispatch(loadCourseDetails({ offset: courseMaxPage * 10 - 10, limit: 10 }));
@@ -50,7 +50,11 @@ const ToolbarBase: React.FC<ToolbarBaseProps> = ({ items }) => {
                   {
                     key: 'JUMP_TO',
                     text: '跳转到页码...',
+                    iconProps: { iconName: 'NumberField' },
                     disabled: courseMaxPage === 1,
+                    onClick: () => {
+                      dispatch(showModel('jumpToDialog'));
+                    },
                   },
                 ],
               }

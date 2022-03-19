@@ -67,7 +67,7 @@ const columns: IColumn[] = [
     key: 'CLASS_TIME',
     name: '上课时间',
     columnActionsMode: ColumnActionsMode.disabled,
-    minWidth: 120,
+    minWidth: 140,
     maxWidth: 180,
     isMultiline: true,
     flexGrow: 1,
@@ -78,6 +78,7 @@ const columns: IColumn[] = [
         secondItems={item.course?.limitations}
         firstWidth="48px"
         secondWidth="18px"
+        tag
       />
     ),
   },

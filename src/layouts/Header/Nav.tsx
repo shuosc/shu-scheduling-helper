@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { ICommandBarItemProps, ICommandBarStyles } from '@fluentui/react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { selectInitStatus, selectTabKey, setShowOptionsPanel, setTabKey } from '../../app/store';
+import { selectInitStatus, selectTabKey, setTabKey, showModel } from '../../app/store';
 import { InitStatus, TabKey } from '../../app/enums';
 import NavBase from './Nav.base';
 import SpinnerItem from './SpinnerItem';
@@ -36,13 +36,13 @@ const Nav: React.FC = () => {
         },
       },
       {
-        key: TabKey.LOOKUP_PANEL,
+        key: TabKey.LOOKUP_LIST,
         text: '检索',
         iconProps: { iconName: 'SearchAndApps' },
         canCheck: true,
-        checked: tabKey === TabKey.LOOKUP_PANEL,
+        checked: tabKey === TabKey.LOOKUP_LIST,
         onClick: () => {
-          dispatch(setTabKey(TabKey.LOOKUP_PANEL));
+          dispatch(setTabKey(TabKey.LOOKUP_LIST));
         },
       },
     ],
@@ -64,7 +64,7 @@ const Nav: React.FC = () => {
         ariaLabel: '选项',
         iconOnly: true,
         onClick: () => {
-          dispatch(setShowOptionsPanel(true));
+          dispatch(showModel('optionsPanel'));
         },
       },
     ],

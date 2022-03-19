@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import {
   ActionButton,
   ChoiceGroup,
@@ -8,22 +8,24 @@ import {
   IChoiceGroupStyles,
   IContextualMenuProps,
   IIconProps,
+  IOverlayProps,
   IPanelStyles,
   IStackTokens,
   Label,
   Panel,
   PanelType,
   Stack,
+  useTheme,
 } from '@fluentui/react';
 import constants from '../../app/constants';
 import { useAppDispatch, useAppSelector, useTermsMenuItems } from '../../app/hooks';
 import {
+  hideModel,
   selectActiveTerm,
   selectDarkMode,
   selectInitStatus,
-  selectShowOptionsPanel,
+  selectModalVisibility,
   setDarkMode,
-  setShowOptionsPanel,
 } from '../../app/store';
 import { DarkMode, InitStatus } from '../../app/enums';
 import Header from './Header';
@@ -48,8 +50,11 @@ const colorSchemeOptions: IChoiceGroupOption[] = [
   text: constants.DARK_MODE_NAME[item.key as DarkMode],
 }));
 
+const onRenderHeader = () => <Header />;
+
 const Option: React.FC = () => {
-  const show = useAppSelector(selectShowOptionsPanel);
+  const theme = useTheme();
+  const { optionsPanel } = useAppSelector(selectModalVisibility);
   const initStatus = useAppSelector(selectInitStatus);
   const activeTerm = useAppSelector(selectActiveTerm);
   const darkMode = useAppSelector(selectDarkMode);
@@ -63,12 +68,22 @@ const Option: React.FC = () => {
     }),
     [termsMenuItems]
   );
+  const overlayProps = useMemo<IOverlayProps>(
+    () => ({
+      isDarkThemed: !theme.isInverted,
+    }),
+    [theme]
+  );
+  const onDismiss = useCallback(() => {
+    dispatch(hideModel('optionsPanel'));
+  }, [dispatch]);
 
   return (
     <Panel
-      isOpen={show}
-      onDismiss={() => dispatch(setShowOptionsPanel(false))}
-      onRenderHeader={() => <Header />}
+      isOpen={optionsPanel}
+      overlayProps={overlayProps}
+      onDismiss={onDismiss}
+      onRenderHeader={onRenderHeader}
       headerText="SHU排课助手"
       type={PanelType.custom}
       customWidth="400px"

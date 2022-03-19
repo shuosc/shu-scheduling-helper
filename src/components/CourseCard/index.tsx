@@ -1,19 +1,10 @@
-import React, { useMemo } from 'react';
-import {
-  Icon,
-  IIconStyles,
-  IStackTokens,
-  ITextStyles,
-  mergeStyles,
-  Shimmer,
-  Stack,
-  Text,
-  useTheme,
-} from '@fluentui/react';
+import React from 'react';
+import { IStackTokens, mergeStyles, Shimmer, Stack, Text } from '@fluentui/react';
 import { Course } from '../../app/types';
+import TextWithIcon from './TextWithIcon';
+import Tag from '../Tag';
 
 const actionsWrapperClassName = mergeStyles({ margin: '0 -8px' });
-const thinGapTokens: IStackTokens = { childrenGap: '4px' };
 const thinPlusGapTokens: IStackTokens = { childrenGap: '6px' };
 const tinyThickGapTokens: IStackTokens = { childrenGap: '2px 16px' };
 const zeroMediumGapTokens: IStackTokens = { childrenGap: '0 8px' };
@@ -24,30 +15,11 @@ export interface CourseCardProps {
 }
 
 const CourseCard: React.FC<CourseCardProps> = ({ course, loading = false, children }) => {
-  const theme = useTheme();
-  const iconStyles = useMemo<Partial<IIconStyles>>(
-    () => ({
-      root: {
-        color: theme.palette.neutralSecondary,
-      },
-    }),
-    [theme]
-  );
-  const limitationStyles = useMemo<Partial<ITextStyles>>(
-    () => ({
-      root: {
-        color: theme.palette.neutralTertiary,
-      },
-    }),
-    [theme]
-  );
-
   return (
-    <>
-      {loading}
-      <Stack tokens={thinPlusGapTokens}>
-        <Stack.Item>
-          <Stack horizontal verticalAlign="center" wrap tokens={zeroMediumGapTokens}>
+    <Stack tokens={thinPlusGapTokens}>
+      <Stack.Item>
+        <Stack horizontal verticalAlign="center" wrap tokens={zeroMediumGapTokens}>
+          <Stack.Item>
             {loading ? (
               <Shimmer width="48px" />
             ) : (
@@ -55,6 +27,8 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, loading = false, childr
                 <b>{course?.courseName || '-'}</b>
               </Text>
             )}
+          </Stack.Item>
+          <Stack.Item grow>
             {loading ? (
               <Shimmer width="60px" />
             ) : (
@@ -63,9 +37,11 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, loading = false, childr
                 <Text variant="smallPlus">{course?.credit || '-'}学分</Text>
               </Stack>
             )}
-          </Stack>
-          <Stack horizontal verticalAlign="center" wrap tokens={zeroMediumGapTokens}>
-            {loading ? <Shimmer width="42px" /> : <Text>{course?.teacherName || '-'}</Text>}
+          </Stack.Item>
+        </Stack>
+        <Stack horizontal verticalAlign="center" wrap tokens={zeroMediumGapTokens}>
+          <Stack.Item>{loading ? <Shimmer width="42px" /> : <Text>{course?.teacherName || '-'}</Text>}</Stack.Item>
+          <Stack.Item grow>
             {loading ? (
               <Shimmer width="36px" />
             ) : (
@@ -74,60 +50,45 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, loading = false, childr
                 {course?.teacherTitle && <Text variant="smallPlus">{course.teacherTitle}</Text>}
               </Stack>
             )}
-          </Stack>
-        </Stack.Item>
-        <Stack.Item>
-          <Stack horizontal verticalAlign="center" wrap tokens={tinyThickGapTokens}>
-            <Stack.Item>
-              <Stack horizontal verticalAlign="center" tokens={thinGapTokens}>
-                <Icon iconName="Clock" ariaLabel="上课时间" styles={iconStyles} />
-                {loading ? <Shimmer width="24px" /> : <Text>{course?.classTime || '-'}</Text>}
-              </Stack>
-            </Stack.Item>
-            <Stack.Item>
-              <Stack horizontal verticalAlign="center" tokens={thinGapTokens}>
-                <Icon iconName="People" ariaLabel="人数" styles={iconStyles} />
-                {loading ? (
-                  <Shimmer width="24px" />
-                ) : (
-                  <Text>
-                    {course?.number || '-'} / {course?.capacity || '-'} 人
-                  </Text>
-                )}
-              </Stack>
-            </Stack.Item>
-            <Stack.Item>
-              <Stack horizontal verticalAlign="center" tokens={tinyThickGapTokens}>
-                <Stack horizontal verticalAlign="center" tokens={thinGapTokens}>
-                  <Icon iconName="Nav2DMapView" ariaLabel="校区" styles={iconStyles} />
-                  {loading ? <Shimmer width="24px" /> : <Text>{course?.campus || '-'}</Text>}
-                </Stack>
-                <Stack horizontal verticalAlign="center" tokens={thinGapTokens}>
-                  <Icon iconName="MapPin" ariaLabel="上课地点" styles={iconStyles} />
-                  {loading ? <Shimmer width="24px" /> : <Text>{course?.position || '-'}</Text>}
-                </Stack>
-              </Stack>
-            </Stack.Item>
-          </Stack>
-        </Stack.Item>
-        {course?.limitations && course.limitations.length > 0 && (
+          </Stack.Item>
+        </Stack>
+      </Stack.Item>
+      <Stack.Item>
+        <Stack horizontal verticalAlign="center" wrap tokens={tinyThickGapTokens}>
           <Stack.Item>
-            <Stack horizontal verticalAlign="center" wrap tokens={zeroMediumGapTokens}>
-              {course.limitations.map((limitation, index) => (
-                <Text variant="smallPlus" styles={limitationStyles} key={index}>
-                  {limitation}
-                </Text>
-              ))}
+            <TextWithIcon iconName="Clock" ariaLabel="上课时间" text={course?.classTime} loading={loading} />
+          </Stack.Item>
+          <Stack.Item>
+            <TextWithIcon
+              iconName="People"
+              ariaLabel="人数"
+              text={`${course?.number || '-'} / ${course?.capacity || '-'} 人`}
+              loading={loading}
+            />
+          </Stack.Item>
+          <Stack.Item>
+            <Stack horizontal verticalAlign="center" tokens={tinyThickGapTokens}>
+              <TextWithIcon iconName="Nav2DMapView" ariaLabel="校区" text={course?.campus} loading={loading} />
+              <TextWithIcon iconName="MapPin" ariaLabel="上课地点" text={course?.position} loading={loading} />
             </Stack>
           </Stack.Item>
-        )}
-        {children && (
-          <Stack.Item>
-            <div className={actionsWrapperClassName}>{children}</div>
-          </Stack.Item>
-        )}
-      </Stack>
-    </>
+        </Stack>
+      </Stack.Item>
+      {course?.limitations && course.limitations.length > 0 && (
+        <Stack.Item>
+          <Stack horizontal verticalAlign="center" wrap tokens={zeroMediumGapTokens}>
+            {course.limitations.map((limitation, index) => (
+              <Tag text={limitation} key={index} />
+            ))}
+          </Stack>
+        </Stack.Item>
+      )}
+      {children && (
+        <Stack.Item>
+          <div className={actionsWrapperClassName}>{children}</div>
+        </Stack.Item>
+      )}
+    </Stack>
   );
 };
 

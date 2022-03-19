@@ -1,4 +1,4 @@
-import { DarkMode } from './enums';
+import { DarkMode, SpecialLimitationType } from './enums';
 
 const constants = {
   MEDIA_DESKTOP_SCREEN: '@media (min-width: 1000px)',
@@ -17,6 +17,11 @@ const constants = {
     [DarkMode.OFF]: 'Sunny',
     [DarkMode.ON]: 'ClearNight',
     [DarkMode.AUTO]: 'System',
+  },
+  LIMITATION_VALUE: {
+    [SpecialLimitationType.LIMITED_IN_NUMBER]: '人数已满',
+    [SpecialLimitationType.NOT_SELECTABLE]: '禁止选课',
+    [SpecialLimitationType.NOT_UNSELECTABLE]: '禁止退课',
   },
 };
 

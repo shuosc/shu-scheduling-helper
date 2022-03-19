@@ -20,5 +20,24 @@ export enum DarkMode {
 export enum TabKey {
   TIME_TABLE = 'TIME_TABLE',
   MY_COURSES = 'MY_COURSES',
-  LOOKUP_PANEL = 'LOOKUP_PANEL',
+  LOOKUP_LIST = 'LOOKUP_LIST',
+}
+
+export enum SortByKey {
+  CREDITS = 'CREDITS',
+  NUMBER = 'NUMBER',
+  CAPACITY = 'CAPACITY',
+  REMAINING_CAPACITY = 'REMAINING_CAPACITY',
+}
+
+export enum SpecialLimitationType {
+  LIMITED_IN_NUMBER = 'LIMITED_IN_NUMBER',
+  NOT_SELECTABLE = 'NOT_SELECTABLE',
+  NOT_UNSELECTABLE = 'NOT_UNSELECTABLE',
+}
+
+export enum LimitationFilterState {
+  DEFAULT = 'DEFAULT',
+  EXCLUDED = 'EXCLUDED',
+  EXCLUSIVE = 'EXCLUSIVE',
 }
