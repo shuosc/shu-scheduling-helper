@@ -2,7 +2,7 @@
   <a-config-provider :locale="zh_CN">
     <div>
       <a-alert banner class="main-alert"
-               message="当前暂未完全适配新学期的选课规则，课程时间是否冲突请以学校选课系统为准，谢谢！" />
+               message="当前暂未适配相同时间段的选课规则（单双周等），课程时间是否冲突请以学校选课系统为准，谢谢！" />
       <a-tabs v-model="activeTab" class="main-tabs" @change="handleActiveTabChanged">
         <a-tab-pane key="scheduleTable" tab="课表">
           <ScheduleTable @click="handleClassCardClick" />
