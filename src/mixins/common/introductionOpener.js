@@ -3,7 +3,7 @@ import {isMacLike} from '../../utils';
 export const introductionOpenerMixin = {
   methods: {
     getLinkHref(id) {
-      return `${this.$store.state.backend}DataQuery/QueryCourseIntro?courseNo=${id}`;
+      return `${this.$store.state.backend}/DataQuery/QueryCourseIntro?courseNo=${id}`;
     },
     getLinkTitle(course, id) {
       let modifiedName = (course.name || course.courseName).replace('《', '〈').replace('》', '〉');
