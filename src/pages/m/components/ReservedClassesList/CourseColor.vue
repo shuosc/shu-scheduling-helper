@@ -26,9 +26,11 @@
 <style scoped>
   .course-color {
     position: absolute;
-    top: 16px;
+    top: 38px;
+    left: 42px;
     display: block;
     width: 8px;
-    height: 15px;
+    height: 8px;
+    border-radius: 8px;
   }
 </style>

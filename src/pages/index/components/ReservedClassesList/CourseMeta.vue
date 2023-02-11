@@ -1,6 +1,6 @@
 <template>
   <div :class="{ 'course-meta': true, 'course-meta-all-conflicted': allConflicted }">
-    <a-badge :count="`${course.credit}学分`" class="credit-badge" />
+    <a-badge :count="`${course.credit} 学分`" class="credit-badge" />
     <NumberCapacity :class-key="`${id}-${selectedClassKey}`" class="number-capacity" slot="actions"
                     v-if="selectedClassKey !== null && !expanded" />
     <span class="course-name">{{ course.courseName }}</span>{{ ' ' }}
@@ -10,6 +10,7 @@
        rel="external nofollow" target="_blank">简介</a>
     <template v-if="selectedClassKey !== null && !expanded">
       <br />
+      <CourseColor :course-id="id" :course-name="course.courseName" />
       <span class="teacher-name">{{ course.classes[selectedClassKey].teacherName }}</span>{{ ' ' }}
       <small class="teacher-id">({{
           $store.getters.extra(`${id}-${selectedClassKey}`).teacher_title
@@ -54,11 +55,12 @@
   import { introductionOpenerMixin } from '../../../../mixins/common/introductionOpener';
   import { CourseMetaMixin } from '../../../../mixins/ReservedClassesList';
   import NumberCapacity from './NumberCapacity';
+  import CourseColor from './CourseColor'
 
 
   export default {
     name: 'CourseMeta',
-    components: { NumberCapacity },
+    components: { NumberCapacity, CourseColor },
     props: {
       course: {
         type: Object,
@@ -80,9 +82,9 @@
 <style scoped>
   /*noinspection CssUnusedSymbol*/
   .course-meta {
-    padding-left: 16px;
     vertical-align: top;
     white-space: normal;
+    line-height: 1.4;
   }
 
   /*noinspection CssUnusedSymbol*/
@@ -124,6 +126,16 @@
 
   .course-name, .course-id, .teacher-name, .teacher-id, .selected-info, .credit-badge, .number-capacity {
     transition: opacity 0.2s;
+  }
+
+  .course-name {
+    font-weight: bold;
+    
+  }
+
+  .teacher-name{
+    font-size: 13px;
+    padding-left: 16px;
   }
 
   .course-intro-link {

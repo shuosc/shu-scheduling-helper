@@ -40,8 +40,8 @@
             {{ limitation }}
           </a-tag>
         </template>
-        <a-avatar slot="avatar">已选</a-avatar>
       </a-list-item-meta>
+      <CourseColor :course-id="id" :course-name="course.courseName" />
       <a-button @click="unselectClass" slot="actions">取消选择</a-button>
     </a-list-item>
     <a-list-item
@@ -102,11 +102,11 @@
   import { conflictSolvingMixin } from '../../../../mixins/common/conflictsSolver';
   import { CourseClassesListMixin } from '../../../../mixins/ReservedClassesList';
   import NumberCapacity from './NumberCapacity';
-
+  import CourseColor from './CourseColor'
 
   export default {
     name: 'CourseClassesList',
-    components: { NumberCapacity },
+    components: { NumberCapacity, CourseColor },
     props: {
       course: {
         type: Object,
@@ -150,6 +150,16 @@
     margin: -12px 0;
   }
 
+  .selected-class-list-item h4{
+    font-weight: bold;
+    color: black;
+    padding-left: 16px;
+  }
+
+  .selected-class-list-item div{
+    color: rgba(0,0,0,0.8);
+  }
+
   /*noinspection CssUnusedSymbol*/
   .ant-list-item-meta-title {
     margin: 0;
@@ -171,5 +181,10 @@
 
   .limitation-tag {
     margin-top: 2px;
+  }
+
+  .course-color {
+    top: 15px !important;
+    left: 2px !important;
   }
 </style>

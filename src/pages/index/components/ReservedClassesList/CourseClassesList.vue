@@ -6,7 +6,8 @@
       v-if="selectedClassKey !== null && expanded"
     >
       <a-list-item-meta>
-        <template slot="title">{{ course.classes[selectedClassKey].teacherName }}
+        <template slot="title">
+          {{ course.classes[selectedClassKey].teacherName }}
           <small>({{
               $store.getters.extra(`${id}-${selectedClassKey}`).teacher_title
                 ? $store.getters.extra(`${id}-${selectedClassKey}`).teacher_title + ', '
@@ -38,8 +39,8 @@
             {{ limitation }}
           </a-tag>
         </template>
-        <a-avatar class="selected-avatar" slot="avatar">已选</a-avatar>
       </a-list-item-meta>
+      <CourseColor :course-id="id" :course-name="course.courseName" />
       <NumberCapacity :class-key="`${id}-${selectedClassKey}`" class="number-capacity" slot="actions" />
       <a-button @click="unselectClass" slot="actions">取消选择</a-button>
     </a-list-item>
@@ -57,7 +58,7 @@
       <a-button @click="conflictsSolving(key)" slot="actions" type="danger" v-else>
         冲突
       </a-button>
-      <a-button :disabled="storageBusy" @click="doRemoveReservedClass(key)" slot="actions" type="dashed">- 待选</a-button>
+      <a-button :disabled="storageBusy" @click="doRemoveReservedClass(key)" slot="actions" type="dashed">取消待选</a-button>
       <a-list-item-meta>
         <template slot="title">{{ course.classes[key].teacherName }}
           <small>({{
@@ -101,11 +102,11 @@
   import { conflictSolvingMixin } from '../../../../mixins/common/conflictsSolver';
   import { CourseClassesListMixin } from '../../../../mixins/ReservedClassesList';
   import NumberCapacity from './NumberCapacity';
-
+  import CourseColor from './CourseColor'
 
   export default {
     name: 'CourseClassesList',
-    components: { NumberCapacity },
+    components: { NumberCapacity, CourseColor },
     props: {
       course: {
         type: Object,
@@ -137,6 +138,16 @@
 
   .selected-class-list-item {
     margin: -12px 0;
+  }
+
+  .selected-class-list-item h4{
+    font-weight: bold;
+    color: black;
+    padding-left: 16px;
+  }
+
+  .selected-class-list-item div{
+    color: rgba(0,0,0,0.8);
   }
 
   /*noinspection CssUnusedSymbol*/
@@ -177,5 +188,10 @@
 
   .classes-list-item:hover .previewing {
     display: inline;
+  }
+
+  .course-color {
+    top: 16px;
+    left: 3px;
   }
 </style>
