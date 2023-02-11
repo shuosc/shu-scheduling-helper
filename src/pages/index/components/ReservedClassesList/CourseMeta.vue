@@ -142,7 +142,7 @@
     font-size: 12px;
     position: absolute;
     z-index: 10;
-    margin: 1px 5px 0;
+    margin: 2.5px 0px 0;
     padding: 0 5px;
     user-select: none;
     transition: all 0.2s;

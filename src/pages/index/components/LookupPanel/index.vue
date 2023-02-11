@@ -22,7 +22,7 @@
              rel="external nofollow" target="_blank">
             <strong>{{ course.name }}</strong>
           </a>
-          <a-badge :count="`${course.credit}学分`" class="credit-badge" />
+          <a-badge :count="`${course.credit} 学分`" class="credit-badge" />
           <br />
           <small class="id-info">{{ course.id }}</small>
         </template>

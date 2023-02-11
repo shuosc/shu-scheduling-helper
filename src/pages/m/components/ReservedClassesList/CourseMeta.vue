@@ -1,6 +1,6 @@
 <template>
   <div :class="{ 'course-meta': true, 'course-meta-all-conflicted': allConflicted }">
-    <a-badge :count="`${course.credit}学分`" class="credit-badge" />
+    <a-badge :count="`${course.credit} 学分`" class="credit-badge" />
     <span class="course-name">{{ course.courseName }}</span>{{ ' ' }}
     <small>({{ id }})</small>
     <template v-if="selectedClassKey !== null && !expanded">

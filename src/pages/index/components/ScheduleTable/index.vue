@@ -27,7 +27,7 @@
             <div class="brand" v-show="capturing">
               <img alt="Logo" src="../../../../assets/shuosc-logo-128px.png" />
               <img alt="Logo" src="../../../../assets/logo.png" />
-              <span>{{ $store.getters.credits }}学分</span>
+              <span>{{ $store.getters.credits }} 学分</span>
             </div>
           </td>
           <th class="header-period">&nbsp;</th>
