@@ -170,12 +170,12 @@
   }
 
   .course-link.course-intro-link {
-    margin: 2.5px 0 0;
+    margin: 1px 5px 0;
     padding-left: 5px;
   }
 
   .course-link.copy-course-id-link {
-    margin: 2.5px 0 0 30px;
+    margin: 1px 5px 0 35px;
     padding-left: 5px;
   }
 </style>
