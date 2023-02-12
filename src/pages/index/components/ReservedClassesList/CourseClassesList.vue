@@ -7,6 +7,7 @@
     >
       <a-list-item-meta>
         <template slot="title">
+          <CourseColor :course-id="id" :course-name="course.courseName" />
           {{ course.classes[selectedClassKey].teacherName }}
           <small>({{
               $store.getters.extra(`${id}-${selectedClassKey}`).teacher_title
@@ -40,7 +41,6 @@
           </a-tag>
         </template>
       </a-list-item-meta>
-      <CourseColor :course-id="id" :course-name="course.courseName" />
       <NumberCapacity :class-key="`${id}-${selectedClassKey}`" class="number-capacity" slot="actions" />
       <a-button @click="unselectClass" slot="actions">取消选择</a-button>
     </a-list-item>
@@ -143,7 +143,6 @@
   .selected-class-list-item h4{
     font-weight: bold;
     color: black;
-    padding-left: 16px;
   }
 
   .selected-class-list-item div{
@@ -188,10 +187,5 @@
 
   .classes-list-item:hover .previewing {
     display: inline;
-  }
-
-  .course-color {
-    top: 16px;
-    left: 3px;
   }
 </style>

@@ -84,7 +84,6 @@
   .course-meta {
     vertical-align: top;
     white-space: normal;
-    line-height: 1.4;
   }
 
   /*noinspection CssUnusedSymbol*/
@@ -135,7 +134,6 @@
 
   .teacher-name{
     font-size: 13px;
-    padding-left: 16px;
   }
 
   .course-intro-link {

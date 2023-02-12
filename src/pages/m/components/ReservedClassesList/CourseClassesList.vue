@@ -6,7 +6,9 @@
       v-if="selectedClassKey !== null && expanded"
     >
       <a-list-item-meta>
-        <template slot="title">{{ course.classes[selectedClassKey].teacherName }}
+        <template slot="title">
+          <CourseColor :course-id="id" :course-name="course.courseName" />
+          {{ course.classes[selectedClassKey].teacherName }}
           <small>({{
               $store.getters.extra(`${id}-${selectedClassKey}`).teacher_title
                 ? $store.getters.extra(`${id}-${selectedClassKey}`).teacher_title + ', '
@@ -41,7 +43,6 @@
           </a-tag>
         </template>
       </a-list-item-meta>
-      <CourseColor :course-id="id" :course-name="course.courseName" />
       <a-button @click="unselectClass" slot="actions">取消选择</a-button>
     </a-list-item>
     <a-list-item
@@ -56,7 +57,7 @@
         冲突
       </a-button>
       <a-button :disabled="storageBusy" @click="doRemoveReservedClass(key)" slot="actions" type="dashed">
-        - 待选
+        取消待选
       </a-button>
       <a-list-item-meta>
         <template slot="title">{{ course.classes[key].teacherName }}
@@ -153,7 +154,6 @@
   .selected-class-list-item h4{
     font-weight: bold;
     color: black;
-    padding-left: 16px;
   }
 
   .selected-class-list-item div{
@@ -181,10 +181,5 @@
 
   .limitation-tag {
     margin-top: 2px;
-  }
-
-  .course-color {
-    top: 15px !important;
-    left: 2px !important;
   }
 </style>

@@ -104,7 +104,6 @@
 
   .teacher-name{
     font-size: 13px;
-    padding-left: 16px;
   }
 
   .all-conflicted-icon {
