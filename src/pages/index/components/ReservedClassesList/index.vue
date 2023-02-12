@@ -113,7 +113,7 @@
   }
 
   /*noinspection CssUnusedSymbol*/
-  .course >>> .ant-collapse-header:hover .course-intro-link {
+  .course >>> .ant-collapse-header:hover .course-link {
     opacity: 1 !important;
   }
 

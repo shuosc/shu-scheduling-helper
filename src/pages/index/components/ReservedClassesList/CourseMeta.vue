@@ -6,8 +6,14 @@
     <span class="course-name">{{ course.courseName }}</span>{{ ' ' }}
     <small class="course-id">({{ id }})</small>
     <a :href="getLinkHref(id)" :title="getLinkTitle(course, id)"
-       @click.stop="showCourseIntroduction($event, getLinkHref(id))" class="course-intro-link"
+       @click.stop="showCourseIntroduction($event, getLinkHref(id))" class="course-link course-intro-link"
        rel="external nofollow" target="_blank">简介</a>
+    <a :title="`复制该课程的课程号 (${id})`"
+        v-clipboard:copy="id"
+        v-clipboard:success="handleCourseIdCopied"
+        @click.stop
+        class="course-link copy-course-id-link"
+        rel="external nofollow" target="_blank">{{copyCourseIdDisplayText}}</a>
     <template v-if="selectedClassKey !== null && !expanded">
       <br />
       <CourseColor :course-id="id" :course-name="course.courseName" />
@@ -54,6 +60,7 @@
 <script>
   import { introductionOpenerMixin } from '../../../../mixins/common/introductionOpener';
   import { CourseMetaMixin } from '../../../../mixins/ReservedClassesList';
+  import { CopyCourseIdMixin } from '../../../../mixins/CopyCourseId'
   import NumberCapacity from './NumberCapacity';
   import CourseColor from './CourseColor'
 
@@ -75,7 +82,7 @@
         type: Boolean,
       },
     },
-    mixins: [introductionOpenerMixin, CourseMetaMixin],
+    mixins: [introductionOpenerMixin, CourseMetaMixin, CopyCourseIdMixin],
   };
 </script>
 
@@ -136,12 +143,10 @@
     font-size: 13px;
   }
 
-  .course-intro-link {
+  .course-link {
     font-size: 12px;
     position: absolute;
     z-index: 10;
-    margin: 2.5px 0px 0;
-    padding: 0 5px;
     user-select: none;
     transition: all 0.2s;
     text-decoration: none;
@@ -151,16 +156,26 @@
     backdrop-filter: blur(5px);
   }
 
-  .course-intro-link:hover {
+  .course-link:hover {
     font-weight: bold;
     color: #64b5f6;
   }
 
-  .course-intro-link:focus {
+  .course-link:focus {
     opacity: 1;
   }
 
-  .course-intro-link:active {
+  .course-link:active {
     color: #1976d2;
+  }
+
+  .course-link.course-intro-link {
+    margin: 2.5px 0 0;
+    padding-left: 5px;
+  }
+
+  .course-link.copy-course-id-link {
+    margin: 2.5px 0 0 30px;
+    padding-left: 5px;
   }
 </style>
