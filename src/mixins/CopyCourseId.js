@@ -24,8 +24,5 @@ export const CopyCourseIdMixin = {
         this.copyCourseIdDisplayText = '复制'
       }, 1500);
     },
-    getCopyCourseIdDisplay () {
-      return this.displayText
-    }
   }
 }
