@@ -1,13 +1,13 @@
 <template>
-  <div :style="style" class="class-card">
+  <div :style="style[theme][0]" class="class-card">
     <div class="course-name" ref="courseName"><strong>{{ courseName }}</strong></div>
-    <div class="teacher-name-venue" :style="subStyle" v-if="!venue">
+    <div class="teacher-name-venue" :style="style[theme][1]" v-if="!venue">
       {{ course.teacherName }}
     </div>
-    <div class="venue" :style="subStyle" v-else>
+    <div class="venue" :style="style[theme][1]" v-else>
       <span class="venue-at">@</span>{{ $store.getters.extra(`${course.courseId}-${course.teacherId}`).venue }}
     </div>
-    <div class="extra" :style="subStyle" v-if="course.fortnight || course.lab">
+    <div class="extra" :style="style[theme][1]" v-if="course.fortnight || course.lab">
       {{ course.fortnight }} {{ course.lab }}
     </div>
   </div>
@@ -31,6 +31,9 @@
         type: Boolean,
         default: false,
       },
+      theme: {
+        type: Number,
+      }
     },
     mixins: [ClassCardMixin],
   };

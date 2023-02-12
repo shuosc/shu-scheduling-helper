@@ -1,13 +1,13 @@
 <template>
-  <div :class="_class" :style="style" @mouseenter="handleMouseEnter" @mouseleave="handleMouseLeave">
+  <div :class="_class" :style="style[theme][0]" @mouseenter="handleMouseEnter" @mouseleave="handleMouseLeave">
     <div class="course-name" ref="courseName"><strong>{{ courseName }}</strong></div>
-    <div class="teacher-name-venue" :style="subStyle" v-if="!venue">
+    <div class="teacher-name-venue" :style="style[theme][1]" v-if="!venue">
       {{ course.teacherName }}
     </div>
-    <div class="venue" :style="subStyle" v-else>
+    <div class="venue" :style="style[theme][1]" v-else>
       <span class="venue-at">@</span>{{ $store.getters.extra(`${course.courseId}-${course.teacherId}`).venue }}
     </div>
-    <div class="extra" :style="subStyle" v-if="course.fortnight || course.lab">
+    <div class="extra" :style="style[theme][1]" v-if="course.fortnight || course.lab">
       {{ course.fortnight }} {{ course.lab }}
     </div>
   </div>
@@ -15,8 +15,7 @@
 
 <script>
   import { ClassCardMixin } from '../../../../mixins/ScheduleTable';
-
-
+  
   export default {
     name: 'ClassCard',
     props: {
@@ -29,6 +28,9 @@
       capturing: {
         type: Boolean,
       },
+      theme: {
+        type: Number
+      }
     },
     mixins: [ClassCardMixin],
   };
@@ -48,14 +50,11 @@
     align-items: flex-start;
     flex-direction: column;
     justify-content: flex-start;
-    padding: 8px 6px 5px;
     cursor: pointer;
     user-select: none;
     transition: all 0.2s;
     text-align: left;
-    border-radius: 8px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    margin: 1px;
   }
 
   /*noinspection CssUnusedSymbol*/
