@@ -1,0 +1,58 @@
+name: Deploy to OSS
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: '14.x'
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'yarn'
+
+    - name: yarn install, and build
+      run: |
+        yarn
+        yarn build
+
+    - name: Upload artifact for deployment job
+      uses: actions/upload-artifact@v3
+      with:
+        name: dist-app
+        path: dist
+
+  deploy-pre:
+    permissions:
+      contents: none
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+    - name: Download artifact from build job
+      uses: actions/download-artifact@v3
+      with:
+        name: dist-app
+        path: dist
+
+    - name: Setup Alibaba Cloud OSS utility
+      run: |
+        curl https://gosspublic.alicdn.com/ossutil/install.sh | sudo bash
+        ossutil config -e ${{ secrets.OSS_ENDPOINT }} -i ${{ secrets.OSS_ACCESS_KEY_ID }} -k ${{ secrets.OSS_ACCESS_KEY_SECRET }}
+
+    - name: Deploy to OSS pre-production environment
+      run: |
+        ossutil cp dist oss://${{ secrets.OSS_BUCKET }}/ --exclude "*.html" -urf && \
+        ossutil cp dist oss://${{ secrets.OSS_BUCKET }}/ --include "*.html" -urf --meta Cache-Control:no-cache
