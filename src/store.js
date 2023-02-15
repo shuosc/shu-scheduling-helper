@@ -31,7 +31,7 @@ export default new Vuex.Store({
     historyPos: 0,
     historyHold: false,
     showIntroductionNotification: true,
-    useScheduleTableTheme: 1,
+    useScheduleTableTheme: 'candy',
   },
   getters: {
     scheduleTableRows(state) {
@@ -313,6 +313,8 @@ export default new Vuex.Store({
       state.showIntroductionNotification = false;
     },
     SET_SCHEDULETABLE_THEME (state, value) {
+      if (value !== 'candy' && value !== 'classic')
+        value = 'candy' // 匹配不到主题需要恢复默认主题
       state.useScheduleTableTheme = value;
     }
   },
@@ -330,7 +332,7 @@ export default new Vuex.Store({
           Storage.get('trimester', null),
           Storage.get('backend', null),
           Storage.get('colorSeed', 2),
-          Storage.get('useScheduleTableTheme', 1)
+          Storage.get('useScheduleTableTheme', 'candy')
         ]).then((values) => {
           context.commit('ALL_CLASSES', values[0]);
           context.commit('ALL_CLASSES_HASH', values[1]);

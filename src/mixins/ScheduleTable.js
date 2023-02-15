@@ -115,8 +115,8 @@ export const ClassCardMixin = {
   },
   computed: {
     style () {
-      return [
-        [
+      return {
+        'classic': [
           {
             color: 'rgba(255, 255, 255, 0.95)',
             borderColor: `rgba(${parseInt(this.course.color.substr(1, 2), 16)}, ${parseInt(this.course.color.substr(3, 2), 16)}, ${parseInt(this.course.color.substr(5, 2), 16)}, 1.0)`,
@@ -131,7 +131,7 @@ export const ClassCardMixin = {
             color: 'rgba(255, 255, 255, 0.85)',
           },
         ],
-        [
+        'candy': [
           {
             color: `rgba(${parseInt(this.course.color.substr(1, 2), 16)}, ${parseInt(this.course.color.substr(3, 2), 16)}, ${parseInt(this.course.color.substr(5, 2), 16)}, 1.0)`,
             background: `rgba(${parseInt(this.course.color.substr(1, 2), 16)}, ${parseInt(this.course.color.substr(3, 2), 16)}, ${parseInt(this.course.color.substr(5, 2), 16)}, 0.3)`,
@@ -144,7 +144,7 @@ export const ClassCardMixin = {
             color: `rgba(${parseInt(this.course.color.substr(1, 2), 16)}, ${parseInt(this.course.color.substr(3, 2), 16)}, ${parseInt(this.course.color.substr(5, 2), 16)}, 0.8)`,
           },
         ]
-      ]
+      }
     },
     _class() {
       return {

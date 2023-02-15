@@ -1,8 +1,20 @@
 export const UseScheduleTableThemeMixin = {
   data () {
     return {
-      ScheduleTableTheme: 1,
-      ScheduleTableThemeText: '糖果'
+      ScheduleTableTheme: 'candy',
+    }
+  },
+  computed: {
+    ScheduleTableThemeText () {
+      const t = this.ScheduleTableTheme
+      switch (t) {
+        case 'candy':
+          return '糖果';
+        case 'classic':
+          return '经典';
+        default:
+          return '<unknown>'
+      }
     }
   },
   created () {
@@ -12,17 +24,9 @@ export const UseScheduleTableThemeMixin = {
     }
     setTimeout(check, 500)
   },
-  watch: {
-    ScheduleTableTheme: {
-      handler (newVal) {
-        this.ScheduleTableThemeText = newVal === 1 ? '糖果' : '经典';
-      },
-      immediate: true
-    }
-  },
   methods: {
     handleChangeScheduleTableTheme () {
-      this.ScheduleTableTheme = (this.ScheduleTableTheme + 1) % 2
+      this.ScheduleTableTheme = this.ScheduleTableTheme === 'candy' ? 'classic' : 'candy'
       this.$store.dispatch('setUseScheduleTableTheme', this.ScheduleTableTheme)
     }
   }

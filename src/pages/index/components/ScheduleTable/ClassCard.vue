@@ -78,14 +78,14 @@
   }
 
   .teacher-name-venue {
-    font-size: 11px;
+    font-size: 12px;
     line-height: 16px;
     overflow: hidden;
     min-height: 16px;
   }
 
   .venue {
-    font-size: 11px;
+    font-size: 12px;
     line-height: 1.25;
   }
 
@@ -94,7 +94,7 @@
   }
 
   .extra {
-      font-size: 11px;
+      font-size: 12px;
       line-height: 1.25;
   }
 </style>

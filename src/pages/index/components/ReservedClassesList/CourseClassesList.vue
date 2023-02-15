@@ -142,11 +142,11 @@
 
   .selected-class-list-item h4{
     font-weight: bold;
-    color: black;
+    color: rgba(0,0,0,0.85);
   }
 
   .selected-class-list-item div{
-    color: rgba(0,0,0,0.8);
+    color: rgba(0,0,0,0.65);
   }
 
   /*noinspection CssUnusedSymbol*/

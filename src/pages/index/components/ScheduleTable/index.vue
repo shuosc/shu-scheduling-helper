@@ -65,7 +65,7 @@
 
 <script>
   import { ScheduleTableMixin } from '../../../../mixins/ScheduleTable';
-  import { UseScheduleTableThemeMixin } from '../../../../mixins/UseScheduleTableTheme'
+  import { UseScheduleTableThemeMixin } from '../../../../mixins/common/useScheduleTableTheme'
   import ClassCard from './ClassCard';
   import NoPeriodClassCard from './NoPeriodClassCard';
   // import QrCard from './QrCard';

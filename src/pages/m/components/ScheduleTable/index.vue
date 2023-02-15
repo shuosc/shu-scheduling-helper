@@ -29,7 +29,7 @@
 <script>
   import ClassCard from './ClassCard';
   import { ScheduleTableMixin } from '../../../../mixins/ScheduleTable';
-  import { UseScheduleTableThemeMixin } from '../../../../mixins/UseScheduleTableTheme';
+  import { UseScheduleTableThemeMixin } from '../../../../mixins/common/useScheduleTableTheme';
 
   export default {
     name: 'ScheduleTable',

@@ -8,7 +8,7 @@
     <a :href="getLinkHref(id)" :title="getLinkTitle(course, id)"
        @click.stop="showCourseIntroduction($event, getLinkHref(id))" class="course-link course-intro-link"
        rel="external nofollow" target="_blank">简介</a>
-    <a :title="`复制该课程的课程号 (${id})`"
+    <a :title="`复制课程号 (${id})`"
         v-clipboard:copy="id"
         v-clipboard:success="handleCourseIdCopied"
         @click.stop
@@ -60,7 +60,7 @@
 <script>
   import { introductionOpenerMixin } from '../../../../mixins/common/introductionOpener';
   import { CourseMetaMixin } from '../../../../mixins/ReservedClassesList';
-  import { CopyCourseIdMixin } from '../../../../mixins/CopyCourseId'
+  import { CopyCourseIdMixin } from '../../../../mixins/common/copyCourseId'
   import NumberCapacity from './NumberCapacity';
   import CourseColor from './CourseColor'
 
