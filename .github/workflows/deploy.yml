@@ -38,6 +38,10 @@ jobs:
     permissions:
       contents: none
     runs-on: ubuntu-latest
+    environment: 
+      name: pre-production
+      url: https://pre.xk.shuosc.com
+    concurrency: pre-production
     needs: build
 
     steps:
@@ -53,6 +57,33 @@ jobs:
         ossutil config -e ${{ secrets.OSS_ENDPOINT }} -i ${{ secrets.OSS_ACCESS_KEY_ID }} -k ${{ secrets.OSS_ACCESS_KEY_SECRET }}
 
     - name: Deploy to OSS pre-production environment
+      run: |
+        ossutil cp dist oss://${{ secrets.OSS_BUCKET }}/ --exclude "*.html" -urf && \
+        ossutil cp dist oss://${{ secrets.OSS_BUCKET }}/ --include "*.html" -urf --meta Cache-Control:no-cache
+
+  deploy-prod:
+    permissions:
+      contents: none
+    runs-on: ubuntu-latest
+    environment: 
+      name: production
+      url: https://xk.shuosc.com
+    concurrency: production
+    needs: deploy-pre
+
+    steps:
+    - name: Download artifact from build job
+      uses: actions/download-artifact@v3
+      with:
+        name: dist-app
+        path: dist
+
+    - name: Setup Alibaba Cloud OSS utility
+      run: |
+        curl https://gosspublic.alicdn.com/ossutil/install.sh | sudo bash
+        ossutil config -e ${{ secrets.OSS_ENDPOINT }} -i ${{ secrets.OSS_ACCESS_KEY_ID }} -k ${{ secrets.OSS_ACCESS_KEY_SECRET }}
+
+    - name: Deploy to OSS production environment
       run: |
         ossutil cp dist oss://${{ secrets.OSS_BUCKET }}/ --exclude "*.html" -urf && \
         ossutil cp dist oss://${{ secrets.OSS_BUCKET }}/ --include "*.html" -urf --meta Cache-Control:no-cache
