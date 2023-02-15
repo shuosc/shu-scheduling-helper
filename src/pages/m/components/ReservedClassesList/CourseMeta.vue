@@ -1,11 +1,12 @@
 <template>
   <div :class="{ 'course-meta': true, 'course-meta-all-conflicted': allConflicted }">
-    <a-badge :count="`${course.credit}学分`" class="credit-badge" />
+    <a-badge :count="`${course.credit} 学分`" class="credit-badge" />
     <span class="course-name">{{ course.courseName }}</span>{{ ' ' }}
     <small>({{ id }})</small>
     <template v-if="selectedClassKey !== null && !expanded">
       <br />
-      {{ course.classes[selectedClassKey].teacherName }}
+      <CourseColor :course-id="id" :course-name="course.courseName" />
+      <span class="teacher-name">{{ course.classes[selectedClassKey].teacherName }}</span>{{ ' ' }}
       <small>({{
           $store.getters.extra(`${id}-${selectedClassKey}`).teacher_title
             ? $store.getters.extra(`${id}-${selectedClassKey}`).teacher_title + ', '
@@ -52,11 +53,12 @@
 <script>
   import { CourseMetaMixin } from '../../../../mixins/ReservedClassesList';
   import NumberCapacity from './NumberCapacity';
+  import CourseColor from './CourseColor'
 
 
   export default {
     name: 'CourseMeta',
-    components: { NumberCapacity },
+    components: { NumberCapacity, CourseColor },
     props: {
       course: {
         type: Object,
@@ -78,9 +80,9 @@
 <style scoped>
   /*noinspection CssUnusedSymbol*/
   .course-meta {
-    padding-left: 16px;
     vertical-align: top;
     white-space: normal;
+    line-height: 1.4;
   }
 
   /*noinspection CssUnusedSymbol*/
@@ -93,6 +95,15 @@
     font-weight: bold;
     font-style: italic;
     margin-right: 1px;
+  }
+
+  .course-name {
+    font-weight: bold;
+    
+  }
+
+  .teacher-name{
+    font-size: 13px;
   }
 
   .all-conflicted-icon {

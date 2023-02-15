@@ -1,15 +1,22 @@
 <template>
   <div :class="{ 'course-meta': true, 'course-meta-all-conflicted': allConflicted }">
-    <a-badge :count="`${course.credit}学分`" class="credit-badge" />
+    <a-badge :count="`${course.credit} 学分`" class="credit-badge" />
     <NumberCapacity :class-key="`${id}-${selectedClassKey}`" class="number-capacity" slot="actions"
                     v-if="selectedClassKey !== null && !expanded" />
     <span class="course-name">{{ course.courseName }}</span>{{ ' ' }}
     <small class="course-id">({{ id }})</small>
     <a :href="getLinkHref(id)" :title="getLinkTitle(course, id)"
-       @click.stop="showCourseIntroduction($event, getLinkHref(id))" class="course-intro-link"
+       @click.stop="showCourseIntroduction($event, getLinkHref(id))" class="course-link course-intro-link"
        rel="external nofollow" target="_blank">简介</a>
+    <a :title="`复制课程号 (${id})`"
+        v-clipboard:copy="id"
+        v-clipboard:success="handleCourseIdCopied"
+        @click.stop
+        class="course-link copy-course-id-link"
+        rel="external nofollow" target="_blank">{{copyCourseIdDisplayText}}</a>
     <template v-if="selectedClassKey !== null && !expanded">
       <br />
+      <CourseColor :course-id="id" :course-name="course.courseName" />
       <span class="teacher-name">{{ course.classes[selectedClassKey].teacherName }}</span>{{ ' ' }}
       <small class="teacher-id">({{
           $store.getters.extra(`${id}-${selectedClassKey}`).teacher_title
@@ -53,12 +60,14 @@
 <script>
   import { introductionOpenerMixin } from '../../../../mixins/common/introductionOpener';
   import { CourseMetaMixin } from '../../../../mixins/ReservedClassesList';
+  import { CopyCourseIdMixin } from '../../../../mixins/common/copyCourseId'
   import NumberCapacity from './NumberCapacity';
+  import CourseColor from './CourseColor'
 
 
   export default {
     name: 'CourseMeta',
-    components: { NumberCapacity },
+    components: { NumberCapacity, CourseColor },
     props: {
       course: {
         type: Object,
@@ -73,14 +82,13 @@
         type: Boolean,
       },
     },
-    mixins: [introductionOpenerMixin, CourseMetaMixin],
+    mixins: [introductionOpenerMixin, CourseMetaMixin, CopyCourseIdMixin],
   };
 </script>
 
 <style scoped>
   /*noinspection CssUnusedSymbol*/
   .course-meta {
-    padding-left: 16px;
     vertical-align: top;
     white-space: normal;
   }
@@ -126,12 +134,19 @@
     transition: opacity 0.2s;
   }
 
-  .course-intro-link {
+  .course-name {
+    font-weight: bold;
+    
+  }
+
+  .teacher-name{
+    font-size: 13px;
+  }
+
+  .course-link {
     font-size: 12px;
     position: absolute;
     z-index: 10;
-    margin: 1px 5px 0;
-    padding: 0 5px;
     user-select: none;
     transition: all 0.2s;
     text-decoration: none;
@@ -141,16 +156,26 @@
     backdrop-filter: blur(5px);
   }
 
-  .course-intro-link:hover {
+  .course-link:hover {
     font-weight: bold;
     color: #64b5f6;
   }
 
-  .course-intro-link:focus {
+  .course-link:focus {
     opacity: 1;
   }
 
-  .course-intro-link:active {
+  .course-link:active {
     color: #1976d2;
+  }
+
+  .course-link.course-intro-link {
+    margin: 1px 5px 0;
+    padding-left: 5px;
+  }
+
+  .course-link.copy-course-id-link {
+    margin: 1px 5px 0 35px;
+    padding-left: 5px;
   }
 </style>

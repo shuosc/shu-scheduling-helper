@@ -114,13 +114,37 @@ export const ClassCardMixin = {
     };
   },
   computed: {
-    style() {
+    style () {
       return {
-        color: 'rgba(255, 255, 255, 0.95)',
-        borderColor: `rgba(${parseInt(this.course.color.substr(1, 2), 16)}, ${parseInt(this.course.color.substr(3, 2), 16)}, ${parseInt(this.course.color.substr(5, 2), 16)}, 1.0)`,
-        background: `rgba(${parseInt(this.course.color.substr(1, 2), 16)}, ${parseInt(this.course.color.substr(3, 2), 16)}, ${parseInt(this.course.color.substr(5, 2), 16)}, 0.75)`,
-        opacity: this.course.isPreview ? '0.5' : '1',
-      };
+        'classic': [
+          {
+            color: 'rgba(255, 255, 255, 0.95)',
+            borderColor: `rgba(${parseInt(this.course.color.substr(1, 2), 16)}, ${parseInt(this.course.color.substr(3, 2), 16)}, ${parseInt(this.course.color.substr(5, 2), 16)}, 1.0)`,
+            background: `rgba(${parseInt(this.course.color.substr(1, 2), 16)}, ${parseInt(this.course.color.substr(3, 2), 16)}, ${parseInt(this.course.color.substr(5, 2), 16)}, 0.75)`,
+            opacity: this.course.isPreview ? '0.5' : '1',
+            padding: '4px 5px 5px',
+            'border-top-width': '3px',
+            'border-top-style': 'solid',
+            'border-radius': '2px',
+          },
+          {
+            color: 'rgba(255, 255, 255, 0.85)',
+          },
+        ],
+        'candy': [
+          {
+            color: `rgba(${parseInt(this.course.color.substr(1, 2), 16)}, ${parseInt(this.course.color.substr(3, 2), 16)}, ${parseInt(this.course.color.substr(5, 2), 16)}, 1.0)`,
+            background: `rgba(${parseInt(this.course.color.substr(1, 2), 16)}, ${parseInt(this.course.color.substr(3, 2), 16)}, ${parseInt(this.course.color.substr(5, 2), 16)}, 0.3)`,
+            opacity: this.course.isPreview ? '0.5' : '1',
+            padding: '8px 6px 5px',
+            'border-radius': '8px',
+            margin: '1px',
+          },
+          {
+            color: `rgba(${parseInt(this.course.color.substr(1, 2), 16)}, ${parseInt(this.course.color.substr(3, 2), 16)}, ${parseInt(this.course.color.substr(5, 2), 16)}, 0.8)`,
+          },
+        ]
+      }
     },
     _class() {
       return {

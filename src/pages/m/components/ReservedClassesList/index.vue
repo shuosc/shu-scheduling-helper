@@ -40,7 +40,6 @@
           </a-collapse-panel>
           <a-collapse-panel :key="key" :ref="`course-${key}`" class="course">
             <template slot="header">
-              <CourseColor :course-id="key" :course-name="reservedClasses[key].courseName" />
               <!--suppress JSUnresolvedVariable -->
               <CourseMeta :all-conflicted="allConflicted[key]" :course="reservedClasses[key]"
                           :expanded="openedCourseId === key"
@@ -59,14 +58,12 @@
 <script>
   import { ReservedClassesListMixin } from '../../../../mixins/ReservedClassesList';
   import CourseClassesList from './CourseClassesList';
-  import CourseColor from './CourseColor';
   import CourseMeta from './CourseMeta';
 
 
   export default {
     name: 'ReservedClassesList',
     components: {
-      CourseColor,
       CourseMeta,
       CourseClassesList,
     },

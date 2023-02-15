@@ -25,10 +25,10 @@
 
 <style scoped>
   .course-color {
-    position: absolute;
-    top: 16px;
-    display: block;
+    display: inline-block;
+    margin: 0 4px 1px 2px;
     width: 8px;
-    height: 15px;
+    height: 8px;
+    border-radius: 8px;
   }
 </style>

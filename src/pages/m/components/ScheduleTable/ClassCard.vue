@@ -1,13 +1,13 @@
 <template>
-  <div :style="style" class="class-card">
+  <div :style="style[theme][0]" class="class-card">
     <div class="course-name" ref="courseName"><strong>{{ courseName }}</strong></div>
-    <div class="teacher-name-venue" v-if="!venue">
+    <div class="teacher-name-venue" :style="style[theme][1]" v-if="!venue">
       {{ course.teacherName }}
     </div>
-    <div class="venue" v-else>
+    <div class="venue" :style="style[theme][1]" v-else>
       <span class="venue-at">@</span>{{ $store.getters.extra(`${course.courseId}-${course.teacherId}`).venue }}
     </div>
-    <div class="extra" v-if="course.fortnight || course.lab">
+    <div class="extra" :style="style[theme][1]" v-if="course.fortnight || course.lab">
       {{ course.fortnight }} {{ course.lab }}
     </div>
   </div>
@@ -31,6 +31,9 @@
         type: Boolean,
         default: false,
       },
+      theme: {
+        type: Number,
+      }
     },
     mixins: [ClassCardMixin],
   };
@@ -49,13 +52,12 @@
     align-items: flex-start;
     flex-direction: column;
     justify-content: flex-start;
-    padding: 4px 5px 5px;
+    padding: 8px 6px 5px;
     user-select: none;
     text-align: left;
-    border-top-width: 3px;
-    border-top-style: solid;
-    border-radius: 2px;
+    border-radius: 8px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin: 1px;
   }
 
   .course-name {
@@ -71,23 +73,19 @@
     line-height: 16px;
     overflow: hidden;
     min-height: 16px;
-    color: rgba(255, 255, 255, 0.85);
   }
 
   .venue {
     font-size: 12px;
     line-height: 1.25;
-    color: rgba(255, 255, 255, 0.85);
   }
 
   .venue-at {
     font-weight: bold;
-    color: white;
   }
 
   .extra {
       font-size: 12px;
       line-height: 1.25;
-      color: rgba(255, 255, 255, 0.8);
   }
 </style>

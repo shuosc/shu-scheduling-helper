@@ -18,6 +18,10 @@
                     <a-icon type="experiment" />
                     色彩随机种子... {{ colorSeedShortcut }}
                   </a-menu-item>
+                  <a-menu-item @click="handleChangeScheduleTableTheme">
+                    <a-icon type="tags" />
+                    切换课表主题 ({{ ScheduleTableThemeText }})
+                  </a-menu-item>
                 </a-menu>
               </a-dropdown>
               <a-button @click="venueMode = false" shape="round" size="small" type="primary" v-else>复原</a-button>
@@ -27,7 +31,7 @@
             <div class="brand" v-show="capturing">
               <img alt="Logo" src="../../../../assets/shuosc-logo-128px.png" />
               <img alt="Logo" src="../../../../assets/logo.png" />
-              <span>{{ $store.getters.credits }}学分</span>
+              <span>{{ $store.getters.credits }} 学分</span>
             </div>
           </td>
           <th class="header-period">&nbsp;</th>
@@ -43,7 +47,7 @@
           </td>
           <template v-for="(course, index2) in row">
             <td :key="index2" :rowspan="course != null ? course.span : 1" v-if="course == null || course.first">
-              <ClassCard :capturing="capturing" :course="course" :venue="venueMode"
+              <ClassCard :theme="ScheduleTableTheme" :capturing="capturing" :course="course" :venue="venueMode"
                          @click.native="handleClassCardClick(course.courseId)"
                          v-if="course != null && !course.qr" />
             </td>
@@ -61,6 +65,7 @@
 
 <script>
   import { ScheduleTableMixin } from '../../../../mixins/ScheduleTable';
+  import { UseScheduleTableThemeMixin } from '../../../../mixins/common/useScheduleTableTheme'
   import ClassCard from './ClassCard';
   import NoPeriodClassCard from './NoPeriodClassCard';
   // import QrCard from './QrCard';
@@ -73,7 +78,7 @@
       // QrCard,
       ClassCard,
     },
-    mixins: [ScheduleTableMixin],
+    mixins: [ScheduleTableMixin, UseScheduleTableThemeMixin],
   };
 </script>
 

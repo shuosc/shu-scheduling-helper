@@ -12,7 +12,7 @@
         <th>{{ index + 1 }}</th>
         <template v-for="(course, index2) in row">
           <td :key="index2" :rowspan="course !== null ? course.span : 1" v-if="course === null || course.first">
-            <ClassCard :course="course" :venue="venueMode" @click.native="handleClassCardClick(course.courseId)"
+            <ClassCard :theme="ScheduleTableTheme" :course="course" :venue="venueMode" @click.native="handleClassCardClick(course.courseId)"
                        v-if="course !== null" />
           </td>
         </template>
@@ -21,20 +21,22 @@
     </table>
     <div class="show-venue-wrapper">
       <a-checkbox v-model="venueMode">显示上课地点</a-checkbox>
+      <a-button @click="handleChangeScheduleTableTheme">切换课表主题 ({{ ScheduleTableThemeText }})</a-button>
     </div>
   </div>
 </template>
 
 <script>
   import ClassCard from './ClassCard';
-  import {ScheduleTableMixin} from '../../../../mixins/ScheduleTable';
+  import { ScheduleTableMixin } from '../../../../mixins/ScheduleTable';
+  import { UseScheduleTableThemeMixin } from '../../../../mixins/common/useScheduleTableTheme';
 
   export default {
     name: 'ScheduleTable',
     components: {
       ClassCard,
     },
-    mixins: [ScheduleTableMixin],
+    mixins: [ScheduleTableMixin, UseScheduleTableThemeMixin],
   };
 </script>
 

@@ -31,6 +31,7 @@ export default new Vuex.Store({
     historyPos: 0,
     historyHold: false,
     showIntroductionNotification: true,
+    useScheduleTableTheme: 'candy',
   },
   getters: {
     scheduleTableRows(state) {
@@ -311,6 +312,11 @@ export default new Vuex.Store({
     IGNORE_INTRODUCTION_NOTIFICATION(state) {
       state.showIntroductionNotification = false;
     },
+    SET_SCHEDULETABLE_THEME (state, value) {
+      if (value !== 'candy' && value !== 'classic')
+        value = 'candy' // 匹配不到主题需要恢复默认主题
+      state.useScheduleTableTheme = value;
+    }
   },
   actions: {
     updateFromStorage(context) {
@@ -326,6 +332,7 @@ export default new Vuex.Store({
           Storage.get('trimester', null),
           Storage.get('backend', null),
           Storage.get('colorSeed', 2),
+          Storage.get('useScheduleTableTheme', 'candy')
         ]).then((values) => {
           context.commit('ALL_CLASSES', values[0]);
           context.commit('ALL_CLASSES_HASH', values[1]);
@@ -343,6 +350,7 @@ export default new Vuex.Store({
           context.dispatch('setColorSeed', values[8]).then(() => {
             resolve();
           });
+          context.commit('SET_SCHEDULETABLE_THEME', values[9])
         });
       });
     },
@@ -456,6 +464,17 @@ export default new Vuex.Store({
           resolve();
         });
       });
+    },
+    setUseScheduleTableTheme (context, data) {
+      // 设置课表主题
+      return new Promise(resolve => {
+        context.commit('SET_SCHEDULETABLE_THEME', data);
+        Promise.all([
+          Storage.set('useScheduleTableTheme', data),
+        ]).then(() => {
+          resolve();
+        });
+      })
     },
     reserveClass(context, data) {
       // 添加待选课程
