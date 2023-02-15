@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 env:
-  NODE_VERSION: '14.x'
+  NODE_VERSION: '18.x'
 
 permissions:
   contents: read
