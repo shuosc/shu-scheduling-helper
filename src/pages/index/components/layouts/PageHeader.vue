@@ -60,7 +60,7 @@
     name: 'PageHeader',
     data() {
       return {
-        undoTitle: isMacLike ? '撤销 ⌘Z' : '重做 Ctrl+Z',
+        undoTitle: isMacLike ? '撤销 ⌘Z' : '撤销 Ctrl+Z',
         redoTitle: isMacLike ? '重做 ⇧⌘Z' : '恢复 Ctrl+Y',
       };
     },
