@@ -16,8 +16,8 @@
         <!--suppress JSUnresolvedVariable -->
         <a-list-item slot="renderItem" slot-scope="course">
           <h3>
-            {{ course['course_name'] }} <small>({{ course['course_id'] }})</small>
-            <a-badge :count="`${course.credit}学分`" class="credit-badge" />
+            {{ course['course_name'] }} <small>{{ course['course_id'] }}</small>
+            <a-badge :count="`${course.credit} 学分`" class="credit-badge" />
           </h3>
           <h4>{{ course['teacher_name'] }}
             <small>({{
@@ -35,6 +35,12 @@
             {{ course['campus'] }}
             <a-divider type="vertical" />
             {{ $store.getters.extra(`${course['course_id']}-${course['teacher_id']}`).venue }}
+            <br />
+            {{ getCourseProperty(course['course_id']) }}
+            <a-divider type="vertical" />
+            {{ getLessonCollegeOrMajor(course['course_id'], "major") }}
+            <a-divider type="vertical" />
+            {{ getLessonCollegeOrMajor(course['course_id'], "college") }}
             <br
               v-if="($store.getters.extra(`${course['course_id']}-${course['teacher_id']}`).date && $store.getters.extra(`${course['course_id']}-${course['teacher_id']}`).date !== '不开') || $store.getters.extra(`${course['course_id']}-${course['teacher_id']}`).limitations.length > 0" />
             <a-tag
@@ -140,6 +146,7 @@
 <script>
 import {conflictSolvingMixin} from '../../../../mixins/common/conflictsSolver';
 import {LookupPanelMixin} from '../../../../mixins/LookupPanel';
+import { GetCoursePropertyMixin } from '../../../../mixins/common/getCourseProperty';
 import LookupConditions from './LookupConditions';
 
 
@@ -148,7 +155,7 @@ export default {
     components: {
       LookupConditions,
     },
-    mixins: [conflictSolvingMixin, LookupPanelMixin],
+    mixins: [conflictSolvingMixin, LookupPanelMixin, GetCoursePropertyMixin],
     data() {
       return {
         pagination: {

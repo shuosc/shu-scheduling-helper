@@ -11573,6 +11573,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"shu-course-number-parser@npm:^0.1.0":
+  version: 0.1.0
+  resolution: "shu-course-number-parser@npm:0.1.0"
+  checksum: 994daa63fd42e86d2ca4d22742a613db44af0be7da3a4222369732553729ad59f47091aa89cf18e3fc71c33bbea0d76ee078a97e1c4253eb05ebfc6d0d39032a
+  languageName: node
+  linkType: hard
+
 "shu-scheduling-helper-frontend@workspace:.":
   version: 0.0.0-use.local
   resolution: "shu-scheduling-helper-frontend@workspace:."
@@ -11599,6 +11606,7 @@ __metadata:
     murmurhash-js: ^1.0.0
     pako: ^1.0.11
     promise-worker: ^2.0.1
+    shu-course-number-parser: ^0.1.0
     v-viewer: ~1.7.0
     vue: ^2.7.14
     vue-cli-plugin-ant-design: ^1.0.1
@@ -12654,11 +12662,11 @@ __metadata:
 
 "typescript@patch:typescript@^4.6.4#~builtin<compat/typescript>":
   version: 4.9.5
-  resolution: "typescript@patch:typescript@npm%3A4.9.5#~builtin<compat/typescript>::version=4.9.5&hash=23ec76"
+  resolution: "typescript@patch:typescript@npm%3A4.9.5#~builtin<compat/typescript>::version=4.9.5&hash=289587"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: ab417a2f398380c90a6cf5a5f74badd17866adf57f1165617d6a551f059c3ba0a3e4da0d147b3ac5681db9ac76a303c5876394b13b3de75fdd5b1eaa06181c9d
+  checksum: 1f8f3b6aaea19f0f67cba79057674ba580438a7db55057eb89cc06950483c5d632115c14077f6663ea76fd09fce3c190e6414bb98582ec80aa5a4eaf345d5b68
   languageName: node
   linkType: hard
 

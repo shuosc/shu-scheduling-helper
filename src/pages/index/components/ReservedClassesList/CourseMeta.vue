@@ -4,7 +4,7 @@
     <NumberCapacity :class-key="`${id}-${selectedClassKey}`" class="number-capacity" slot="actions"
                     v-if="selectedClassKey !== null && !expanded" />
     <span class="course-name">{{ course.courseName }}</span>{{ ' ' }}
-    <small class="course-id">({{ id }})</small>
+    <small class="course-id">{{ id }}{{ expanded ? ` ${getCourseInfo(id)}` : `` }}</small>
     <a :href="getLinkHref(id)" :title="getLinkTitle(course, id)"
        @click.stop="showCourseIntroduction($event, getLinkHref(id))" class="course-link course-intro-link"
        rel="external nofollow" target="_blank">简介</a>
@@ -26,6 +26,10 @@
       <a-divider type="vertical" />
       <small class="selected-info">
         {{ course.classes[selectedClassKey].classTime }}
+      </small>
+      <a-divider type="vertical" />
+      <small class="selected-info" :title="getCourseInfo(id,false)">
+        {{ getCourseProperty(id) }}
       </small>
       <a-divider type="vertical" />
       <small class="selected-info">
@@ -61,6 +65,7 @@
   import { introductionOpenerMixin } from '../../../../mixins/common/introductionOpener';
   import { CourseMetaMixin } from '../../../../mixins/ReservedClassesList';
   import { CopyCourseIdMixin } from '../../../../mixins/common/copyCourseId'
+  import { GetCoursePropertyMixin } from '../../../../mixins/common/getCourseProperty';
   import NumberCapacity from './NumberCapacity';
   import CourseColor from './CourseColor'
 
@@ -82,7 +87,7 @@
         type: Boolean,
       },
     },
-    mixins: [introductionOpenerMixin, CourseMetaMixin, CopyCourseIdMixin],
+    mixins: [introductionOpenerMixin, CourseMetaMixin, CopyCourseIdMixin, GetCoursePropertyMixin],
   };
 </script>
 
