@@ -29,8 +29,8 @@
           <div class="course-info">
             {{ course['class_time'] }}
             <a-divider type="vertical" />
-            {{ $store.getters.extra(`${course['course_id']}-${course['teacher_id']}`).number }}/{{
-            $store.getters.extra(`${course['course_id']}-${course['teacher_id']}`).capacity }}人
+            {{ $store.getters.extra(`${course['course_id']}-${course['teacher_id']}`).number }} / {{
+            $store.getters.extra(`${course['course_id']}-${course['teacher_id']}`).capacity }} 人
             <br />
             {{ course['campus'] }}
             <a-divider type="vertical" />
