@@ -32,7 +32,7 @@
         default: false,
       },
       theme: {
-        type: Number,
+        type: String,
       }
     },
     mixins: [ClassCardMixin],
