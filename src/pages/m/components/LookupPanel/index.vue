@@ -37,9 +37,9 @@
             {{ $store.getters.extra(`${course['course_id']}-${course['teacher_id']}`).venue }}
             <br />
             {{ getCourseProperty(course['course_id']) }}
-            <a-divider type="vertical" />
+            <a-divider v-if="getLessonCollegeOrMajor(course['course_id'], 'major') !== ''" type="vertical" />
             {{ getLessonCollegeOrMajor(course['course_id'], "major") }}
-            <a-divider type="vertical" />
+            <a-divider v-if="getLessonCollegeOrMajor(course['course_id'], 'college') !== ''" type="vertical" />
             {{ getLessonCollegeOrMajor(course['course_id'], "college") }}
             <br
               v-if="($store.getters.extra(`${course['course_id']}-${course['teacher_id']}`).date && $store.getters.extra(`${course['course_id']}-${course['teacher_id']}`).date !== '不开') || $store.getters.extra(`${course['course_id']}-${course['teacher_id']}`).limitations.length > 0" />
