@@ -2,7 +2,7 @@
   <div :class="{ 'course-meta': true, 'course-meta-all-conflicted': allConflicted }">
     <a-badge :count="`${course.credit} 学分`" class="credit-badge" />
     <span class="course-name">{{ course.courseName }}</span>{{ ' ' }}
-    <small>({{ id }})</small>
+    <small>{{ id }}{{ expanded ? ` ${getCourseInfo(id)}` : `` }}</small>
     <template v-if="selectedClassKey !== null && !expanded">
       <br />
       <CourseColor :course-id="id" :course-name="course.courseName" />
@@ -19,6 +19,14 @@
       <a-divider type="vertical" />
       <small class="selected-info">
         {{ course.classes[selectedClassKey].classTime }}
+      </small>
+      <a-divider type="vertical" />
+      <small class="selected-info">
+        {{ getCourseProperty(id) }}
+      </small>
+      <a-divider v-if="getCourseInfo(id, false) !== ''" type="vertical" />
+      <small v-if="getCourseInfo(id, false) !== ''" class="selected-info">
+        {{ getCourseInfo(id, false) }}
       </small>
       <a-divider type="vertical" />
       <small class="selected-info">
@@ -52,6 +60,7 @@
 
 <script>
   import { CourseMetaMixin } from '../../../../mixins/ReservedClassesList';
+  import { GetCoursePropertyMixin } from '../../../../mixins/common/getCourseProperty';
   import NumberCapacity from './NumberCapacity';
   import CourseColor from './CourseColor'
 
@@ -73,7 +82,7 @@
         type: Boolean,
       },
     },
-    mixins: [CourseMetaMixin],
+    mixins: [CourseMetaMixin, GetCoursePropertyMixin],
   };
 </script>
 

@@ -2,7 +2,7 @@
   <div>
     <sup><strong>{{ extra.number }}</strong></sup>
     <span></span>
-    <sub>{{ extra.capacity }}人</sub>
+    <sub>{{ extra.capacity }} 人</sub>
   </div>
 </template>
 

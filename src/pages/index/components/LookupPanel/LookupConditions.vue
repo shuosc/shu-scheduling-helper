@@ -35,6 +35,24 @@
           <a-select-option value="延长">延长</a-select-option>
         </a-select>
       </a-form-item>
+      <a-form-item label="学院">
+        <a-select v-model="conditions.search['class_sort_college']"  class="w-200px">
+          <a-select-option value='{"name":""}'>全部</a-select-option>
+          <a-select-option v-for="item in getCollegesList()" :key="item.name" :value="JSON.stringify({name:item.name,regex:item.regex.toString()})">{{item.name}}</a-select-option>
+        </a-select>
+      </a-form-item>
+      <a-form-item label="专业">
+        <a-select v-model="conditions.search['class_sort_major']"  class="w-200px">
+          <a-select-option value='{"name":""}'>全部</a-select-option>
+          <a-select-option v-for="item in getMajorsList(JSON.parse(conditions.search['class_sort_college']).name)" :key="item.name" :value="JSON.stringify({name:item.name,regex:item.regex.toString()})">{{item.name}}</a-select-option>
+        </a-select>
+      </a-form-item>
+      <a-form-item label="课程属性">
+        <a-select v-model="conditions.search['class_sort_property']"  class="w-200px">
+          <a-select-option value='{"name":""}'>全部</a-select-option>
+          <a-select-option v-for="item in getLessonPropertiesList()" :key="item.name" :value="JSON.stringify({name:item.name,code:item.code,regex:item.regex.toString()})">{{item.name}}</a-select-option>
+        </a-select>
+      </a-form-item>
       <a-form-item label="筛除时间冲突选项">
         <a-switch checked-children="是" un-checked-children="否" v-model="conditions.filterConflicts" />
       </a-form-item>
@@ -108,11 +126,12 @@
 
 <script>
   import { LookupConditionsMixin } from '../../../../mixins/LookupPanel';
+  import { GetCourseClassListMixin } from '../../../../mixins/common/getCourseClassList';
 
 
   export default {
     name: 'LookupConditions',
-    mixins: [LookupConditionsMixin],
+    mixins: [LookupConditionsMixin, GetCourseClassListMixin],
   };
 </script>
 

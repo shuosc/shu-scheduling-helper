@@ -158,6 +158,9 @@ export const LookupConditionsMixin = {
           'teacher_name': '',
           'class_time': '',
           'campus': '',
+          'class_sort_college': '{"name":""}',
+          'class_sort_major': '{"name":""}',
+          'class_sort_property': '{"name":""}',
         },
         filterLimitations: {
           'xian_zhi_ren_shu': 'default',

@@ -24,7 +24,7 @@
           </a>
           <a-badge :count="`${course.credit} 学分`" class="credit-badge" />
           <br />
-          <small class="id-info">{{ course.id }}</small>
+          <small class="id-info" :title="getCourseInfo(course.id)">{{ course.id }}</small>
         </template>
       </a-table-column>
       <a-table-column data-index="teacher" title="教师">
@@ -190,6 +190,7 @@
   import { conflictSolvingMixin } from '../../../../mixins/common/conflictsSolver';
   import { introductionOpenerMixin } from '../../../../mixins/common/introductionOpener';
   import { LookupPanelMixin } from '../../../../mixins/LookupPanel';
+  import { GetCoursePropertyMixin } from '../../../../mixins/common/getCourseProperty';
   import LookupConditions from './LookupConditions';
   import NumberCapacity from './NumberCapacity';
 
@@ -200,7 +201,7 @@
       NumberCapacity,
       LookupConditions,
     },
-    mixins: [introductionOpenerMixin, conflictSolvingMixin, LookupPanelMixin],
+    mixins: [introductionOpenerMixin, conflictSolvingMixin, LookupPanelMixin, GetCoursePropertyMixin],
   };
 </script>
 

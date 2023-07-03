@@ -29,6 +29,7 @@
     "murmurhash-js": "^1.0.0",
     "pako": "^1.0.11",
     "promise-worker": "^2.0.1",
+    "shu-course-number-parser": "^0.2.0",
     "v-viewer": "~1.7.0",
     "vue": "^2.7.14",
     "vue-clipboard2": "^0.3.3",
