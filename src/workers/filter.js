@@ -114,8 +114,6 @@ registerPromiseWorker(function (message) {
     if (message.conditions.search.hasOwnProperty(condition)) {
       if (condition.startsWith('class_sort')) {
         if (JSON.parse(message.conditions.search[condition]).name !== '') {
-          // eslint-disable-next-line no-console
-          console.log('adding condition', condition, JSON.parse(message.conditions.search[condition]).name, JSON.parse(message.conditions.search[condition]).regex);
           conditionsRegExp[condition] = new RegExp(JSON.parse(message.conditions.search[condition]).regex.slice(1, -1));
         }
       } else if (message.conditions.regexpMode) {
