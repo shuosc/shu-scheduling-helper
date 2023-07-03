@@ -11573,10 +11573,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"shu-course-number-parser@npm:^0.1.0":
-  version: 0.1.0
-  resolution: "shu-course-number-parser@npm:0.1.0"
-  checksum: 994daa63fd42e86d2ca4d22742a613db44af0be7da3a4222369732553729ad59f47091aa89cf18e3fc71c33bbea0d76ee078a97e1c4253eb05ebfc6d0d39032a
+"shu-course-number-parser@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "shu-course-number-parser@npm:0.2.0"
+  checksum: 95dde18c822ceafee92eff8d48bd74fb8778d31b292584a983e0581dfe2b0aec126f889e9704bf1cb1bf1dff7cdf74ff3e93c63a360c4a58fff6bf833e08ac96
   languageName: node
   linkType: hard
 
@@ -11606,7 +11606,7 @@ __metadata:
     murmurhash-js: ^1.0.0
     pako: ^1.0.11
     promise-worker: ^2.0.1
-    shu-course-number-parser: ^0.1.0
+    shu-course-number-parser: ^0.2.0
     v-viewer: ~1.7.0
     vue: ^2.7.14
     vue-cli-plugin-ant-design: ^1.0.1

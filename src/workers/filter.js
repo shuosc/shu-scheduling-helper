@@ -2,7 +2,7 @@ import registerPromiseWorker from 'promise-worker/register';
 import { getPeriods } from '../utils';
 
 
-function concatRegExp(parts) {
+function concatRegExp (parts) {
   parts.forEach((part, index) => {
     parts[index] = part.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   });
@@ -112,7 +112,13 @@ registerPromiseWorker(function (message) {
   let conditionsRegExp = {};
   for (let condition in message.conditions.search) {
     if (message.conditions.search.hasOwnProperty(condition)) {
-      if (message.conditions.regexpMode) {
+      if (condition.startsWith('class_sort')) {
+        if (JSON.parse(message.conditions.search[condition]).name !== '') {
+          // eslint-disable-next-line no-console
+          console.log('adding condition', condition, JSON.parse(message.conditions.search[condition]).name, JSON.parse(message.conditions.search[condition]).regex);
+          conditionsRegExp[condition] = new RegExp(JSON.parse(message.conditions.search[condition]).regex.slice(1, -1));
+        }
+      } else if (message.conditions.regexpMode) {
         try {
           conditionsRegExp[condition] = new RegExp(message.conditions.search[condition], 'i');
         } catch (e) {
@@ -135,7 +141,11 @@ registerPromiseWorker(function (message) {
     }
     for (let condition in conditionsRegExp) {
       if (conditionsRegExp.hasOwnProperty(condition)) {
-        if (!conditionsRegExp[condition].test(row[condition])) {
+        if (condition.startsWith('class_sort')) {
+          if (conditionsRegExp[condition] && !conditionsRegExp[condition].test(row['course_id'])) {
+            return;
+          }
+        } else if (!conditionsRegExp[condition].test(row[condition])) {
           return;
         }
       }
