@@ -20,7 +20,7 @@
   "dependencies": {
     "ant-design-vue": "^1.7.8",
     "axios": "^0.27.2",
-    "core-js": "^3.27.2",
+    "core-js": "^3.33.0",
     "crypto-js": "^3.3.0",
     "file-saver": "^2.0.5",
     "html2canvas": "^1.4.1",
@@ -29,8 +29,8 @@
     "murmurhash-js": "^1.0.0",
     "pako": "^1.0.11",
     "promise-worker": "^2.0.1",
-    "shu-course-number-parser": "^0.2.0",
-    "v-viewer": "~1.7.0",
+    "shu-course-number-parser": "^0.2.1",
+    "v-viewer": "~1.7.1",
     "vue": "^2.7.14",
     "vue-clipboard2": "^0.3.3",
     "vuex": "^3.6.2"
@@ -41,7 +41,7 @@
     "@vue/cli-service": "^4.5.19",
     "acorn": "^7.4.1",
     "babel-eslint": "^10.1.0",
-    "babel-plugin-import": "^1.13.6",
+    "babel-plugin-import": "^1.13.8",
     "cross-env": "^7.0.3",
     "cz-conventional-changelog": "3.3.0",
     "eslint": "^5.16.0",
