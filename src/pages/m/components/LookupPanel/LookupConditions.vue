@@ -59,7 +59,7 @@
       <a-row>
         <a-col :xs="11">
           <a-form-item label="学院">
-            <a-select v-model="conditions.search['class_sort_college']"  class="w-200px">
+            <a-select v-model="conditions.search['class_sort_college']" @change="changeCollege"  class="w-200px">
               <a-select-option value='{"name":""}'>全部</a-select-option>
               <a-select-option v-for="item in getCollegesList()" :key="item.name" :value="JSON.stringify({name:item.name,regex:item.regex.toString()})">{{item.name}}</a-select-option>
             </a-select>
