@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-form class="conditions-wrapper" layout="vertical" ref="form">
+    <a-form class="lookup-conditions" layout="vertical" ref="form">
       <a-form-item :validate-status="regexpValidateStatus['course_id']">
         <a-input allow-clear v-model="conditions.search['course_id']">
           <span class="label" slot="prefix">课程号：</span>
@@ -59,7 +59,7 @@
       <a-row>
         <a-col :xs="11">
           <a-form-item label="学院">
-            <a-select v-model="conditions.search['class_sort_college']" @change="changeCollege"  class="w-200px">
+            <a-select show-search v-model="conditions.search['class_sort_college']" @change="changeCollege"  class="w-200px">
               <a-select-option value='{"name":""}'>全部</a-select-option>
               <a-select-option v-for="item in getCollegesList()" :key="item.name" :value="JSON.stringify({name:item.name,regex:item.regex.toString()})">{{item.name}}</a-select-option>
             </a-select>
@@ -67,7 +67,7 @@
         </a-col>
         <a-col :xs="{offset: 2, span: 11}">
           <a-form-item label="专业">
-            <a-select v-model="conditions.search['class_sort_major']"  class="w-200px">
+            <a-select show-search v-model="conditions.search['class_sort_major']"  class="w-200px">
               <a-select-option value='{"name":""}'>全部</a-select-option>
               <a-select-option v-for="item in getMajorsList(JSON.parse(conditions.search['class_sort_college']).name)" :key="item.name" :value="JSON.stringify({name:item.name,regex:item.regex.toString()})">{{item.name}}</a-select-option>
             </a-select>
@@ -77,7 +77,7 @@
       <a-row>
         <a-col :xs="11">
           <a-form-item label="课程属性">
-            <a-select v-model="conditions.search['class_sort_property']"  class="w-200px">
+            <a-select show-search v-model="conditions.search['class_sort_property']"  class="w-200px">
               <a-select-option value='{"name":""}'>全部</a-select-option>
               <a-select-option v-for="item in getLessonPropertiesList()" :key="item.name" :value="JSON.stringify({name:item.name,code:item.code,regex:item.regex.toString()})">{{item.name}}</a-select-option>
             </a-select>
@@ -165,8 +165,13 @@
 </script>
 
 <style scoped>
-  .conditions-wrapper {
+  .lookup-conditions {
     padding: 16px 16px 0;
+  }
+
+  /*noinspection CssUnusedSymbol*/
+  .lookup-conditions >>> .ant-select-search__field {
+    padding: 0;
   }
 
   .w-80px {
