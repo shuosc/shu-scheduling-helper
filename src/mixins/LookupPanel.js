@@ -302,5 +302,8 @@ export const LookupConditionsMixin = {
         });
       }
     },
+    changeCollege() {
+      this.conditions.search['class_sort_major'] = '{"name":""}';
+    },
   },
 };

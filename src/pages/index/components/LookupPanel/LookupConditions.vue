@@ -36,19 +36,19 @@
         </a-select>
       </a-form-item>
       <a-form-item label="学院">
-        <a-select v-model="conditions.search['class_sort_college']"  class="w-200px">
+        <a-select show-search v-model="conditions.search['class_sort_college']" @change="changeCollege"  class="w-200px">
           <a-select-option value='{"name":""}'>全部</a-select-option>
           <a-select-option v-for="item in getCollegesList()" :key="item.name" :value="JSON.stringify({name:item.name,regex:item.regex.toString()})">{{item.name}}</a-select-option>
         </a-select>
       </a-form-item>
       <a-form-item label="专业">
-        <a-select v-model="conditions.search['class_sort_major']"  class="w-200px">
+        <a-select show-search v-model="conditions.search['class_sort_major']"  class="w-200px">
           <a-select-option value='{"name":""}'>全部</a-select-option>
           <a-select-option v-for="item in getMajorsList(JSON.parse(conditions.search['class_sort_college']).name)" :key="item.name" :value="JSON.stringify({name:item.name,regex:item.regex.toString()})">{{item.name}}</a-select-option>
         </a-select>
       </a-form-item>
       <a-form-item label="课程属性">
-        <a-select v-model="conditions.search['class_sort_property']"  class="w-200px">
+        <a-select show-search v-model="conditions.search['class_sort_property']"  class="w-200px">
           <a-select-option value='{"name":""}'>全部</a-select-option>
           <a-select-option v-for="item in getLessonPropertiesList()" :key="item.name" :value="JSON.stringify({name:item.name,code:item.code,regex:item.regex.toString()})">{{item.name}}</a-select-option>
         </a-select>
@@ -138,6 +138,11 @@
 <style scoped>
   .lookup-conditions {
     margin: 0 16px 16px;
+  }
+
+  /*noinspection CssUnusedSymbol*/
+  .lookup-conditions >>> .ant-select-search__field {
+    padding: 0;
   }
 
   .w-200px {
