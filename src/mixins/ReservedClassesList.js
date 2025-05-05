@@ -1,5 +1,5 @@
-import { getColor, getPeriods } from '../utils';
-
+import { getColor } from '../utils/color';
+import { getAllCoursesConflictStatus, getConflicts } from '../utils/CheckConflict';
 
 export const ReservedClassesListMixin = {
   data() {
@@ -43,46 +43,8 @@ export const ReservedClassesListMixin = {
       return this.$store.getters.credits;
     },
     allConflicted() {
-      let result = {};
-      this.reservedClassesKeys.forEach((key) => {
-        let flag = false;
-        if (!this.$store.state.selectedClasses.hasOwnProperty(key)) {
-          flag = true;
-          for (let teacherId in this.$store.state.reservedClasses[key].classes) {
-            if (this.$store.state.reservedClasses[key].classes.hasOwnProperty(teacherId)) {
-              let isConflicted = false;
-              getPeriods(this.$store.state.reservedClasses[key].classes[teacherId].classTime).forEach((period) => {
-                if (!isConflicted) {
-                  let cell = this.$store.getters.scheduleTableRows[period[0]][period[1]];
-                  if (cell !== null && cell.courseId !== key) {
-                    isConflicted = true;
-                  } else {
-                    let campusCell = this.$store.getters.campusTableRows[period[0]][period[1]];
-                    if (campusCell != null && campusCell !== this.$store.state.reservedClasses[key].classes[teacherId].campus) {
-                      const cellBefore = period[0] - 1 >= 0 ? this.$store.getters.scheduleTableRows[period[0] - 1][period[1]] : null;
-                      const cellAfter = period[0] + 1 < 12 ? this.$store.getters.scheduleTableRows[period[0] + 1][period[1]] : null;
-                      if (cellBefore != null && cellBefore.campus !== this.$store.state.reservedClasses[key].classes[teacherId].campus
-                        && cellBefore.courseId !== this.id) {
-                        isConflicted = true;
-                      }
-                      if (cellAfter != null && cellAfter.campus !== this.$store.state.reservedClasses[key].classes[teacherId].campus
-                        && cellAfter.courseId !== this.id) {
-                        isConflicted = true;
-                      }
-                    }
-                  }
-                }
-              });
-              if (!isConflicted) {
-                flag = false;
-                break;
-              }
-            }
-          }
-        }
-        result[key] = flag;
-      });
-      return result;
+      
+      return getAllCoursesConflictStatus(this.reservedClassesKeys, this.$store);
     },
     openedCourseId: {
       get() {
@@ -147,28 +109,7 @@ export const CourseClassesListMixin = {
     conflicts() {
       let result = {};
       this.classesKeys.forEach((key) => {
-        let courseConflicts = {};
-        getPeriods(this.$store.state.reservedClasses[this.id].classes[key].classTime).forEach((period) => {
-          let cell = this.$store.getters.scheduleTableRows[period[0]][period[1]];
-          if (cell !== null && cell.courseId !== this.id) {
-            courseConflicts[cell.courseId] = 1;
-          } else {
-            let campusCell = this.$store.getters.campusTableRows[period[0]][period[1]];
-            if (campusCell != null && campusCell !== this.$store.state.reservedClasses[this.id].classes[key].campus) {
-              const cellBefore = period[0] - 1 >= 0 ? this.$store.getters.scheduleTableRows[period[0] - 1][period[1]] : null;
-              const cellAfter = period[0] + 1 < 12 ? this.$store.getters.scheduleTableRows[period[0] + 1][period[1]] : null;
-              if (cellBefore != null && cellBefore.campus !== this.$store.state.reservedClasses[this.id].classes[key].campus
-                && cellBefore.courseId !== this.id && courseConflicts[cellBefore.courseId] == null) {
-                courseConflicts[cellBefore.courseId] = 2;
-              }
-              if (cellAfter != null && cellAfter.campus !== this.$store.state.reservedClasses[this.id].classes[key].campus
-                && cellAfter.courseId !== this.id && courseConflicts[cellAfter.courseId] == null) {
-                courseConflicts[cellAfter.courseId] = 2;
-              }
-            }
-          }
-        });
-        result[key] = courseConflicts;
+        result[key] = getConflicts(this.id, key, this.$store);
       });
       return result;
     },
@@ -207,40 +148,38 @@ export const CourseClassesListMixin = {
         teacherId: key,
         teacherName: this.course.classes[key].teacherName,
         classTime: this.course.classes[key].classTime,
+        campus: this.course.classes[key].campus,
       });
       this.$store.commit('PREVIEW_CLASS_CONFLICTS', this.conflicts[key]);
     },
-    cancelPreviewClass(key) {
+    cancelPreviewClass() {
       if (this.$store.state.previewClass !== null
-        && this.$store.state.previewClass.courseId === this.id
-        && this.$store.state.previewClass.teacherId === key) {
+        && this.$store.state.previewClass.courseId === this.id) {
         this.$store.commit('PREVIEW_CLASS', null);
       }
-    },
-    conflictsSolving(key) {
-      this.showConflictsSolvingDialog({
-        course_id: this.id,
-        course_name: this.course.courseName,
-        teacher_id: key,
-        teacher_name: this.course.classes[key].teacherName,
-        class_time: this.course.classes[key].classTime,
-      }, this.conflicts[key]);
     },
   },
 };
 
+// 添加缺失的Mixin
 export const CourseColorMixin = {
+  props: {
+    courseId: {
+      type: String,
+    },
+    courseName: {
+      type: String,
+    },
+    seed: {
+      type: Number,
+      default: 0,
+    },
+  },
   computed: {
     style() {
-      if (this.$store.state.selectedClasses.hasOwnProperty(this.courseId)) {
-        return {
-          background: this.$store.state.selectedClasses[this.courseId].themeColor,
-        };
-      } else {
-        return {
-          background: getColor(this.courseName, this.seed),
-        };
-      }
+      return {
+        background: getColor(this.courseName || this.courseId, this.seed),
+      };
     },
   },
 };
@@ -253,6 +192,18 @@ export const CourseMetaMixin = {
       } else {
         return null;
       }
+    },
+    getCourseInfo() {
+      return (courseId, showCredit = true) => {
+        let result = [];
+        if (showCredit && this.$store.state.reservedClasses[courseId].credit) {
+          result.push(`${this.$store.state.reservedClasses[courseId].credit}学分`);
+        }
+        if (this.$store.state.reservedClasses[courseId].courseType) {
+          result.push(this.$store.state.reservedClasses[courseId].courseType);
+        }
+        return result.join(' · ');
+      };
     },
   },
 };

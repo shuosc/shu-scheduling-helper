@@ -23,11 +23,11 @@ module.exports = {
       filename: 'index.html',
       chunks: ['chunk-vendors', 'chunk-common', 'index'],
     },
-    m: {
-      entry: 'src/pages/m/main.js',
-      template: 'public/m.html',
-      filename: 'm.html',
-      chunks: ['chunk-vendors', 'chunk-common', 'm'],
+    mobile: {
+      entry: 'src/pages/mobile/main.js',
+      template: 'public/mobile.html',
+      filename: 'mobile.html',
+      chunks: ['chunk-vendors', 'chunk-common', 'mobile'],
     },
     'quick-inputting': {
       entry: 'src/pages/quick-inputting/main.js',

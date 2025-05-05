@@ -261,9 +261,9 @@ ec17f6e2:00000000+1002,00000000-1001
   "00000000": {
     teacherId: "1001",
     periods: [
-      [10, 0, true, 3], // [第(0-12)节课, 周(0-4), 是否为时段第一节, periods的长度]
-      [11, 0, false, 3],
-      [12, 0, false, 3],
+      [10, 0, true, 3, "单", false], // [第(0-12)节课, 周(0-4), 是否为时段第一节, periods的长度, 单双周信息, 是否为实验课]
+      [11, 0, false, 3, "单", false],
+      [12, 0, false, 3, "单", false],
     ],
     themeColor: "#7B1FA2",
   },
@@ -309,19 +309,54 @@ ec17f6e2:00000000+1002,00000000-1001
 
 ```javascript
 [
-  [null, null, null, null, null],
-  [null, null, null, null, null],
-  [null, null, null, null, null],
-  [null, null, null, null, null],
-  [null, null, null, null, null],
-  [null, null, null, null, null],
-  [null, null, null, null, null],
-  [null, null, null, null, null],
-  [null, null, null, null, null],
-  [null, null, null, null, null],
-  [null, {courseId: "00000000", courseName: "活动课", teacherName: "辅导员", first: true, span: 3, color: "#7B1FA2", isPreview: false}, null, null, null],
-  [null, {courseId: "00000000", courseName: "活动课", teacherName: "辅导员", first: false, span: 3, color: "#7B1FA2", isPreview: false}, null, null, null],
-  [null, {courseId: "00000000", courseName: "活动课", teacherName: "辅导员", first: false, span: 3, color: "#7B1FA2", isPreview: false}, null, null, null],
+  [[], [], [], [], []],
+  [[], [], [], [], []],
+  [[], [], [], [], []],
+  [[], [], [], [], []],
+  [[], [], [], [], []],
+  [[], [], [], [], []],
+  [[], [], [], [], []],
+  [[], [], [], [], []],
+  [[], [], [], [], []],
+  [[], [], [], [], []],
+  [
+    [],
+    [
+      {
+        courseId: "00000000",
+        courseName: "活动课",
+        teacherId: "1001",
+        teacherName: "辅导员",
+        campus: "宝山",
+        first: true,
+        span: 3,
+        color: "#7B1FA2",
+        isPreview: false,
+        fortnight: "单周",
+        lab: false,
+        clipPathMode: "top-left"
+      },
+      {
+        courseId: "11111111",
+        courseName: "高等数学",
+        teacherId: "2001",
+        teacherName: "张教授",
+        campus: "宝山",
+        first: true,
+        span: 3,
+        color: "#2196F3",
+        isPreview: false,
+        fortnight: "双周",
+        lab: false,
+        clipPathMode: "bottom-right"
+      }
+    ],
+    [],
+    [],
+    []
+  ],
+  [[], [], [], [], []],
+  [[], [], [], [], []]
 ]
 ```
 

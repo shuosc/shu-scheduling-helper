@@ -11,7 +11,7 @@
 <script>
   import zh_CN from 'ant-design-vue/lib/locale-provider/zh_CN';
   import { dataManagerMixin } from '../../mixins/common/dataManager';
-  import { isMacLike } from '../../utils';
+  import { isMacLike } from '../../utils/course';
   import PageContent from './components/layouts/PageContent';
   import PageHeader from './components/layouts/PageHeader';
   import PageSider from './components/layouts/PageSider';

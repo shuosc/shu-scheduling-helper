@@ -53,7 +53,7 @@
 </template>
 
 <script>
-  import { isMacLike } from '../../../../utils';
+  import { isMacLike } from '../../../../utils/course';
 
 
   export default {

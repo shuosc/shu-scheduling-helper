@@ -1,5 +1,11 @@
 import html2canvas from 'html2canvas';
-import { getColor, getPeriods, isMacLike } from '../utils';
+import { getPeriods, isMacLike } from '../utils/course';
+import { getColor } from '../utils/color';
+import { 
+  adjustAllTextElements, 
+  getCourseNameParts, 
+  shortenCourseNameParts 
+} from '../utils/AdjustTextSize';
 
 
 export const ScheduleTableMixin = {
@@ -30,17 +36,18 @@ export const ScheduleTableMixin = {
         return this.$store.getters.scheduleTableRows;
       } else {
         let rows = JSON.parse(JSON.stringify(this.$store.getters.scheduleTableRows));
+
         rows.forEach((row, i) => {
-          row.forEach((cell, j) => {
-            if (cell !== null
-              && (cell.courseId === this.$store.state.previewClass.courseId
-                || this.$store.state.previewClassConflicts.hasOwnProperty(cell.courseId))) {
-              rows[i][j] = null;
-            }
+          row.forEach((cellCourses, j) => {
+            rows[i][j] = cellCourses.filter(cell => 
+              cell === null || 
+              (cell.courseId !== this.$store.state.previewClass.courseId && 
+               !this.$store.state.previewClassConflicts.hasOwnProperty(cell.courseId))
+            );
           });
         });
         getPeriods(this.$store.state.previewClass.classTime).forEach((period) => {
-          rows[period[0]][period[1]] = {
+          const previewCourse = {
             courseId: this.$store.state.previewClass.courseId,
             courseName: this.$store.state.previewClass.courseName,
             teacherId: this.$store.state.previewClass.teacherId,
@@ -51,8 +58,29 @@ export const ScheduleTableMixin = {
             isPreview: true,
             fortnight: period[4] ? period[4] + '周' : null,
             lab: period[5],
+            clipPathMode: period[4] === '单' ? 'top-left' : 
+                         period[4] === '双' ? 'bottom-right' : 'full',
           };
+          
+          // 检查是否可以与现有课程共存（单双周交替）
+          const existingCourses = rows[period[0]][period[1]];
+          if (existingCourses.length === 0) {
+            rows[period[0]][period[1]].push(previewCourse);
+          } 
+          else if (existingCourses.length === 1) {
+            const existingCourse = existingCourses[0];
+            
+            if ((previewCourse.fortnight === '单周' && existingCourse.fortnight === '双周') ||
+                (previewCourse.fortnight === '双周' && existingCourse.fortnight === '单周')) {
+              rows[period[0]][period[1]].push(previewCourse);
+            } else {
+              rows[period[0]][period[1]] = [previewCourse];
+            }
+          } else {
+            rows[period[0]][period[1]] = [previewCourse];
+          }
         });
+        
         return rows;
       }
     },
@@ -114,18 +142,51 @@ export const ClassCardMixin = {
     };
   },
   computed: {
+    clipPath() {
+      const offset = 2;
+      const minHeight = 18;
+      const mode = this.course.clipPathMode;
+      
+      switch (mode) {
+        case 'top-left':
+          return `polygon(0 0, 100% 0, 100% ${minHeight}px, 0 calc(100% - ${minHeight + offset}px))`;
+        case 'bottom-right':
+          return `polygon(0 100%, 0 calc(100% - ${minHeight}px), 100% ${minHeight + offset}px, 100% 100%)`;
+        case 'full':
+        default:
+          return 'polygon(0 0, 100% 0, 100% 100%, 0 100%)';
+      }
+    },
     style () {
+      const defaultColor = '#888888'; // Default gray color
+      
+      
+      const color = (() => {
+        const courseColor = this.course?.color;
+        const isValidColor = courseColor && typeof courseColor === 'string' && courseColor.startsWith('#') && courseColor.length === 7;
+        
+        if (isValidColor) {
+          return courseColor;
+        } else if (this.course?.courseName) {
+          return getColor(this.course.courseName, 0);
+        } else {
+          return defaultColor;
+        }
+      })();
+      
       return {
         'classic': [
           {
             color: 'rgba(255, 255, 255, 0.95)',
-            borderColor: `rgba(${parseInt(this.course.color.substr(1, 2), 16)}, ${parseInt(this.course.color.substr(3, 2), 16)}, ${parseInt(this.course.color.substr(5, 2), 16)}, 1.0)`,
-            background: `rgba(${parseInt(this.course.color.substr(1, 2), 16)}, ${parseInt(this.course.color.substr(3, 2), 16)}, ${parseInt(this.course.color.substr(5, 2), 16)}, 0.75)`,
-            opacity: this.course.isPreview ? '0.5' : '1',
+            borderColor: `rgba(${parseInt(color.substr(1, 2), 16)}, ${parseInt(color.substr(3, 2), 16)}, ${parseInt(color.substr(5, 2), 16)}, 1.0)`, 
+            background: `rgba(${parseInt(color.substr(1, 2), 16)}, ${parseInt(color.substr(3, 2), 16)}, ${parseInt(color.substr(5, 2), 16)}, 0.75)`,
+            opacity: this.course?.isPreview ? '0.5' : '1',
             padding: '4px 5px 5px',
             'border-top-width': '3px',
             'border-top-style': 'solid',
             'border-radius': '2px',
+            'clip-path': this.clipPath,
+            'background-clip': 'padding-box',
           },
           {
             color: 'rgba(255, 255, 255, 0.85)',
@@ -133,15 +194,17 @@ export const ClassCardMixin = {
         ],
         'candy': [
           {
-            color: `rgba(${parseInt(this.course.color.substr(1, 2), 16)}, ${parseInt(this.course.color.substr(3, 2), 16)}, ${parseInt(this.course.color.substr(5, 2), 16)}, 1.0)`,
-            background: `rgba(${parseInt(this.course.color.substr(1, 2), 16)}, ${parseInt(this.course.color.substr(3, 2), 16)}, ${parseInt(this.course.color.substr(5, 2), 16)}, 0.3)`,
-            opacity: this.course.isPreview ? '0.5' : '1',
+            color: `rgba(${parseInt(color.substr(1, 2), 16)}, ${parseInt(color.substr(3, 2), 16)}, ${parseInt(color.substr(5, 2), 16)}, 1.0)`,
+            background: `rgba(${parseInt(color.substr(1, 2), 16)}, ${parseInt(color.substr(3, 2), 16)}, ${parseInt(color.substr(5, 2), 16)}, 0.3)`,
+            opacity: this.course?.isPreview ? '0.5' : '1',
             padding: '8px 6px 5px',
             'border-radius': '8px',
             margin: '1px',
+            'clip-path':  this.clipPath,
+            'background-clip': 'padding-box',
           },
           {
-            color: `rgba(${parseInt(this.course.color.substr(1, 2), 16)}, ${parseInt(this.course.color.substr(3, 2), 16)}, ${parseInt(this.course.color.substr(5, 2), 16)}, 0.8)`,
+            color: `rgba(${parseInt(color.substr(1, 2), 16)}, ${parseInt(color.substr(3, 2), 16)}, ${parseInt(color.substr(5, 2), 16)}, 0.8)`,
           },
         ]
       }
@@ -182,20 +245,7 @@ export const ClassCardMixin = {
   },
   methods: {
     getCourseNameParts() {
-      const parts = [];
-      let courseName = this.course.courseName;
-      while (courseName.length > 0) {
-        const regexp = /(?:\w|\([^()]+\))$/i;
-        const result = regexp.exec(courseName);
-        if (result != null) {
-          parts.unshift(result[0]);
-          courseName = courseName.slice(0, -result[0].length);
-        } else {
-          parts.unshift(courseName);
-          courseName = '';
-        }
-      }
-      return parts;
+      return getCourseNameParts(this.course.courseName);
     },
     handleResize() {
       if (this.timer !== null) {
@@ -206,6 +256,7 @@ export const ClassCardMixin = {
         clearTimeout(this.timer);
         this.timer = setTimeout(async () => {
           await this.doShortenCourseName();
+          await this.adjustAllTextElements();
         }, 500);
       }, 0);
     },
@@ -222,33 +273,24 @@ export const ClassCardMixin = {
         }
         await this.$nextTick();
       }
+      await this.adjustAllTextElements();
     },
+
+    async adjustAllTextElements() {
+      await this.$nextTick();
+      const elements = [
+        this.$refs.courseName,
+        this.$refs.teacherNameVenue,
+        this.$refs.venueRef,
+        this.$refs.venueAtRef,
+        this.$refs.extraRef
+      ].filter(Boolean);
+      
+      await adjustAllTextElements(this, elements, this.course, this.$el);
+    },
+  
     shortenCourseNameParts() {
-      const parts = this.courseNameParts.slice();
-      if (parts.length === 0) {
-        return;
-      }
-      let index = parts.length - 1;
-      let maxLength = 1;
-      for (let i = parts.length - 1; i >= 0; i--) {
-        if (!/\w|\((?:\w{1,2}|\W)\)/.test(parts[i])) {
-          const lengthCanBeShorten = parts[i]
-            .replace(/^\(/, '')
-            .replace(/\)$/, '')
-            .replace(/…$/, '')
-            .length;
-          if (lengthCanBeShorten > maxLength) {
-            maxLength = lengthCanBeShorten;
-            index = i;
-          }
-        }
-      }
-      if (maxLength > 1) {
-        parts[index] = parts[index]
-          .replace(/[^()]+/, (value) =>
-            `${value.slice(0, 1)}${value.slice(1, value.endsWith('…') ? -2 : -1)}…`);
-      }
-      this.courseNameParts = parts;
+      this.courseNameParts = shortenCourseNameParts(this.courseNameParts);
     },
     handleMouseEnter() {
       this.$store.commit('HOVER_COURSE_ID', this.course.courseId);
@@ -259,4 +301,4 @@ export const ClassCardMixin = {
       }
     },
   },
-};
+}

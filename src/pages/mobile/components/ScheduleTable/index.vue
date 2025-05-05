@@ -10,10 +10,20 @@
       <tbody>
       <tr :key="index" v-for="(row, index) in rows">
         <th>{{ index + 1 }}</th>
-        <template v-for="(course, index2) in row">
-          <td :key="index2" :rowspan="course !== null ? course.span : 1" v-if="course === null || course.first">
-            <ClassCard :theme="ScheduleTableTheme" :course="course" :venue="venueMode" @click.native="handleClassCardClick(course.courseId)"
-                       v-if="course !== null" />
+        <template v-for="(courses, index2) in row">
+          <td :key="index2" :rowspan="courses.length > 0 && courses[0] != null ? courses[0].span : 1" 
+              v-if="courses.length === 0 || (courses.length > 0 && courses[0] != null && courses[0].first)">
+            <div class="course-stack" v-if="courses.length > 0">
+              <template v-for="(course, courseIndex) in courses">
+                <ClassCard
+                  v-if="course != null"
+                  :key="courseIndex"
+                  :theme="ScheduleTableTheme" 
+                  :course="course" 
+                  :venue="venueMode"
+                  @click.native="handleClassCardClick(course.courseId)" />
+              </template>
+            </div>
           </td>
         </template>
       </tr>
@@ -27,7 +37,7 @@
 </template>
 
 <script>
-  import ClassCard from './ClassCard';
+  import ClassCard from './ClassCard.vue';
   import { ScheduleTableMixin } from '../../../../mixins/ScheduleTable';
   import { UseScheduleTableThemeMixin } from '../../../../mixins/common/useScheduleTableTheme';
 
@@ -69,6 +79,8 @@
 
   .schedule-table td {
     position: relative;
+    height: 100%;
+    padding: 0;
   }
 
   .header-number {
@@ -83,5 +95,18 @@
     margin-top: 6px;
     padding: 8px 0;
     text-align: center;
+  }
+  
+  .course-stack {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 48px;
+  display: flex;
+  flex-direction: column;
   }
 </style>

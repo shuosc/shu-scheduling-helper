@@ -1,12 +1,14 @@
 <template>
   <div :style="style" class="class-card">
     <div class="course-name" ref="courseName"><strong>{{ course.courseName }}</strong></div>
-    <div class="teacher-name-venue" ref="teacherNameVenue" v-if="!venue">
-      {{ course.teacherName }}
-    </div>
-    <div class="venue" ref="venueRef" v-else>
+    <div class="venue" ref="venueRef" v-if="!venue">
       <span class="venue-at" ref="venueAtRef">@</span>{{ $store.getters.extra(`${course.courseId}-${course.teacherId}`).venue }}
     </div>
+    <div class="teacher-name-venue" ref="teacherNameVenue" v-else>
+      {{ course.teacherName }}
+    </div>
+    
+    
   </div>
 </template>
 
@@ -36,8 +38,8 @@ export default {
   line-height: 1.35;
   display: flex; 
   flex-direction: column; 
-  align-items: flex-start; 
-  justify-content: flex-start; 
+  align-items: flex-end; 
+  justify-content: flex-end; 
   margin: 0 4px 4px 0;
   padding: 4px 6px;
   user-select: none;

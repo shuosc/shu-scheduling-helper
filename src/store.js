@@ -4,7 +4,8 @@ import Vuex from 'vuex';
 import apiConfig from './apiConfig';
 
 import Storage from './storage';
-import { getClassesChangeList, processSelectedClasses, processWithChangeList, setColorSeed } from './utils';
+import { getClassesChangeList, processSelectedClasses, processWithChangeList } from './utils/course';
+import { setColorSeed, getColor } from './utils/color';
 
 
 Vue.use(Vuex);
@@ -35,16 +36,20 @@ export default new Vuex.Store({
   },
   getters: {
     scheduleTableRows(state) {
-      // 课程表格
       let rows = [];
       for (let i = 0; i < 12; i++) {
-        rows.push([null, null, null, null, null]);
+        rows.push([[], [], [], [], []]);
       }
+      
       for (let courseId in state.selectedClasses) {
         if (state.selectedClasses.hasOwnProperty(courseId)) {
           let teacherId = state.selectedClasses[courseId].teacherId;
+
           state.selectedClasses[courseId].periods.forEach((period) => {
-            rows[period[0]][period[1]] = {
+            const rowIndex = period[0];
+            const colIndex = period[1];
+
+            const courseInfo = {
               courseId,
               courseName: state.reservedClasses[courseId].courseName,
               teacherId,
@@ -56,32 +61,69 @@ export default new Vuex.Store({
               isPreview: false,
               fortnight: period[4] ? period[4] + '周' : null,
               lab: period[5],
+              clipPathMode: period[4] === '单' ? 'top-left' : 
+                         period[4] === '双' ? 'bottom-right' : 'full',
             };
+            
+            if (rows[rowIndex][colIndex].length === 0) {
+              rows[rowIndex][colIndex].push(courseInfo);
+            } 
+            else {
+              const existingCourses = rows[rowIndex][colIndex];
+
+              if (existingCourses.length === 1) {
+                const existingCourse = existingCourses[0];
+
+                if ((courseInfo.fortnight === '单周' && existingCourse.fortnight === '双周') ||
+                    (courseInfo.fortnight === '双周' && existingCourse.fortnight === '单周')) {
+                  rows[rowIndex][colIndex].push(courseInfo);
+                }
+                else if ((courseInfo.fortnight === '单周' || courseInfo.fortnight === '双周') && 
+                         !existingCourse.fortnight) {
+                  rows[rowIndex][colIndex] = [courseInfo];
+                }
+              }
+            }
           });
         }
       }
+      
       return rows;
     },
     campusTableRows(state) {
-      // 课程校区表格
+
       let rows = [];
       for (let i = 0; i < 12; i++) {
-        rows.push([null, null, null, null, null]);
+        rows.push([[], [], [], [], []]);
       }
+
       for (let courseId in state.selectedClasses) {
         if (state.selectedClasses.hasOwnProperty(courseId)) {
           let teacherId = state.selectedClasses[courseId].teacherId;
+          const campus = state.reservedClasses[courseId].classes[teacherId].campus;
           state.selectedClasses[courseId].periods.forEach((period) => {
-            rows[period[0]][period[1]] = state.reservedClasses[courseId].classes[teacherId].campus;
-            if (period[0] - 1 >= 0 && period[0] !== 4 && period[0] !== 8 && rows[period[0] - 1][period[1]] == null) {
-              rows[period[0] - 1][period[1]] = state.reservedClasses[courseId].classes[teacherId].campus;
+            const rowIndex = period[0];
+            const colIndex = period[1];
+
+            if (!rows[rowIndex][colIndex].includes(campus)) {
+              rows[rowIndex][colIndex].push(campus);
             }
-            if (period[0] + 1 < 12 && period[0] !== 3 && period[0] !== 7 && rows[period[0] + 1][period[1]] == null) {
-              rows[period[0] + 1][period[1]] = state.reservedClasses[courseId].classes[teacherId].campus;
+
+            if (rowIndex - 1 >= 0 && rowIndex !== 4 && rowIndex !== 8) {
+              if (!rows[rowIndex-1][colIndex].includes(campus)) {
+                rows[rowIndex-1][colIndex].push(campus);
+              }
+            }
+            
+            if (rowIndex + 1 < 12 && rowIndex !== 3 && rowIndex !== 7) {
+              if (!rows[rowIndex+1][colIndex].includes(campus)) {
+                rows[rowIndex+1][colIndex].push(campus);
+              }
             }
           });
         }
       }
+      
       return rows;
     },
     credits(state) {
@@ -127,32 +169,153 @@ export default new Vuex.Store({
       let result = false;
       let rows = [];
       for (let i = 0; i < 12; i++) {
-        rows.push([null, null, null, null, null]);
+        rows.push([[], [], [], [], []]);
       }
+
+      let periodInfo = {};
       for (let courseId in state.selectedClasses) {
         if (state.selectedClasses.hasOwnProperty(courseId)) {
           let teacherId = state.selectedClasses[courseId].teacherId;
+          const campus = state.reservedClasses[courseId].classes[teacherId].campus;
+          
           state.selectedClasses[courseId].periods.forEach((period) => {
-            if (!result) {
-              rows[period[0]][period[1]] = state.reservedClasses[courseId].classes[teacherId].campus;
-              if (period[0] - 1 >= 0 && period[0] !== 4 && period[0] !== 8) {
-                if (rows[period[0] - 1][period[1]] == null) {
-                  rows[period[0] - 1][period[1]] = state.reservedClasses[courseId].classes[teacherId].campus;
-                } else if (rows[period[0] - 1][period[1]] !== rows[period[0]][period[1]]) {
-                  result = true;
-                }
-              }
-              if (period[0] + 1 < 12 && period[0] !== 3 && period[0] !== 7) {
-                if (rows[period[0] + 1][period[1]] == null) {
-                  rows[period[0] + 1][period[1]] = state.reservedClasses[courseId].classes[teacherId].campus;
-                } else if (rows[period[0] + 1][period[1]] !== rows[period[0]][period[1]]) {
-                  result = true;
-                }
-              }
+            const rowIndex = period[0];
+            const colIndex = period[1];
+            const fortnight = period[4]; // 单双周信息
+            
+            if (!periodInfo[`${rowIndex}-${colIndex}`]) {
+              periodInfo[`${rowIndex}-${colIndex}`] = [];
             }
+            
+            periodInfo[`${rowIndex}-${colIndex}`].push({
+              campus,
+              fortnight,
+              courseId
+            });
           });
         }
       }
+      
+
+      for (let key in periodInfo) {
+        if (result) break; 
+        
+        const [rowIndex, colIndex] = key.split('-').map(Number);
+        const campusInfos = periodInfo[key];
+
+        let singleWeekInfo = null;
+        let doubleWeekInfo = null;
+        let fullWeekInfos = [];
+        
+        campusInfos.forEach(info => {
+          if (info.fortnight === '单') {
+            singleWeekInfo = info;
+          } else if (info.fortnight === '双') {
+            doubleWeekInfo = info;
+          } else {
+            fullWeekInfos.push(info);
+          }
+        });
+
+        let currentCampuses = [];
+        
+        if (fullWeekInfos.length > 0) {
+          currentCampuses = fullWeekInfos.map(info => info.campus);
+        } else if (singleWeekInfo && doubleWeekInfo) {
+          currentCampuses = [singleWeekInfo.campus, doubleWeekInfo.campus];
+        } else if (campusInfos.length > 0) {
+
+          currentCampuses = campusInfos.map(info => info.campus);
+        }
+        
+        if (currentCampuses.length > 0) {
+
+          if (rowIndex - 1 >= 0 && rowIndex !== 4 && rowIndex !== 8) {
+            const adjacentKey = `${rowIndex-1}-${colIndex}`;
+            
+            if (periodInfo[adjacentKey]) {
+              const adjacentInfos = periodInfo[adjacentKey];
+              let adjacentCampuses = [];
+              
+              // 确定相邻单元格的校区信息
+              let adjacentSingleWeekInfo = null;
+              let adjacentDoubleWeekInfo = null;
+              let adjacentFullWeekInfos = [];
+              
+              adjacentInfos.forEach(info => {
+                if (info.fortnight === '单') {
+                  adjacentSingleWeekInfo = info;
+                } else if (info.fortnight === '双') {
+                  adjacentDoubleWeekInfo = info;
+                } else {
+                  adjacentFullWeekInfos.push(info);
+                }
+              });
+              
+              if (adjacentFullWeekInfos.length > 0) {
+                adjacentCampuses = adjacentFullWeekInfos.map(info => info.campus);
+              } else if (adjacentSingleWeekInfo && adjacentDoubleWeekInfo) {
+                adjacentCampuses = [adjacentSingleWeekInfo.campus, adjacentDoubleWeekInfo.campus];
+              } else if (adjacentInfos.length > 0) {
+                adjacentCampuses = adjacentInfos.map(info => info.campus);
+              }
+              
+              // 检查校区冲突
+              for (const campus of currentCampuses) {
+                for (const adjacentCampus of adjacentCampuses) {
+                  if (campus !== adjacentCampus) {
+                    result = true;
+                    break;
+                  }
+                }
+                if (result) break;
+              }
+            }
+          }
+          
+          if (!result && rowIndex + 1 < 12 && rowIndex !== 3 && rowIndex !== 7) {
+            const adjacentKey = `${rowIndex+1}-${colIndex}`;
+            
+            if (periodInfo[adjacentKey]) {
+              const adjacentInfos = periodInfo[adjacentKey];
+              let adjacentCampuses = [];
+
+              let adjacentSingleWeekInfo = null;
+              let adjacentDoubleWeekInfo = null;
+              let adjacentFullWeekInfos = [];
+              
+              adjacentInfos.forEach(info => {
+                if (info.fortnight === '单') {
+                  adjacentSingleWeekInfo = info;
+                } else if (info.fortnight === '双') {
+                  adjacentDoubleWeekInfo = info;
+                } else {
+                  adjacentFullWeekInfos.push(info);
+                }
+              });
+              
+              if (adjacentFullWeekInfos.length > 0) {
+                adjacentCampuses = adjacentFullWeekInfos.map(info => info.campus);
+              } else if (adjacentSingleWeekInfo && adjacentDoubleWeekInfo) {
+                adjacentCampuses = [adjacentSingleWeekInfo.campus, adjacentDoubleWeekInfo.campus];
+              } else if (adjacentInfos.length > 0) {
+                adjacentCampuses = adjacentInfos.map(info => info.campus);
+              }
+              
+              for (const campus of currentCampuses) {
+                for (const adjacentCampus of adjacentCampuses) {
+                  if (campus !== adjacentCampus) {
+                    result = true;
+                    break;
+                  }
+                }
+                if (result) break;
+              }
+            }
+          }
+        }
+      }
+      
       return result;
     },
     extra(state) {
@@ -583,9 +746,13 @@ export default new Vuex.Store({
       return new Promise((resolve) => {
         let copy = JSON.parse(JSON.stringify(context.state.selectedClasses));
         copy[data['course_id']] = {
-          teacherId: data['teacher_id'],
+          teacherId: data['teacher_id']
         };
+        // First process to set up periods
         processSelectedClasses(copy, context.state.reservedClasses);
+        // Then set color to ensure it's preserved
+        const courseName = context.state.reservedClasses[data['course_id']]?.courseName;
+        copy[data['course_id']].themeColor = getColor(courseName, 0);
         context.commit('SELECTED_CLASSES', copy);
         let row = context.state.allClassesMap[`${data['course_id']}-${data['teacher_id']}`];
         context.commit('HISTORY_PUSH', {

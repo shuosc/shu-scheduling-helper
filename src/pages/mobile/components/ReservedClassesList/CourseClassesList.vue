@@ -138,6 +138,16 @@
           },
         }, []), '按钮撤销此操作。']));
       },
+      conflictsSolving(key) {
+        const row = {
+          course_id: this.id,
+          course_name: this.course.courseName,
+          teacher_id: key,
+          teacher_name: this.course.classes[key].teacherName,
+          class_time: this.course.classes[key].classTime,
+        };
+        this.showConflictsSolvingDialog(row, this.conflicts[key]);
+      },
     },
   };
 </script>

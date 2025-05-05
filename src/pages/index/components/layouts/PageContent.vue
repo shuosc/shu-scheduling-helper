@@ -1,7 +1,5 @@
 <template>
   <a-layout-content class="page-content">
-    <a-alert class="content-alert" show-icon type="warning"
-             message="当前暂未适配相同时间段的选课规则（单双周等），课程时间是否冲突请以学校选课系统为准，谢谢！" />
     <a-spin :spinning="!$store.state.loaded" size="large" tip="正在加载…">
       <a-tabs class="content-tabs" type="card" v-model="activeTab">
         <a-tab-pane key="schedule_table" tab="课表" v-if="showScheduleTable">
@@ -47,7 +45,7 @@
         <div>
           <a href="https://beian.miit.gov.cn" target="_blank">沪ICP备19044115号-1</a>
         </div>
-        <a-button class="alternate-to-desktop" href="/m.html" icon="mobile" type="link">
+        <a-button class="alternate-to-desktop" href="/mobile.html" icon="mobile" type="link">
           切换到移动版
         </a-button>
       </div>
